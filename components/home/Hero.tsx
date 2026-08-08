@@ -64,7 +64,7 @@ export default function Hero() {
 const [activeSlide, setActiveSlide] = useState(0);
 
 return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section data-navbar-theme="dark" className="relative min-h-[103vh] overflow-hidden">
       <Swiper
         modules={[Autoplay]}
         loop
@@ -105,7 +105,7 @@ return (
         </div>
         </SwiperSlide>
         ))}
-        <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 gap-3 rounded-full border border-white/20 bg-white/10 px-5 py-4 backdrop-blur-xl">
+        <div className="absolute bottom-40 left-1/2 z-20 flex -translate-x-1/2 gap-3 rounded-full border border-white/20 bg-white/10 px-5 py-4 backdrop-blur-xl">
             {slides.map((_, index) => (
                 <div
                 key={index}
