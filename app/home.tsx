@@ -3,6 +3,10 @@ import SearchSection from "@/components/home/SearchSection";
 import FeaturedPackages from "@/components/home/FeaturedPackages";
 import Services from "@/components/home/services";
 import Destinations from "@/components/home/Destinations";
+import FeedbackSection from "@/components/home/FeedbackSection";
+import TravelCTA from "@/components/home/TravelCTA";
+import FAQSection from "@/components/home/FAQSection";
+import Footer from "@/components/home/Footer";
 
 export default function HomePage() {
     return (
@@ -35,6 +39,10 @@ export default function HomePage() {
                 <Services />
                 <Destinations />
             </div>
+            <FeedbackSection/>
+            <TravelCTA/>
+            <FAQSection/>
+            <Footer/>
         </main>
     );
 }
