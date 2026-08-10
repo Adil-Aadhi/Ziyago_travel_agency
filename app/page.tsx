@@ -1,11 +1,8 @@
-import HomePage from "./home"
-import Navbar from "@/components/layout/Navbar"
+import HomePage from "./home/home"
 
 export default function mainapp() {
   return (
     <>
-      <Navbar />
-
       <main>
         <HomePage />
       </main>

@@ -14,7 +14,6 @@ import {
     Briefcase,
     PlayCircle,
     CalendarDays,
-    MessageCircle,
     Phone,
 } from "lucide-react";
 
@@ -35,20 +34,15 @@ const navLinks = [
         icon: Briefcase,
     },
     {
-        name: "Videos",
-        href: "/videos",
+        name: "Gallery",
+        href: "/gallery",
         icon: PlayCircle,
     },
-    {
-        name: "Upcoming",
-        href: "/upcoming",
-        icon: CalendarDays,
-    },
-    {
-        name: "Testimonials",
-        href: "/testimonials",
-        icon: MessageCircle,
-    },
+    // {
+    //     name: "Upcoming",
+    //     href: "/upcoming",
+    //     icon: CalendarDays,
+    // },
     {
         name: "Contact",
         href: "/contact",
