@@ -64,7 +64,7 @@ export default function AboutPage() {
 
       {/* Hero */}
       <section  className="px-6 pb-20 pt-32 sm:px-8 lg:px-12">
-        <div className="mx-auto mt-32 grid min-h-[520px] max-w-7xl items-center gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:px-12">
+        <div className="mx-auto grid min-h-[520px] max-w-7xl items-center gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:px-12">
 
           {/* Content */}
           <div className="max-w-xl">
