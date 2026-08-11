@@ -6,12 +6,44 @@ import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
 
 export default function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Backend authentication will be connected here later.
-    console.log("Login submitted");
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Invalid email or password");
+        return;
+      }
+
+      // Login successful
+      window.location.href = "/admin";
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("Unable to connect to the server");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -79,6 +111,8 @@ export default function AdminLoginPage() {
                   id="email"
                   name="email"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@example.com"
                   required
                   className="
@@ -131,6 +165,8 @@ export default function AdminLoginPage() {
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   required
                   className="
@@ -187,9 +223,16 @@ export default function AdminLoginPage() {
               </div>
             </div>
 
+            {error && (
+              <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">
+                {error}
+              </div>
+            )}
+
             {/* Submit */}
             <button
               type="submit"
+              disabled={loading}
               className="
                 mt-2
                 w-full
@@ -205,9 +248,11 @@ export default function AdminLoginPage() {
                 hover:bg-orange-600
                 hover:shadow-md
                 active:scale-[0.99]
+                disabled:cursor-not-allowed
+                disabled:opacity-60
               "
             >
-              Sign In
+              {loading ? "Signing in..." : "Sign In"}
             </button>
 
           </form>
