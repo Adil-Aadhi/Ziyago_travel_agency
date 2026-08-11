@@ -81,7 +81,7 @@ export default function FeaturedPackages() {
 
         {/* Cards */}
 
-        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4 rounded-2xl">
 
         {packages.map((item) => (
 
@@ -149,6 +149,7 @@ export default function FeaturedPackages() {
                 transition-all
                 duration-300
                 group-hover:bg-white/15
+                rounded-2xl
                 "
             />
 
