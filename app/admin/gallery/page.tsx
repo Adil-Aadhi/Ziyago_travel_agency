@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Plus,
   Image as ImageIcon,
@@ -11,62 +11,47 @@ import {
   Eye,
   X,
   Upload,
+  Loader2
 } from "lucide-react";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminHeader from "@/components/admin/AdminHeader";
+import { toast } from "sonner";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 
 type GalleryItem = {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   type: "image" | "video";
   url: string;
+  publicId: string;
   createdAt: string;
 };
 
-const dummyGallery: GalleryItem[] = [
-  {
-    id: "1",
-    title: "Swiss Alps",
-    description: "Beautiful views from Switzerland.",
-    type: "image",
-    url: "https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=800",
-    createdAt: "Aug 11, 2026",
-  },
-  {
-    id: "2",
-    title: "Maldives Beach",
-    description: "A peaceful beach experience.",
-    type: "image",
-    url: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=800",
-    createdAt: "Aug 10, 2026",
-  },
-  {
-    id: "3",
-    title: "Dubai Experience",
-    description: "Dubai city travel highlights.",
-    type: "video",
-    url: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
-    createdAt: "Aug 9, 2026",
-  },
-  {
-    id: "4",
-    title: "Mountain Adventure",
-    description: "Adventure through the mountains.",
-    type: "image",
-    url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800",
-    createdAt: "Aug 8, 2026",
-  },
-];
 
 export default function GalleryPage() {
-  const [gallery, setGallery] =
-    useState<GalleryItem[]>(dummyGallery);
+ const [gallery, setGallery] =
+    useState<GalleryItem[]>([]);
+
+    const [loading, setLoading] =
+    useState(true);
+
+    const [error, setError] =
+    useState("");
+
+    const [deleteGalleryId, setDeleteGalleryId] =
+  useState<string | null>(null);
+
+const [deleting, setDeleting] = useState(false);
+    
 
   const [showAddModal, setShowAddModal] =
     useState(false);
 
   const [selectedItem, setSelectedItem] =
+    useState<GalleryItem | null>(null);
+
+    const [editingItem, setEditingItem] =
     useState<GalleryItem | null>(null);
 
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -80,11 +65,94 @@ export default function GalleryPage() {
     return item.type === filter;
   });
 
-  const handleDelete = (id: string) => {
-    setGallery((current) =>
-      current.filter((item) => item.id !== id)
+ const handleDelete = async (id: string) => {
+  try {
+    setDeleting(true);
+
+    const response = await fetch(
+      `/api/gallery/${id}`,
+      {
+        method: "DELETE",
+      }
     );
-  };
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message ||
+          "Failed to delete gallery item"
+      );
+    }
+
+    setGallery((currentGallery) =>
+      currentGallery.filter(
+        (item) => item._id !== id
+      )
+    );
+
+    setDeleteGalleryId(null);
+
+    toast.success(
+      "Gallery item deleted successfully"
+    );
+  } catch (error) {
+    console.error(
+      "DELETE GALLERY ERROR:",
+      error
+    );
+
+    toast.error(
+      error instanceof Error
+        ? error.message
+        : "Failed to delete gallery item"
+    );
+  } finally {
+    setDeleting(false);
+  }
+};
+
+
+  const fetchGallery = async () => {
+    try {
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(
+        "/api/gallery",
+        {
+            cache: "no-store",
+        }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+        throw new Error(
+            data.message ||
+            "Failed to fetch gallery"
+        );
+        }
+
+        setGallery(data.gallery || []);
+    } catch (error) {
+        console.error(
+        "FETCH GALLERY ERROR:",
+        error
+        );
+
+        setError(
+        error instanceof Error
+            ? error.message
+            : "Failed to fetch gallery"
+        );
+    } finally {
+        setLoading(false);
+    }
+    };
+  useEffect(() => {
+  fetchGallery();
+}, []);
 
   return (
     <div className="min-h-screen bg-[#f8fafb]">
@@ -251,7 +319,7 @@ export default function GalleryPage() {
               {filteredGallery.map((item) => (
 
                 <div
-                  key={item.id}
+                  key={item._id}
                   className="
                     group
                     overflow-hidden
@@ -268,7 +336,17 @@ export default function GalleryPage() {
 
                   {/* MEDIA */}
 
-                  <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                  <div
+                    onClick={() => setSelectedItem(item)}
+                    className="
+                        group/media
+                        relative
+                        aspect-[4/3]
+                        cursor-pointer
+                        overflow-hidden
+                        bg-gray-100
+                    "
+                    >
 
                     {item.type === "image" ? (
                       <img
@@ -333,32 +411,6 @@ export default function GalleryPage() {
 
                     </div>
 
-                    {/* MENU */}
-
-                    <div className="absolute right-3 top-3">
-
-                      <button
-                        className="
-                          flex
-                          h-8
-                          w-8
-                          items-center
-                          justify-center
-                          rounded-lg
-                          bg-white/90
-                          text-gray-500
-                          shadow-sm
-                          backdrop-blur-sm
-                          transition
-                          hover:bg-white
-                          hover:text-gray-800
-                        "
-                      >
-                        <MoreVertical size={17} />
-                      </button>
-
-                    </div>
-
                   </div>
 
                   {/* CONTENT */}
@@ -382,27 +434,7 @@ export default function GalleryPage() {
                       <div className="flex items-center gap-1">
 
                         <button
-                          onClick={() =>
-                            setSelectedItem(item)
-                          }
-                          className="
-                            flex
-                            h-8
-                            w-8
-                            items-center
-                            justify-center
-                            rounded-lg
-                            text-gray-400
-                            transition
-                            hover:bg-gray-100
-                            hover:text-gray-700
-                          "
-                          title="View"
-                        >
-                          <Eye size={15} />
-                        </button>
-
-                        <button
+                          onClick={() => setEditingItem(item)}
                           className="
                             flex
                             h-8
@@ -422,7 +454,7 @@ export default function GalleryPage() {
 
                         <button
                           onClick={() =>
-                            handleDelete(item.id)
+                            setDeleteGalleryId(item._id)
                           }
                           className="
                             flex
@@ -462,11 +494,18 @@ export default function GalleryPage() {
       {/* ADD GALLERY MODAL */}
       {/* ================================================= */}
 
-      {showAddModal && (
+      {(showAddModal || editingItem) && (
         <AddGalleryModal
-          onClose={() => setShowAddModal(false)}
+            editItem={editingItem}
+            onClose={() => {
+            setShowAddModal(false);
+            setEditingItem(null);
+            }}
+            onSuccess={() => {
+            fetchGallery();
+            }}
         />
-      )}
+        )}
 
       {/* ================================================= */}
       {/* VIEW MODAL */}
@@ -557,8 +596,29 @@ export default function GalleryPage() {
 
           </div>
 
+          
+
         </div>
       )}
+
+      <ConfirmModal
+            open={deleteGalleryId !== null}
+            title="Delete gallery item?"
+            message="This media will be permanently deleted from the gallery and Cloudinary."
+            confirmText="Delete"
+            cancelText="Cancel"
+            loading={deleting}
+            onCancel={() => {
+                if (!deleting) {
+                setDeleteGalleryId(null);
+                }
+            }}
+            onConfirm={() => {
+                if (deleteGalleryId) {
+                handleDelete(deleteGalleryId);
+                }
+            }}
+            />
     </div>
   );
 }
@@ -569,8 +629,12 @@ export default function GalleryPage() {
 
 function AddGalleryModal({
   onClose,
+  onSuccess,
+  editItem
 }: {
   onClose: () => void;
+  onSuccess?: () => void;
+  editItem?: GalleryItem | null;
 }) {
   const [type, setType] =
     useState<"image" | "video">("image");
@@ -584,6 +648,7 @@ function AddGalleryModal({
 
   const [preview, setPreview] =
     useState("");
+const isEditMode = !!editItem;
 
   const handleFile = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -599,16 +664,123 @@ function AddGalleryModal({
     );
   };
 
-  const handleSubmit = () => {
-    console.log({
-      title,
-      description,
-      type,
-      file,
+  const [isSubmitting, setIsSubmitting] =
+  useState(false);
+
+ const handleSubmit = async () => {
+  if (isSubmitting) return;
+
+  if (!title.trim()) {
+    toast.error("Please enter a title");
+    return;
+  }
+
+  if (!isEditMode && !file) {
+    toast.error(`Please select a ${type}`);
+    return;
+  }
+
+  try {
+    setIsSubmitting(true);
+
+    const formData = new FormData();
+
+    formData.append(
+      "title",
+      title.trim()
+    );
+
+    formData.append(
+      "description",
+      description.trim()
+    );
+
+    formData.append(
+      "type",
+      type
+    );
+
+    /*
+     * Only send file when a new one
+     * has actually been selected.
+     */
+
+    if (file) {
+      formData.append("file", file);
+    }
+
+    const url = isEditMode
+      ? `/api/gallery/${editItem?._id}`
+      : "/api/gallery";
+
+    const response = await fetch(url, {
+      method: isEditMode
+        ? "PUT"
+        : "POST",
+      body: formData,
     });
 
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message ||
+          (
+            isEditMode
+              ? "Failed to update gallery item"
+              : "Failed to add gallery item"
+          )
+      );
+    }
+
+    toast.success(
+      isEditMode
+        ? "Gallery item updated successfully"
+        : "Gallery item added successfully"
+    );
+
+    onSuccess?.();
     onClose();
-  };
+
+  } catch (error) {
+    console.error(
+      isEditMode
+        ? "UPDATE GALLERY ERROR:"
+        : "ADD GALLERY ERROR:",
+      error
+    );
+
+    toast.error(
+      error instanceof Error
+        ? error.message
+        : (
+            isEditMode
+              ? "Failed to update gallery item"
+              : "Failed to add gallery item"
+          )
+    );
+
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
+    useEffect(() => {
+    if (editItem) {
+        setType(editItem.type);
+        setTitle(editItem.title);
+        setDescription(editItem.description);
+        setFile(null);
+        setPreview(editItem.url);
+    } else {
+        setType("image");
+        setTitle("");
+        setDescription("");
+        setFile(null);
+        setPreview("");
+    }
+    }, [editItem]);
 
   return (
     <div
@@ -650,12 +822,16 @@ function AddGalleryModal({
             </p>
 
             <h2 className="mt-1 text-xl font-bold text-gray-900">
-              Add Gallery Item
-            </h2>
+                {isEditMode
+                    ? "Edit Gallery Item"
+                    : "Add Gallery Item"}
+                </h2>
 
             <p className="mt-1 text-xs text-gray-400">
-              Upload an image or video to your gallery.
-            </p>
+                {isEditMode
+                    ? "Update the gallery item details and media."
+                    : "Upload an image or video to your gallery."}
+                </p>
           </div>
 
           <button
@@ -957,6 +1133,7 @@ function AddGalleryModal({
           <button
             type="button"
             onClick={handleSubmit}
+            disabled={isSubmitting}
             className="
               rounded-xl
               bg-orange-500
@@ -970,8 +1147,23 @@ function AddGalleryModal({
               hover:bg-orange-600
             "
           >
-            Add to Gallery
-          </button>
+            {isSubmitting ? (
+        <>
+            <Loader2
+            size={16}
+            className="animate-spin"
+            />
+
+            {isEditMode
+            ? "Saving..."
+            : "Uploading..."}
+        </>
+        ) : (
+        isEditMode
+            ? "Save Changes"
+            : "Add to Gallery"
+        )}
+                </button>
 
         </div>
 
