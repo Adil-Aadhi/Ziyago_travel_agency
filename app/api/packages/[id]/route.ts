@@ -50,6 +50,45 @@ async function uploadToCloudinary(
   });
 }
 
+async function deleteFromCloudinary(
+  imageUrl: string
+): Promise<void> {
+  if (!imageUrl) return;
+
+  try {
+    const uploadPart = imageUrl.split("/upload/")[1];
+
+    if (!uploadPart) {
+      console.warn(
+        "Could not extract Cloudinary public_id:",
+        imageUrl
+      );
+      return;
+    }
+
+    // Remove Cloudinary version if present
+    const withoutVersion =
+      uploadPart.replace(/^v\d+\//, "");
+
+    // Remove file extension
+    const publicId =
+      withoutVersion.replace(/\.[^/.]+$/, "");
+
+    await cloudinary.uploader.destroy(publicId, {
+      resource_type: "image",
+    });
+
+    console.log(
+      "Deleted old Cloudinary image:",
+      publicId
+    );
+  } catch (error) {
+    console.error(
+      "CLOUDINARY DELETE ERROR:",
+      error
+    );
+  }
+}
 
 // GET SINGLE PACKAGE
 export async function GET(
@@ -279,6 +318,8 @@ export async function PUT(
 
     const mainImage = formData.get("mainImage");
 
+    let oldMainImage: string | null = null;
+
     if (
       mainImage instanceof File &&
       mainImage.size > 0
@@ -288,7 +329,13 @@ export async function PUT(
         "travel-agency/packages/main"
       );
 
-      updateData.mainImage = result.secure_url;
+      // Keep old image URL temporarily
+      oldMainImage =
+        existingPackage.mainImage;
+
+      // Save new image URL
+      updateData.mainImage =
+        result.secure_url;
     }
 
     // -----------------------------------------
@@ -333,23 +380,35 @@ export async function PUT(
     // -----------------------------------------
 
     const updatedPackage =
-      await Package.findByIdAndUpdate(
-        id,
-        updateData,
-        {
-          new: true,
-          runValidators: true,
-        }
-      );
+  await Package.findByIdAndUpdate(
+    id,
+    updateData,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
-    return NextResponse.json(
-      {
-        success: true,
-        message: "Package updated successfully",
-        package: updatedPackage,
-      },
-      { status: 200 }
-    );
+// -----------------------------------------
+// Delete old main image from Cloudinary
+// ONLY after MongoDB update succeeds
+// -----------------------------------------
+
+if (oldMainImage) {
+  await deleteFromCloudinary(
+    oldMainImage
+  );
+}
+
+return NextResponse.json(
+  {
+    success: true,
+    message: "Package updated successfully",
+    package: updatedPackage,
+  },
+  { status: 200 }
+);
+
   } catch (error) {
     console.error(
       "UPDATE PACKAGE ERROR:",
@@ -365,6 +424,7 @@ export async function PUT(
     );
   }
 }
+
 
 
 // SOFT DELETE PACKAGE

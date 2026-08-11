@@ -38,6 +38,11 @@ export default function DeletedPackagesPage() {
   const [restoringId, setRestoringId] = useState<string | null>(
     null
   );
+  const [deletingId, setDeletingId] =
+  useState<string | null>(null);
+
+const [packageToDelete, setPackageToDelete] =
+  useState<PackageData | null>(null);
 
   const fetchDeletedPackages = useCallback(async () => {
     try {
@@ -98,8 +103,8 @@ export default function DeletedPackagesPage() {
       );
 
       toast.success(
-        "Package moved to deleted packages"
-        );
+      "Package restored successfully"
+    );
     } catch (error) {
       console.error(
         "RESTORE PACKAGE ERROR:",
@@ -109,12 +114,61 @@ export default function DeletedPackagesPage() {
       toast.error(
         error instanceof Error
             ? error.message
-            : "Failed to delete package"
+            : "Failed to restore  package"
         );
     } finally {
       setRestoringId(null);
     }
   };
+
+  const handlePermanentDelete = async () => {
+  if (!packageToDelete) return;
+
+  const id = packageToDelete._id;
+
+  try {
+    setDeletingId(id);
+
+    const response = await fetch(
+      `/api/packages/${id}/permanent-delete`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message ||
+          "Failed to permanently delete package"
+      );
+    }
+
+    setPackages((current) =>
+      current.filter((pkg) => pkg._id !== id)
+    );
+
+    setPackageToDelete(null);
+
+    toast.success(
+      "Package permanently deleted"
+    );
+  } catch (error) {
+    console.error(
+      "PERMANENT DELETE PACKAGE ERROR:",
+      error
+    );
+
+    toast.error(
+      error instanceof Error
+        ? error.message
+        : "Failed to permanently delete package"
+    );
+  } finally {
+    setDeletingId(null);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-50 px-5 py-8 md:px-8">
@@ -229,22 +283,71 @@ export default function DeletedPackagesPage() {
                       </p>
                     </div>
 
+                    <div className="flex items-center gap-2">
+                    {/* RESTORE */}
+
                     <button
                       type="button"
-                      disabled={restoringId === pkg._id}
+                      disabled={
+                        restoringId === pkg._id ||
+                        deletingId === pkg._id
+                      }
                       onClick={() =>
                         handleRestore(pkg._id)
                       }
-                      className="inline-flex items-center gap-2 rounded-xl bg-green-50 px-4 py-2.5 text-sm font-semibold text-green-600 transition hover:bg-green-100 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="
+                        inline-flex
+                        items-center
+                        gap-2
+                        rounded-xl
+                        bg-green-50
+                        px-4
+                        py-2.5
+                        text-sm
+                        font-semibold
+                        text-green-600
+                        transition
+                        hover:bg-green-100
+                        disabled:cursor-not-allowed
+                        disabled:opacity-50
+                      "
                     >
-                      <RotateCcw
-                        size={15}
-                      />
+                      <RotateCcw size={15} />
 
                       {restoringId === pkg._id
                         ? "Restoring..."
                         : "Restore"}
                     </button>
+
+                    {/* PERMANENT DELETE */}
+
+                        <button
+                          type="button"
+                          disabled={
+                            restoringId === pkg._id ||
+                            deletingId === pkg._id
+                          }
+                          onClick={() =>
+                            setPackageToDelete(pkg)
+                          }
+                          className="
+                            inline-flex
+                            items-center
+                            justify-center
+                            rounded-xl
+                            bg-red-50
+                            p-2.5
+                            text-red-500
+                            transition
+                            hover:bg-red-100
+                            disabled:cursor-not-allowed
+                            disabled:opacity-50
+                          "
+                          title="Delete permanently"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
                   </div>
 
                 </div>
@@ -254,6 +357,145 @@ export default function DeletedPackagesPage() {
           </div>
         )}
       </div>
+      {packageToDelete && (
+        <div
+          className="
+            fixed
+            inset-0
+            z-50
+            flex
+            items-center
+            justify-center
+            bg-black/40
+            px-5
+            backdrop-blur-sm
+          "
+        >
+          <div
+            className="
+              w-full
+              max-w-md
+              rounded-2xl
+              bg-white
+              p-6
+              shadow-2xl
+            "
+          >
+            {/* ICON */}
+
+            <div className="
+              flex
+              h-12
+              w-12
+              items-center
+              justify-center
+              rounded-full
+              bg-red-50
+            ">
+              <Trash2
+                size={22}
+                className="text-red-500"
+              />
+            </div>
+
+            {/* CONTENT */}
+
+            <h2 className="
+              mt-5
+              text-lg
+              font-bold
+              text-gray-900
+            ">
+              Permanently delete package?
+            </h2>
+
+            <p className="
+              mt-2
+              text-sm
+              leading-6
+              text-gray-500
+            ">
+              Are you sure you want to permanently
+              delete{" "}
+              <span className="font-semibold text-gray-800">
+                {packageToDelete.title}
+              </span>
+              ?
+            </p>
+
+            <p className="
+              mt-2
+              text-sm
+              font-medium
+              text-red-500
+            ">
+              This will permanently remove the
+              package, its main image, and all gallery
+              images. This action cannot be undone.
+            </p>
+
+            {/* ACTIONS */}
+
+            <div className="
+              mt-6
+              flex
+              justify-end
+              gap-3
+            ">
+              <button
+                type="button"
+                disabled={deletingId === packageToDelete._id}
+                onClick={() =>
+                  setPackageToDelete(null)
+                }
+                className="
+                  rounded-xl
+                  border
+                  border-gray-200
+                  px-4
+                  py-2.5
+                  text-sm
+                  font-semibold
+                  text-gray-600
+                  transition
+                  hover:bg-gray-50
+                  disabled:opacity-50
+                "
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                disabled={deletingId === packageToDelete._id}
+                onClick={handlePermanentDelete}
+                className="
+                  inline-flex
+                  items-center
+                  gap-2
+                  rounded-xl
+                  bg-red-500
+                  px-4
+                  py-2.5
+                  text-sm
+                  font-semibold
+                  text-white
+                  transition
+                  hover:bg-red-600
+                  disabled:cursor-not-allowed
+                  disabled:opacity-50
+                "
+              >
+                <Trash2 size={15} />
+
+                {deletingId === packageToDelete._id
+                  ? "Deleting..."
+                  : "Delete Permanently"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
