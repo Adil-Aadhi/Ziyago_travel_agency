@@ -156,7 +156,7 @@ export default function PackageDetailsPage() {
       ====================================== */}
 
       <section className="px-6 pb-10 pt-12">
-        <div className="mx-auto max-w-7xl">
+        <div className="mt-10 mx-auto max-w-7xl">
 
           {/* Back */}
           <Link
