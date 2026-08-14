@@ -9,6 +9,7 @@ import {
   MessageSquare,
   LogOut,
   X,
+  Star,
 } from "lucide-react";
 
 import { useState } from "react";
@@ -47,6 +48,11 @@ const navItems = [
     name: "Contact-enquiry",
     href: "/admin/contact-enquiries",
     icon: MessageSquare,
+  },
+  {
+    name: "Reviews",
+    href: "/admin/reviews",
+    icon: Star,
   },
 ];
 
