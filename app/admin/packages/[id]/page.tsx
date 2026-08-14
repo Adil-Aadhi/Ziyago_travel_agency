@@ -1,4 +1,5 @@
 "use client";
+
 import AddPackageModal from "@/components/admin/AddPackageModal";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -7,14 +8,13 @@ import {
   ArrowLeft,
   MapPin,
   Clock3,
-  CalendarDays,
   Pencil,
-  Image as ImageIcon,
   Check,
   X,
-  CheckCircle2,
   Loader2,
   Package as PackageIcon,
+  Star,
+  Flag,
 } from "lucide-react";
 
 import AdminSidebar from "@/components/admin/AdminSidebar";
@@ -32,6 +32,11 @@ type PackageData = {
   destination: string;
   duration: string;
   price: number;
+
+  // NEW
+  tourType: string;
+  rating: number;
+
   description: string;
   mainImage: string;
   galleryImages: string[];
@@ -45,15 +50,21 @@ type PackageData = {
 export default function PackageDetailsPage() {
   const params = useParams();
   const id = params.id as string;
-  const [showEditModal, setShowEditModal] =useState(false);
 
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [showEditModal, setShowEditModal] =
+    useState(false);
+
+  const [mobileOpen, setMobileOpen] =
+    useState(false);
 
   const [packageData, setPackageData] =
     useState<PackageData | null>(null);
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
 
   /* ---------------------------------------------
      FETCH PACKAGE
@@ -78,7 +89,8 @@ export default function PackageDetailsPage() {
 
         if (!response.ok) {
           throw new Error(
-            data.message || "Failed to fetch package"
+            data.message ||
+              "Failed to fetch package"
           );
         }
 
@@ -117,7 +129,9 @@ export default function PackageDetailsPage() {
 
           <AdminSidebar
             mobileOpen={mobileOpen}
-            onClose={() => setMobileOpen(false)}
+            onClose={() =>
+              setMobileOpen(false)
+            }
           />
 
           <div className="flex flex-1 flex-col">
@@ -163,7 +177,9 @@ export default function PackageDetailsPage() {
 
           <AdminSidebar
             mobileOpen={mobileOpen}
-            onClose={() => setMobileOpen(false)}
+            onClose={() =>
+              setMobileOpen(false)
+            }
           />
 
           <div className="flex flex-1 flex-col">
@@ -235,7 +251,9 @@ export default function PackageDetailsPage() {
 
         <AdminSidebar
           mobileOpen={mobileOpen}
-          onClose={() => setMobileOpen(false)}
+          onClose={() =>
+            setMobileOpen(false)
+          }
         />
 
         {/* ==========================================
@@ -279,7 +297,9 @@ export default function PackageDetailsPage() {
 
                 <button
                   type="button"
-                  onClick={() => setShowEditModal(true)}
+                  onClick={() =>
+                    setShowEditModal(true)
+                  }
                   className="
                     inline-flex
                     items-center
@@ -338,27 +358,122 @@ export default function PackageDetailsPage() {
                   {packageData.title}
                 </h1>
 
-                <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-gray-500">
+                {/* ========================================
+                    PACKAGE META
+                ======================================== */}
 
-                  <span className="flex items-center gap-2">
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+
+                  {/* Destination */}
+
+                  <div
+                    className="
+                      flex
+                      items-center
+                      gap-2
+                      rounded-full
+                      bg-gray-50
+                      px-4
+                      py-2
+                      text-sm
+                      text-gray-600
+                    "
+                  >
                     <MapPin
                       size={16}
                       className="text-orange-500"
                     />
 
-                    {packageData.destination}
-                  </span>
+                    <span>
+                      {packageData.destination}
+                    </span>
+                  </div>
 
-                  <span className="h-1 w-1 rounded-full bg-gray-300" />
+                  {/* Duration */}
 
-                  <span className="flex items-center gap-2">
+                  <div
+                    className="
+                      flex
+                      items-center
+                      gap-2
+                      rounded-full
+                      bg-gray-50
+                      px-4
+                      py-2
+                      text-sm
+                      text-gray-600
+                    "
+                  >
                     <Clock3
                       size={16}
                       className="text-orange-500"
                     />
 
-                    {packageData.duration}
-                  </span>
+                    <span>
+                      {packageData.duration}
+                    </span>
+                  </div>
+
+                  {/* Tour Type */}
+
+                  <div
+                    className="
+                      flex
+                      items-center
+                      gap-2
+                      rounded-full
+                      bg-orange-50
+                      px-4
+                      py-2
+                      text-sm
+                      font-medium
+                      text-orange-600
+                    "
+                  >
+                    <Flag
+                      size={16}
+                    />
+
+                    <span>
+                      {packageData.tourType ||
+                        "Not specified"}
+                    </span>
+                  </div>
+
+                  {/* Rating */}
+
+                  <div
+                    className="
+                      flex
+                      items-center
+                      gap-2
+                      rounded-full
+                      bg-yellow-50
+                      px-4
+                      py-2
+                      text-sm
+                      font-semibold
+                      text-gray-700
+                    "
+                  >
+                    <Star
+                      size={16}
+                      className="
+                        fill-yellow-400
+                        text-yellow-400
+                      "
+                    />
+
+                    <span>
+                      {typeof packageData.rating ===
+                      "number" &&
+                      packageData.rating > 0
+                        ? packageData.rating.toFixed(
+                            1
+                          )
+                        : "No rating"}
+                    </span>
+                  </div>
 
                 </div>
 
@@ -382,20 +497,68 @@ export default function PackageDetailsPage() {
 
                   <div className="absolute bottom-0 left-0 right-0 p-7 md:p-10">
 
-                    <p className="flex items-center gap-2 text-sm text-white/90">
-                      <Clock3 size={17} />
-                      {packageData.duration}
-                    </p>
+                    <div className="flex flex-wrap items-end justify-between gap-5">
 
-                    <p className="mt-2 text-3xl font-bold text-white md:text-4xl">
-                      {formatPrice(
-                        packageData.price
-                      )}
-                    </p>
+                      <div>
 
-                    <p className="mt-1 text-sm text-white/70">
-                      Package price
-                    </p>
+                        <p className="flex items-center gap-2 text-sm text-white/90">
+                          <Clock3 size={17} />
+                          {packageData.duration}
+                        </p>
+
+                        <p className="mt-2 text-3xl font-bold text-white md:text-4xl">
+                          {formatPrice(
+                            packageData.price
+                          )}
+                        </p>
+
+                        <p className="mt-1 text-sm text-white/70">
+                          Package price
+                        </p>
+
+                      </div>
+
+                      {/* Hero rating */}
+
+                      <div
+                        className="
+                          flex
+                          items-center
+                          gap-2
+                          rounded-2xl
+                          bg-black/30
+                          px-4
+                          py-3
+                          backdrop-blur-md
+                        "
+                      >
+                        <Star
+                          size={20}
+                          className="
+                            fill-yellow-400
+                            text-yellow-400
+                          "
+                        />
+
+                        <div>
+                          <p className="text-lg font-bold text-white">
+                            {typeof packageData.rating ===
+                            "number" &&
+                            packageData.rating > 0
+                              ? packageData.rating.toFixed(
+                                  1
+                                )
+                              : "N/A"}
+                          </p>
+
+                          <p className="text-xs text-white/70">
+                            Rating
+                          </p>
+                        </div>
+
+                      </div>
+
+                    </div>
 
                   </div>
 
@@ -494,7 +657,10 @@ export default function PackageDetailsPage() {
                     <div className="mt-6 grid gap-4 sm:grid-cols-2">
 
                       {packageData.highlights.map(
-                        (highlight, index) => (
+                        (
+                          highlight,
+                          index
+                        ) => (
                           <div
                             key={index}
                             className="flex items-start gap-3"
@@ -543,7 +709,10 @@ export default function PackageDetailsPage() {
                     <div className="mt-8 space-y-7">
 
                       {packageData.itinerary.map(
-                        (day, index) => (
+                        (
+                          day,
+                          index
+                        ) => (
                           <div
                             key={`${day.day}-${index}`}
                             className="relative flex gap-5"
@@ -595,111 +764,126 @@ export default function PackageDetailsPage() {
                 </section>
 
                 {/* ----------------------------------------
-                      INCLUDED / EXCLUDED
-                  ---------------------------------------- */}
+                    INCLUDED / EXCLUDED
+                ---------------------------------------- */}
 
-                  <section className="rounded-3xl border border-gray-100 bg-white p-7 shadow-sm md:p-9">
+                <section className="rounded-3xl border border-gray-100 bg-white p-7 shadow-sm md:p-9">
 
-                    <p className="text-sm font-semibold uppercase tracking-wider text-orange-500">
-                      Package Details
-                    </p>
+                  <p className="text-sm font-semibold uppercase tracking-wider text-orange-500">
+                    Package Details
+                  </p>
 
-                    <h2 className="mt-2 text-2xl font-bold text-gray-900">
-                      What's included
-                    </h2>
+                  <h2 className="mt-2 text-2xl font-bold text-gray-900">
+                    What's included
+                  </h2>
 
-                    <div className="mt-7 grid gap-8 md:grid-cols-2">
+                  <div className="mt-7 grid gap-8 md:grid-cols-2">
 
-                      {/* INCLUDED */}
+                    {/* INCLUDED */}
 
-                      <div>
+                    <div>
 
-                        <h3 className="flex items-center gap-2 font-semibold text-gray-900">
-                          <Check
-                            size={18}
-                            className="text-green-500"
-                          />
-                          Included
-                        </h3>
+                      <h3 className="flex items-center gap-2 font-semibold text-gray-900">
+                        <Check
+                          size={18}
+                          className="text-green-500"
+                        />
+                        Included
+                      </h3>
 
-                        {packageData.included &&
-                        packageData.included.length > 0 ? (
-                          <div className="mt-4 space-y-3">
+                      {packageData.included &&
+                      packageData.included.length >
+                        0 ? (
+                        <div className="mt-4 space-y-3">
 
-                            {packageData.included.map(
-                              (item, index) => (
-                                <div
-                                  key={index}
-                                  className="flex items-start gap-3 text-sm text-gray-600"
-                                >
-                                  <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-50">
-                                    <Check
-                                      size={12}
-                                      className="text-green-500"
-                                    />
-                                  </div>
+                          {packageData.included.map(
+                            (
+                              item,
+                              index
+                            ) => (
+                              <div
+                                key={index}
+                                className="flex items-start gap-3 text-sm text-gray-600"
+                              >
 
-                                  <span>{item}</span>
+                                <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-50">
+                                  <Check
+                                    size={12}
+                                    className="text-green-500"
+                                  />
                                 </div>
-                              )
-                            )}
 
-                          </div>
-                        ) : (
-                          <p className="mt-4 text-sm text-gray-400">
-                            No inclusions added.
-                          </p>
-                        )}
+                                <span>
+                                  {item}
+                                </span>
 
-                      </div>
+                              </div>
+                            )
+                          )}
 
-
-                      {/* EXCLUDED */}
-
-                      <div>
-
-                        <h3 className="flex items-center gap-2 font-semibold text-gray-900">
-                          <X
-                            size={18}
-                            className="text-red-400"
-                          />
-                          Not Included
-                        </h3>
-
-                        {packageData.excluded &&
-                        packageData.excluded.length > 0 ? (
-                          <div className="mt-4 space-y-3">
-
-                            {packageData.excluded.map(
-                              (item, index) => (
-                                <div
-                                  key={index}
-                                  className="flex items-start gap-3 text-sm text-gray-600"
-                                >
-                                  <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-50">
-                                    <X
-                                      size={12}
-                                      className="text-red-400"
-                                    />
-                                  </div>
-
-                                  <span>{item}</span>
-                                </div>
-                              )
-                            )}
-
-                          </div>
-                        ) : (
-                          <p className="mt-4 text-sm text-gray-400">
-                            No exclusions added.
-                          </p>
-                        )}
-
-                      </div>
+                        </div>
+                      ) : (
+                        <p className="mt-4 text-sm text-gray-400">
+                          No inclusions added.
+                        </p>
+                      )}
 
                     </div>
 
-                  </section>
+                    {/* EXCLUDED */}
+
+                    <div>
+
+                      <h3 className="flex items-center gap-2 font-semibold text-gray-900">
+                        <X
+                          size={18}
+                          className="text-red-400"
+                        />
+                        Not Included
+                      </h3>
+
+                      {packageData.excluded &&
+                      packageData.excluded.length >
+                        0 ? (
+                        <div className="mt-4 space-y-3">
+
+                          {packageData.excluded.map(
+                            (
+                              item,
+                              index
+                            ) => (
+                              <div
+                                key={index}
+                                className="flex items-start gap-3 text-sm text-gray-600"
+                              >
+
+                                <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-50">
+                                  <X
+                                    size={12}
+                                    className="text-red-400"
+                                  />
+                                </div>
+
+                                <span>
+                                  {item}
+                                </span>
+
+                              </div>
+                            )
+                          )}
+
+                        </div>
+                      ) : (
+                        <p className="mt-4 text-sm text-gray-400">
+                          No exclusions added.
+                        </p>
+                      )}
+
+                    </div>
+
+                  </div>
+
+                </section>
 
                 {/* ----------------------------------------
                     PACKAGE ID
@@ -729,19 +913,28 @@ export default function PackageDetailsPage() {
 
       </div>
 
-      {showEditModal && packageData && (
-        <AddPackageModal
-          editPackage={packageData}
-          onClose={() => setShowEditModal(false)}
-          onSuccess={(updatedPackage) => {
-            if (updatedPackage) {
-              setPackageData(updatedPackage);
-            }
+      {/* ==========================================
+          EDIT MODAL
+      ========================================== */}
 
-            setShowEditModal(false);
-          }}
-        />
-)}
+      {showEditModal &&
+        packageData && (
+          <AddPackageModal
+            editPackage={packageData}
+            onClose={() =>
+              setShowEditModal(false)
+            }
+            onSuccess={(updatedPackage) => {
+              if (updatedPackage) {
+                setPackageData(
+                  updatedPackage
+                );
+              }
+
+              setShowEditModal(false);
+            }}
+          />
+        )}
 
     </div>
   );

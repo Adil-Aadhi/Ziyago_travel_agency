@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Package,
@@ -10,6 +10,12 @@ import {
   LogOut,
   X,
 } from "lucide-react";
+
+import { useState } from "react";
+import { toast } from "sonner";
+import Image from "next/image";
+
+import ConfirmModal from "../ui/ConfirmModal";
 
 type AdminSidebarProps = {
   mobileOpen?: boolean;
@@ -33,8 +39,13 @@ const navItems = [
     icon: Images,
   },
   {
-    name: "Enquiries",
-    href: "/admin/enquiries",
+    name: "Booking",
+    href: "/admin/bookings",
+    icon: MessageSquare,
+  },
+  {
+    name: "Contact-enquiry",
+    href: "/admin/contact-enquiries",
     icon: MessageSquare,
   },
 ];
@@ -44,6 +55,55 @@ export default function AdminSidebar({
   onClose,
 }: AdminSidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const [showLogoutModal, setShowLogoutModal] =
+    useState(false);
+
+  const [loggingOut, setLoggingOut] =
+    useState(false);
+
+  const handleLogout = async () => {
+    try {
+      setLoggingOut(true);
+
+      const response = await fetch(
+        "/api/admin/logout",
+        {
+          method: "POST",
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message || "Failed to logout"
+        );
+      }
+
+      setShowLogoutModal(false);
+      onClose?.();
+
+      toast.success("Logged out successfully");
+
+      router.push("/admin/login");
+      router.refresh();
+    } catch (error) {
+      console.error(
+        "LOGOUT ERROR:",
+        error
+      );
+
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to logout"
+      );
+    } finally {
+      setLoggingOut(false);
+    }
+  };
 
   return (
     <>
@@ -79,24 +139,25 @@ export default function AdminSidebar({
         `}
       >
         {/* Logo */}
-        <div className="flex h-20 items-center justify-between border-b border-gray-100 px-6">
-          <div>
-            <h1 className="text-xl font-bold text-gray-900">
-              Ziya<span className="text-orange-500">Go</span>
-            </h1>
+          <div className="flex h-20 items-center justify-between border-b border-gray-100 px-6">
+            <div>
+              <Image
+                src="/logo/logo.svg"
+                alt="ZiyaGo"
+                width={120}
+                height={25}
+                className="h-auto w-[140px] object-contain"
+                priority
+              />
+            </div>
 
-            <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-400">
-              Admin Panel
-            </p>
+            <button
+              onClick={onClose}
+              className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 lg:hidden"
+            >
+              <X size={19} />
+            </button>
           </div>
-
-          <button
-            onClick={onClose}
-            className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 lg:hidden"
-          >
-            <X size={19} />
-          </button>
-        </div>
 
         {/* Navigation */}
         <nav className="flex-1 space-y-1 px-4 py-6">
@@ -145,6 +206,8 @@ export default function AdminSidebar({
         {/* Logout */}
         <div className="border-t border-gray-100 p-4">
           <button
+            type="button"
+            onClick={() => setShowLogoutModal(true)}
             className="
               flex
               w-full
@@ -166,6 +229,21 @@ export default function AdminSidebar({
           </button>
         </div>
       </aside>
+      <ConfirmModal
+        open={showLogoutModal}
+        title="Logout"
+        message="Are you sure you want to logout from the admin panel?"
+        confirmText="Logout"
+        cancelText="Cancel"
+        confirmClassName="bg-red-500 hover:bg-red-600"
+        loading={loggingOut}
+        onConfirm={handleLogout}
+        onCancel={() => {
+          if (!loggingOut) {
+            setShowLogoutModal(false);
+          }
+        }}
+      />
     </>
   );
 }

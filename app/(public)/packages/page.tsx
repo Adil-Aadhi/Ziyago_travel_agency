@@ -1,176 +1,338 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { SlidersHorizontal } from "lucide-react";
+
 import SearchSection from "@/components/home/SearchSection";
 import PackageCard from "@/components/packages/PackageCard";
-import Link from "next/link";
 
-const packages = [
+type PackageData = {
+  _id: string;
+  title: string;
+  destination: string;
+  duration: string;
+  price: number;
+  description: string;
+  mainImage: string;
+  galleryImages: string[];
+  highlights: string[];
+  included: string[];
+  excluded: string[];
+  itinerary: {
+    day: number;
+    title: string;
+    description: string;
+  }[];
+  tourType: string;
+  rating: number;
+  status: "Active" | "Draft";
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type PaginationData = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+};
+
+const destinations = [
+  "Dubai",
+  "Maldives",
+  "Switzerland",
+  "Paris",
+  "Bali",
+  "Singapore",
+  "Italy",
+  "Thailand",
+];
+
+const tourTypes = [
+  "Adventure",
+  "Family",
+  "Honeymoon",
+];
+
+const budgetOptions = [
   {
-    id: 1,
-    image: "/images/packages/switzerland.jpg",
-    title: "Switzerland Escape",
-    location: "Switzerland",
-    duration: "7 Days / 6 Nights",
-    price: "₹1,25,000",
-    rating: 4.9,
-    type: "Adventure",
-    region: "Europe",
+    label: "Under ₹50,000",
+    min: "",
+    max: "50000",
   },
   {
-    id: 2,
-    image: "/images/packages/dubai.jpg",
-    title: "Dubai Adventure",
-    location: "Dubai",
-    duration: "5 Days / 4 Nights",
-    price: "₹85,000",
-    rating: 4.8,
-    type: "Adventure",
-    region: "Middle East",
+    label: "₹50,000 – ₹1,00,000",
+    min: "50000",
+    max: "100000",
   },
   {
-    id: 3,
-    image: "/images/packages/maldives.jpg",
-    title: "Maldives Paradise",
-    location: "Maldives",
-    duration: "5 Days / 4 Nights",
-    price: "₹95,000",
-    rating: 4.9,
-    type: "Honeymoon",
-    region: "Asia",
+    label: "₹1,00,000 – ₹1,50,000",
+    min: "100000",
+    max: "150000",
   },
   {
-    id: 4,
-    image: "/images/packages/paris.jpg",
-    title: "Paris Getaway",
-    location: "Paris, France",
-    duration: "6 Days / 5 Nights",
-    price: "₹1,10,000",
-    rating: 4.7,
-    type: "Family",
-    region: "Europe",
-  },
-  {
-    id: 5,
-    image: "/images/packages/bali.jpg",
-    title: "Bali Experience",
-    location: "Bali, Indonesia",
-    duration: "6 Days / 5 Nights",
-    price: "₹75,000",
-    rating: 4.8,
-    type: "Adventure",
-    region: "Asia",
-  },
-  {
-    id: 6,
-    image: "/images/packages/singapore.jpg",
-    title: "Singapore Explorer",
-    location: "Singapore",
-    duration: "5 Days / 4 Nights",
-    price: "₹68,000",
-    rating: 4.7,
-    type: "Family",
-    region: "Asia",
-  },
-  {
-    id: 7,
-    image: "/images/packages/italy.jpg",
-    title: "Italian Journey",
-    location: "Italy",
-    duration: "8 Days / 7 Nights",
-    price: "₹1,45,000",
-    rating: 4.9,
-    type: "Family",
-    region: "Europe",
-  },
-  {
-    id: 8,
-    image: "/images/packages/thailand.jpg",
-    title: "Thailand Escape",
-    location: "Thailand",
-    duration: "6 Days / 5 Nights",
-    price: "₹72,000",
-    rating: 4.6,
-    type: "Adventure",
-    region: "Asia",
+    label: "Above ₹1,50,000",
+    min: "150000",
+    max: "",
   },
 ];
 
-const regions = ["Europe", "Asia", "Middle East"];
-const tourTypes = ["Adventure", "Family", "Honeymoon"];
-
 export default function PackagesPage() {
-  const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const [sort, setSort] = useState("popular");
-  const [currentPage, setCurrentPage] = useState(1);
+  // -----------------------------------------
+  // Packages
+  // -----------------------------------------
 
-  const toggleFilter = (
-    value: string,
-    setter: React.Dispatch<React.SetStateAction<string[]>>
-  ) => {
-    setter((current) =>
-      current.includes(value)
-        ? current.filter((item) => item !== value)
-        : [...current, value]
+  const searchParams = useSearchParams();
+
+  const [packages, setPackages] = useState<PackageData[]>([]);
+
+  const [loading, setLoading] = useState(true);
+
+  const [error, setError] = useState("");
+
+  // -----------------------------------------
+  // Search / Filters
+  // -----------------------------------------
+
+  const [destination, setDestination] =
+    useState(
+      () => searchParams.get("destination") || ""
     );
+
+const [tourType, setTourType] =
+    useState(
+      () => searchParams.get("tourType") || ""
+    );
+
+
+  const [minPrice, setMinPrice] =
+    useState("");
+
+  const [maxPrice, setMaxPrice] =
+    useState("");
+
+  const [sort, setSort] =
+    useState("newest");
+
+  // -----------------------------------------
+  // Pagination
+  // -----------------------------------------
+
+  const [currentPage, setCurrentPage] =
+    useState(1);
+
+  const [pagination, setPagination] =
+    useState<PaginationData>({
+      page: 1,
+      limit: 8,
+      total: 0,
+      totalPages: 0,
+      hasNextPage: false,
+      hasPreviousPage: false,
+    });
+
+  // -----------------------------------------
+  // Fetch packages
+  // -----------------------------------------
+
+  const fetchPackages = useCallback(
+    async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const params = new URLSearchParams();
+
+        params.set(
+          "page",
+          currentPage.toString()
+        );
+
+        params.set("limit", "8");
+
+        // Destination
+        if (destination) {
+          params.set(
+            "destination",
+            destination
+          );
+        }
+
+        // Tour type
+        if (tourType) {
+          params.set(
+            "tourType",
+            tourType
+          );
+        }
+
+        // Budget
+        if (minPrice) {
+          params.set(
+            "minPrice",
+            minPrice
+          );
+        }
+
+        if (maxPrice) {
+          params.set(
+            "maxPrice",
+            maxPrice
+          );
+        }
+
+        // Sorting
+        params.set("sort", sort);
+
+        const response = await fetch(
+          `/api/public/packages?${params.toString()}`,
+          {
+            method: "GET",
+            cache: "no-store",
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(
+            data.message ||
+              "Failed to fetch packages"
+          );
+        }
+
+        setPackages(data.packages || []);
+
+        setPagination(
+          data.pagination || {
+            page: currentPage,
+            limit: 8,
+            total: 0,
+            totalPages: 0,
+            hasNextPage: false,
+            hasPreviousPage: false,
+          }
+        );
+      } catch (error) {
+        console.error(
+          "FETCH PUBLIC PACKAGES ERROR:",
+          error
+        );
+
+        setPackages([]);
+
+        setError(
+          "Unable to load packages. Please try again."
+        );
+      } finally {
+        setLoading(false);
+      }
+    },
+    [
+      currentPage,
+      destination,
+      tourType,
+      minPrice,
+      maxPrice,
+      sort,
+    ]
+  );
+
+  // -----------------------------------------
+  // Fetch when filters/page change
+  // -----------------------------------------
+
+  useEffect(() => {
+    fetchPackages();
+  }, [fetchPackages]);
+
+  // -----------------------------------------
+  // Search button
+  // -----------------------------------------
+
+  const handleSearch = () => {
+    setCurrentPage(1);
+
+    // SearchSection already updates
+    // destination/tourType.
+    //
+    // The useEffect will automatically
+    // fetch the updated packages.
   };
 
-  let filteredPackages = packages.filter((pkg) => {
-    const regionMatch =
-      selectedRegions.length === 0 ||
-      selectedRegions.includes(pkg.region);
+  // -----------------------------------------
+  // Destination change
+  // -----------------------------------------
 
-    const typeMatch =
-      selectedTypes.length === 0 ||
-      selectedTypes.includes(pkg.type);
+  const handleDestinationChange = (
+    value: string
+  ) => {
+    setDestination(value);
+    setCurrentPage(1);
+  };
 
-    return regionMatch && typeMatch;
-  });
+  // -----------------------------------------
+  // Tour type change
+  // -----------------------------------------
 
-  if (sort === "rating") {
-    filteredPackages = [...filteredPackages].sort(
-      (a, b) => b.rating - a.rating
-    );
-  }
+  const handleTourTypeChange = (
+    value: string
+  ) => {
+    setTourType(value);
+    setCurrentPage(1);
+  };
 
-  if (sort === "price-low") {
-    filteredPackages = [...filteredPackages].sort(
-      (a, b) =>
-        Number(a.price.replace(/[₹,]/g, "")) -
-        Number(b.price.replace(/[₹,]/g, ""))
-    );
-  }
+  // -----------------------------------------
+  // Budget change
+  // -----------------------------------------
 
-  if (sort === "price-high") {
-    filteredPackages = [...filteredPackages].sort(
-      (a, b) =>
-        Number(b.price.replace(/[₹,]/g, "")) -
-        Number(a.price.replace(/[₹,]/g, ""))
-    );
-  }
+  const handleBudgetChange = (
+    min: string,
+    max: string
+  ) => {
+    setMinPrice(min);
+    setMaxPrice(max);
+    setCurrentPage(1);
+  };
 
-  const PACKAGES_PER_PAGE = 8;
+  // -----------------------------------------
+  // Clear filters
+  // -----------------------------------------
 
-const totalPages = Math.ceil(
-  filteredPackages.length / PACKAGES_PER_PAGE
-);
+  const clearFilters = () => {
+    setDestination("");
+    setTourType("");
+    setMinPrice("");
+    setMaxPrice("");
+    setSort("newest");
+    setCurrentPage(1);
+  };
 
-const startIndex =
-  (currentPage - 1) * PACKAGES_PER_PAGE;
-
-const paginatedPackages = filteredPackages.slice(
-  startIndex,
-  startIndex + PACKAGES_PER_PAGE
-);
+  const hasFilters =
+    destination !== "" ||
+    tourType !== "" ||
+    minPrice !== "" ||
+    maxPrice !== "" ||
+    sort !== "newest";
 
   return (
-    <main data-navbar-theme="light" className="bg-gradient-to-b from-white to-[#4eb8db] min-h-screen ">
-
+    <main
+      data-navbar-theme="light"
+      className="min-h-screen bg-gradient-to-b from-white to-[#4eb8db]"
+    >
+      {/* ---------------------------------- */}
       {/* Hero */}
-      <section data-navbar-theme="light" className="  px-6 pb-20 pt-32">
-        <div className="mt-10 mx-auto max-w-7xl">
+      {/* ---------------------------------- */}
+
+      <section
+        data-navbar-theme="light"
+        className="px-6 pb-20 pt-32"
+      >
+        <div className="mx-auto mt-10 max-w-7xl">
           <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-orange-500">
             Explore the world
           </p>
@@ -180,37 +342,70 @@ const paginatedPackages = filteredPackages.slice(
           </h1>
 
           <p className="mt-4 max-w-2xl text-gray-500">
-            Discover unforgettable destinations, handpicked experiences,
-            and carefully designed travel packages.
+            Discover unforgettable destinations,
+            handpicked experiences, and carefully
+            designed travel packages.
           </p>
         </div>
       </section>
 
+      {/* ---------------------------------- */}
       {/* Search */}
+      {/* ---------------------------------- */}
+
       <section
         data-navbar-theme="light"
-        className="relative z-20 -mt-10 -mb-14 px-6"
-        >
+        className="relative z-20 -mb-14 -mt-10 px-6"
+      >
         <div className="mx-auto max-w-7xl">
-            <SearchSection />
+          <SearchSection
+            destination={destination}
+            tourType={tourType}
+            onDestinationChange={
+              handleDestinationChange
+            }
+            onTourTypeChange={
+              handleTourTypeChange
+            }
+            onSearch={handleSearch}
+          />
         </div>
-    </section>
+      </section>
 
-      {/* Package section */}
-   <section
-        className="relative z-10 rounded-t-[70px] bg-gradient-to-b
-                    from-white
-                    via-[#fff4e9]
-                    via-30%
-                    via-[#ffe4cc]
-                    via-65%
-                    to-[#e8f7fc]
-        px-6 pb-16 pt-28"
-    >
+      {/* ---------------------------------- */}
+      {/* Packages */}
+      {/* ---------------------------------- */}
+
+      <section
+        className="
+          relative z-10
+          rounded-t-[70px]
+          bg-gradient-to-b
+          from-white
+          via-[#fff4e9]
+          via-30%
+          via-[#ffe4cc]
+          via-65%
+          to-[#e8f7fc]
+          px-6
+          pb-16
+          pt-28
+        "
+      >
         <div className="mx-auto max-w-7xl">
 
           {/* Heading + Sort */}
-          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div
+            className="
+              mb-8
+              flex
+              flex-col
+              gap-4
+              sm:flex-row
+              sm:items-end
+              sm:justify-between
+            "
+          >
             <div>
               <p className="text-sm font-medium text-orange-500">
                 OUR PACKAGES
@@ -221,29 +416,73 @@ const paginatedPackages = filteredPackages.slice(
               </h2>
 
               <p className="mt-2 text-sm text-gray-500">
-                Showing {filteredPackages.length} of {packages.length} packages
+                {loading
+                  ? "Loading packages..."
+                  : `Showing ${packages.length} of ${pagination.total} packages`}
               </p>
             </div>
 
+            {/* Sort */}
             <select
               value={sort}
-              onChange={(e) => setSort(e.target.value)}
-              className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 outline-none transition focus:border-orange-400"
+              onChange={(e) => {
+                setSort(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="
+                rounded-xl
+                border
+                border-gray-200
+                bg-white
+                px-4
+                py-3
+                text-sm
+                font-medium
+                text-gray-700
+                outline-none
+                transition
+                focus:border-orange-400
+              "
             >
-              <option value="popular">Most Popular</option>
-              <option value="rating">Highest Rated</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
+              <option value="newest">
+                Newest
+              </option>
+
+              <option value="rating">
+                Highest Rated
+              </option>
+
+              <option value="price-low">
+                Price: Low to High
+              </option>
+
+              <option value="price-high">
+                Price: High to Low
+              </option>
+
+              <option value="oldest">
+                Oldest
+              </option>
             </select>
           </div>
 
+          {/* ---------------------------------- */}
+          {/* Main layout */}
+          {/* ---------------------------------- */}
+
           <div className="mt-15 grid gap-8 lg:grid-cols-[240px_1fr]">
 
+            {/* -------------------------------- */}
             {/* Filters */}
+            {/* -------------------------------- */}
+
             <aside className="h-fit lg:sticky lg:top-28">
 
               <div className="mb-6 flex items-center gap-2">
-                <SlidersHorizontal size={19} className="text-orange-500" />
+                <SlidersHorizontal
+                  size={19}
+                  className="text-orange-500"
+                />
 
                 <h3 className="font-semibold text-gray-900">
                   Filters
@@ -257,165 +496,459 @@ const paginatedPackages = filteredPackages.slice(
                 </p>
 
                 <div className="space-y-3">
-                  {regions.map((region) => (
-                    <label
-                      key={region}
-                      className="flex cursor-pointer items-center gap-3 text-sm text-gray-600"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={selectedRegions.includes(region)}
-                        onChange={() =>
-                          toggleFilter(region, setSelectedRegions)
-                        }
-                        className="h-4 w-4 accent-orange-500"
-                      />
+                  {destinations.map(
+                    (item) => (
+                      <label
+                        key={item}
+                        className="
+                          flex
+                          cursor-pointer
+                          items-center
+                          gap-3
+                          text-sm
+                          text-gray-600
+                        "
+                      >
+                        <input
+                          type="radio"
+                          name="destination"
+                          checked={
+                            destination ===
+                            item
+                          }
+                          onChange={() => {
+                            handleDestinationChange(
+                              item
+                            );
+                          }}
+                          className="h-4 w-4 accent-orange-500"
+                        />
 
-                      {region}
-                    </label>
-                  ))}
+                        {item}
+                      </label>
+                    )
+                  )}
+
+                  {/* All destinations */}
+                  <label
+                    className="
+                      flex
+                      cursor-pointer
+                      items-center
+                      gap-3
+                      text-sm
+                      text-gray-600
+                    "
+                  >
+                    <input
+                      type="radio"
+                      name="destination"
+                      checked={
+                        destination === ""
+                      }
+                      onChange={() =>
+                        handleDestinationChange(
+                          ""
+                        )
+                      }
+                      className="h-4 w-4 accent-orange-500"
+                    />
+
+                    All Destinations
+                  </label>
                 </div>
               </div>
 
               {/* Tour Type */}
-              <div className="pt-6">
+              <div className="border-b border-gray-100 py-6">
                 <p className="mb-4 text-sm font-semibold text-gray-800">
                   Tour Type
                 </p>
 
                 <div className="space-y-3">
-                  {tourTypes.map((type) => (
-                    <label
-                      key={type}
-                      className="flex cursor-pointer items-center gap-3 text-sm text-gray-600"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={selectedTypes.includes(type)}
-                        onChange={() =>
-                          toggleFilter(type, setSelectedTypes)
-                        }
-                        className="h-4 w-4 accent-orange-500"
-                      />
+                  {tourTypes.map(
+                    (type) => (
+                      <label
+                        key={type}
+                        className="
+                          flex
+                          cursor-pointer
+                          items-center
+                          gap-3
+                          text-sm
+                          text-gray-600
+                        "
+                      >
+                        <input
+                          type="radio"
+                          name="tourType"
+                          checked={
+                            tourType ===
+                            type
+                          }
+                          onChange={() => {
+                            handleTourTypeChange(
+                              type
+                            );
+                          }}
+                          className="h-4 w-4 accent-orange-500"
+                        />
 
-                      {type}
-                    </label>
-                  ))}
+                        {type}
+                      </label>
+                    )
+                  )}
+
+                  <label
+                    className="
+                      flex
+                      cursor-pointer
+                      items-center
+                      gap-3
+                      text-sm
+                      text-gray-600
+                    "
+                  >
+                    <input
+                      type="radio"
+                      name="tourType"
+                      checked={
+                        tourType === ""
+                      }
+                      onChange={() =>
+                        handleTourTypeChange(
+                          ""
+                        )
+                      }
+                      className="h-4 w-4 accent-orange-500"
+                    />
+
+                    All Tours
+                  </label>
                 </div>
               </div>
 
-              {/* Clear */}
-              {(selectedRegions.length > 0 ||
-                selectedTypes.length > 0) && (
+              {/* Budget */}
+              <div className="border-b border-gray-100 py-6">
+                <p className="mb-4 text-sm font-semibold text-gray-800">
+                  Budget
+                </p>
+
+                <div className="space-y-3">
+                  {budgetOptions.map(
+                    (budget) => (
+                      <label
+                        key={budget.label}
+                        className="
+                          flex
+                          cursor-pointer
+                          items-center
+                          gap-3
+                          text-sm
+                          text-gray-600
+                        "
+                      >
+                        <input
+                          type="radio"
+                          name="budget"
+                          checked={
+                            minPrice ===
+                              budget.min &&
+                            maxPrice ===
+                              budget.max
+                          }
+                          onChange={() =>
+                            handleBudgetChange(
+                              budget.min,
+                              budget.max
+                            )
+                          }
+                          className="h-4 w-4 accent-orange-500"
+                        />
+
+                        {budget.label}
+                      </label>
+                    )
+                  )}
+
+                  <label
+                    className="
+                      flex
+                      cursor-pointer
+                      items-center
+                      gap-3
+                      text-sm
+                      text-gray-600
+                    "
+                  >
+                    <input
+                      type="radio"
+                      name="budget"
+                      checked={
+                        minPrice === "" &&
+                        maxPrice === ""
+                      }
+                      onChange={() =>
+                        handleBudgetChange(
+                          "",
+                          ""
+                        )
+                      }
+                      className="h-4 w-4 accent-orange-500"
+                    />
+
+                    Any Budget
+                  </label>
+                </div>
+              </div>
+
+              {/* Clear Filters */}
+              {hasFilters && (
                 <button
-                  onClick={() => {
-                    setSelectedRegions([]);
-                    setSelectedTypes([]);
-                  }}
-                  className="mt-6 w-full rounded-xl border border-orange-200 py-2.5 text-sm font-medium text-orange-500 transition hover:bg-orange-50"
+                  type="button"
+                  onClick={clearFilters}
+                  className="
+                    mt-6
+                    w-full
+                    rounded-xl
+                    border
+                    border-orange-200
+                    py-2.5
+                    text-sm
+                    font-medium
+                    text-orange-500
+                    transition
+                    hover:bg-orange-50
+                  "
                 >
                   Clear Filters
                 </button>
               )}
             </aside>
 
+            {/* -------------------------------- */}
             {/* Package Grid */}
+            {/* -------------------------------- */}
+
             <div>
-              {filteredPackages.length > 0 ? (
-                <>
+
+              {/* Loading */}
+              {loading && (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
-                  {filteredPackages.map((pkg) => (
-                    <PackageCard
-                      key={pkg.id}
-                      package={pkg}
+                  {Array.from({
+                    length: 8,
+                  }).map((_, index) => (
+                    <div
+                      key={index}
+                      className="
+                        h-[380px]
+                        animate-pulse
+                        rounded-3xl
+                        bg-white/70
+                      "
                     />
                   ))}
                 </div>
-                 {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="mt-10 flex items-center justify-center gap-3">
+              )}
 
-          {/* Previous */}
-          <button
-            onClick={() =>
-              setCurrentPage((page) => Math.max(page - 1, 1))
-            }
-            disabled={currentPage === 1}
-            className="
-              rounded-xl
-              border border-gray-200
-              bg-white
-              px-5 py-2.5
-              text-sm font-medium
-              text-gray-700
-              transition
-              hover:border-orange-400
-              hover:text-orange-500
-              disabled:cursor-not-allowed
-              disabled:opacity-40
-            "
-          >
-            Previous
-          </button>
-
-          {/* Page Number */}
-          <div
-            className="
-              flex h-10 min-w-10
-              items-center justify-center
-              rounded-xl
-              bg-orange-500
-              px-4
-              text-sm font-semibold
-              text-white
-            "
-          >
-            {currentPage}
-          </div>
-
-          {/* Next */}
-          <button
-            onClick={() =>
-              setCurrentPage((page) =>
-                Math.min(page + 1, totalPages)
-              )
-            }
-            disabled={currentPage === totalPages}
-            className="
-              rounded-xl
-              border border-gray-200
-              bg-white
-              px-5 py-2.5
-              text-sm font-medium
-              text-gray-700
-              transition
-              hover:border-orange-400
-              hover:text-orange-500
-              disabled:cursor-not-allowed
-              disabled:opacity-40
-            "
-          >
-            Next
-          </button>
-
-        </div>
-      )}
-    </>
-              ) : (
-                <div className="flex min-h-[300px] items-center justify-center rounded-2xl bg-white">
+              {/* Error */}
+              {!loading && error && (
+                <div className="flex min-h-[300px] items-center justify-center rounded-3xl bg-white">
                   <div className="text-center">
                     <h3 className="text-lg font-semibold text-gray-900">
-                      No packages found
+                      Something went wrong
                     </h3>
 
                     <p className="mt-2 text-sm text-gray-500">
-                      Try changing your filters.
+                      {error}
                     </p>
+
+                    <button
+                      type="button"
+                      onClick={fetchPackages}
+                      className="
+                        mt-5
+                        rounded-xl
+                        bg-orange-500
+                        px-5
+                        py-2.5
+                        text-sm
+                        font-medium
+                        text-white
+                        transition
+                        hover:bg-orange-600
+                      "
+                    >
+                      Try Again
+                    </button>
                   </div>
                 </div>
               )}
-            </div>
 
+              {/* No packages */}
+              {!loading &&
+                !error &&
+                packages.length === 0 && (
+                  <div className="flex min-h-[300px] items-center justify-center rounded-3xl bg-white">
+                    <div className="text-center">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        No packages found
+                      </h3>
+
+                      <p className="mt-2 text-sm text-gray-500">
+                        Try changing your
+                        search or filters.
+                      </p>
+
+                      {hasFilters && (
+                        <button
+                          type="button"
+                          onClick={
+                            clearFilters
+                          }
+                          className="
+                            mt-5
+                            rounded-xl
+                            border
+                            border-orange-200
+                            px-5
+                            py-2.5
+                            text-sm
+                            font-medium
+                            text-orange-500
+                            transition
+                            hover:bg-orange-50
+                          "
+                        >
+                          Clear Filters
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+              {/* Packages */}
+              {!loading &&
+                !error &&
+                packages.length > 0 && (
+                  <>
+                    <div
+                      className="
+                        grid
+                        grid-cols-1
+                        gap-6
+                        sm:grid-cols-2
+                        xl:grid-cols-4
+                      "
+                    >
+                      {packages.map(
+                        (pkg) => (
+                          <PackageCard
+                            key={pkg._id}
+                            package={pkg}
+                          />
+                        )
+                      )}
+                    </div>
+
+                    {/* -------------------------------- */}
+                    {/* Pagination */}
+                    {/* -------------------------------- */}
+
+                    {pagination.totalPages >
+                      1 && (
+                      <div className="mt-10 flex items-center justify-center gap-3">
+
+                        {/* Previous */}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setCurrentPage(
+                              (page) =>
+                                Math.max(
+                                  page - 1,
+                                  1
+                                )
+                            )
+                          }
+                          disabled={
+                            !pagination.hasPreviousPage
+                          }
+                          className="
+                            rounded-xl
+                            border
+                            border-gray-200
+                            bg-white
+                            px-5
+                            py-2.5
+                            text-sm
+                            font-medium
+                            text-gray-700
+                            transition
+                            hover:border-orange-400
+                            hover:text-orange-500
+                            disabled:cursor-not-allowed
+                            disabled:opacity-40
+                          "
+                        >
+                          Previous
+                        </button>
+
+                        {/* Current page */}
+                        <div
+                          className="
+                            flex
+                            h-10
+                            min-w-10
+                            items-center
+                            justify-center
+                            rounded-xl
+                            bg-orange-500
+                            px-4
+                            text-sm
+                            font-semibold
+                            text-white
+                          "
+                        >
+                          {pagination.page}
+                        </div>
+
+                        {/* Next */}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setCurrentPage(
+                              (page) =>
+                                page + 1
+                            )
+                          }
+                          disabled={
+                            !pagination.hasNextPage
+                          }
+                          className="
+                            rounded-xl
+                            border
+                            border-gray-200
+                            bg-white
+                            px-5
+                            py-2.5
+                            text-sm
+                            font-medium
+                            text-gray-700
+                            transition
+                            hover:border-orange-400
+                            hover:text-orange-500
+                            disabled:cursor-not-allowed
+                            disabled:opacity-40
+                          "
+                        >
+                          Next
+                        </button>
+                      </div>
+                    )}
+                  </>
+                )}
+            </div>
           </div>
         </div>
       </section>

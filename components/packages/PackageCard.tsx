@@ -6,22 +6,33 @@ import { MapPin, Clock3, Star } from "lucide-react";
 
 type PackageCardProps = {
   package: {
-    id: number;
-    image: string;
+    _id: string;
     title: string;
-    location: string;
+    destination: string;
     duration: string;
-    price: string;
-    rating: number;
+    price: number;
+    mainImage: string;
+    rating?: number;
+    tourType: string;
   };
 };
 
 export default function PackageCard({
   package: pkg,
 }: PackageCardProps) {
+  // Format price
+  const formattedPrice = new Intl.NumberFormat(
+    "en-IN",
+    {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }
+  ).format(pkg.price);
+
   return (
     <Link
-      href={`/packages/${pkg.id}`}
+      href={`/packages/${pkg._id}`}
       className="
         group
         relative
@@ -42,7 +53,7 @@ export default function PackageCard({
 
       <div className="relative h-[60%] overflow-hidden">
         <Image
-          src={pkg.image}
+          src={pkg.mainImage}
           alt={pkg.title}
           fill
           className="
@@ -62,7 +73,7 @@ export default function PackageCard({
 
         {/* Same image as blurred background */}
         <Image
-          src={pkg.image}
+          src={pkg.mainImage}
           alt=""
           fill
           className="
@@ -115,7 +126,10 @@ export default function PackageCard({
             {/* Location */}
             <div className="flex items-center gap-2 text-white/80">
               <MapPin size={15} />
-              <span>{pkg.location}</span>
+
+              <span>
+                {pkg.destination}
+              </span>
             </div>
 
             {/* Rating */}
@@ -125,7 +139,11 @@ export default function PackageCard({
                 className="fill-yellow-400 text-yellow-400"
               />
 
-              <span>{pkg.rating}</span>
+              <span>
+                {typeof pkg.rating === "number"
+                  ? pkg.rating.toFixed(1)
+                  : "New"}
+              </span>
             </div>
 
           </div>
@@ -134,7 +152,9 @@ export default function PackageCard({
           <div className="flex items-center gap-2 text-xs text-white/70">
             <Clock3 size={15} />
 
-            <span>{pkg.duration}</span>
+            <span>
+              {pkg.duration}
+            </span>
           </div>
 
           {/* Price + View */}
@@ -147,7 +167,7 @@ export default function PackageCard({
               </p>
 
               <h4 className="text-xl font-bold text-orange-400">
-                {pkg.price}
+                {formattedPrice}
               </h4>
             </div>
 
