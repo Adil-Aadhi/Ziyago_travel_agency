@@ -32,20 +32,6 @@ export default function AdminHeader({
 
       {/* Right */}
       <div className="ml-auto flex items-center gap-4">
-        <button
-          className="
-            relative
-            rounded-xl
-            p-2.5
-            text-gray-500
-            transition
-            hover:bg-gray-100
-          "
-        >
-          <Bell size={19} />
-
-          <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-orange-500" />
-        </button>
 
         <div className="flex items-center gap-3 border-l border-gray-100 pl-4">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-orange-100 text-sm font-bold text-orange-600">

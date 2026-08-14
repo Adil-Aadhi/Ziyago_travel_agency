@@ -119,6 +119,15 @@ export async function POST(request: NextRequest) {
 
     const price = formData.get("price")?.toString();
 
+    const tourType = formData
+      .get("tourType")
+      ?.toString()
+      .trim();
+
+    const rating = formData
+      .get("rating")
+      ?.toString();
+
     const description = formData
       .get("description")
       ?.toString()
@@ -168,21 +177,26 @@ export async function POST(request: NextRequest) {
     ------------------------------------------------ */
 
     const numericPrice = Number(price);
+    const numericRating = Number(rating);
 
     if (
       !title ||
       !destination ||
       !duration ||
       !price ||
+      !tourType ||
       !mainImage ||
       !Number.isFinite(numericPrice) ||
-      numericPrice < 0
+      numericPrice < 0 ||
+      !Number.isFinite(numericRating) ||
+      numericRating < 0 ||
+      numericRating > 5
     ) {
       return NextResponse.json(
         {
           success: false,
           message:
-            "Title, destination, duration, price and main image are required",
+            "Title, destination, duration, price, tour type, rating and main image are required",
         },
         { status: 400 }
       );
@@ -290,6 +304,9 @@ export async function POST(request: NextRequest) {
       destination,
       duration,
       price: numericPrice,
+
+      tourType,
+      rating: numericRating,
 
       description: description || "",
 

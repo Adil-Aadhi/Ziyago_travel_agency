@@ -7,8 +7,95 @@ import {
   Clock3,
   Send,
 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function ContactPage() {
+  const [loading, setLoading] = useState(false);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        "/api/public/contact",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            subject: formData.subject,
+            message: formData.message,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message ||
+            "Failed to send your message"
+        );
+      }
+
+      toast.success(
+        "Your message has been sent successfully!"
+      );
+
+      // Clear form after successful submission
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error(
+        "CONTACT FORM ERROR:",
+        error
+      );
+
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to send your message"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main
       data-navbar-theme="light"
@@ -21,7 +108,6 @@ export default function ContactPage() {
         pt-16
       "
     >
-
       {/* ================================
           HERO
       ================================= */}
@@ -40,8 +126,9 @@ export default function ContactPage() {
           </h1>
 
           <p className="mx-auto mt-4 max-w-2xl text-gray-600">
-            Have a question about a package, need help planning your trip,
-            or simply want to talk to us? We're here to help.
+            Have a question about a package, need help
+            planning your trip, or simply want to talk to us?
+            We're here to help.
           </p>
 
         </div>
@@ -77,8 +164,9 @@ export default function ContactPage() {
               </h2>
 
               <p className="mt-4 leading-relaxed text-gray-500">
-                Whether you're looking for your next adventure or need
-                assistance with an existing booking, feel free to reach out.
+                Whether you're looking for your next adventure
+                or need assistance with an existing booking,
+                feel free to reach out.
               </p>
 
               {/* Contact details */}
@@ -235,18 +323,29 @@ export default function ContactPage() {
                 Tell us how we can help
               </h2>
 
-              <form className="mt-8 space-y-5">
+              <form
+                onSubmit={handleSubmit}
+                className="mt-8 space-y-5"
+              >
 
                 {/* Name + Email */}
                 <div className="grid gap-5 md:grid-cols-2">
 
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="name"
+                      className="mb-2 block text-sm font-medium text-gray-700"
+                    >
                       Your Name
                     </label>
 
                     <input
+                      id="name"
+                      name="name"
                       type="text"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
                       placeholder="Enter your name"
                       className="
                         w-full
@@ -266,12 +365,20 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="email"
+                      className="mb-2 block text-sm font-medium text-gray-700"
+                    >
                       Email Address
                     </label>
 
                     <input
+                      id="email"
+                      name="email"
                       type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
                       placeholder="Enter your email"
                       className="
                         w-full
@@ -296,12 +403,28 @@ export default function ContactPage() {
                 <div className="grid gap-5 md:grid-cols-2">
 
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="phone"
+                      className="mb-2 block text-sm font-medium text-gray-700"
+                    >
                       Phone Number
                     </label>
 
                     <input
+                      id="phone"
+                      name="phone"
                       type="tel"
+                      maxLength={10}
+                      inputMode="numeric"
+                      value={formData.phone}
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, "");
+
+                        setFormData((prev) => ({
+                          ...prev,
+                          phone: value,
+                        }));
+                      }}
                       placeholder="Enter your phone"
                       className="
                         w-full
@@ -321,12 +444,20 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="subject"
+                      className="mb-2 block text-sm font-medium text-gray-700"
+                    >
                       Subject
                     </label>
 
                     <input
+                      id="subject"
+                      name="subject"
                       type="text"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      required
                       placeholder="How can we help?"
                       className="
                         w-full
@@ -349,12 +480,20 @@ export default function ContactPage() {
 
                 {/* Message */}
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="message"
+                    className="mb-2 block text-sm font-medium text-gray-700"
+                  >
                     Message
                   </label>
 
                   <textarea
+                    id="message"
+                    name="message"
                     rows={5}
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
                     placeholder="Tell us about your travel plans..."
                     className="
                       w-full
@@ -377,6 +516,7 @@ export default function ContactPage() {
                 {/* Submit */}
                 <button
                   type="submit"
+                  disabled={loading}
                   className="
                     flex
                     items-center
@@ -391,10 +531,15 @@ export default function ContactPage() {
                     text-white
                     transition
                     hover:bg-orange-600
+                    disabled:cursor-not-allowed
+                    disabled:opacity-60
                   "
                 >
-                  Send Message
-                  <Send size={17} />
+                  {loading
+                    ? "Sending..."
+                    : "Send Message"}
+
+                  {!loading && <Send size={17} />}
                 </button>
 
               </form>

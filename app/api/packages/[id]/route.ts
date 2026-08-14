@@ -10,6 +10,10 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+/* -------------------------------------------------------
+   Upload File → Cloudinary
+------------------------------------------------------- */
+
 async function uploadToCloudinary(
   file: File,
   folder: string
@@ -49,6 +53,10 @@ async function uploadToCloudinary(
     uploadStream.end(buffer);
   });
 }
+
+/* -------------------------------------------------------
+   Delete File → Cloudinary
+------------------------------------------------------- */
 
 async function deleteFromCloudinary(
   imageUrl: string
@@ -90,7 +98,10 @@ async function deleteFromCloudinary(
   }
 }
 
-// GET SINGLE PACKAGE
+/* -------------------------------------------------------
+   GET SINGLE PACKAGE
+------------------------------------------------------- */
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -100,7 +111,8 @@ export async function GET(
 
     const { id } = await params;
 
-    const packageData = await Package.findById(id).lean();
+    const packageData =
+      await Package.findById(id).lean();
 
     if (!packageData) {
       return NextResponse.json(
@@ -132,8 +144,10 @@ export async function GET(
   }
 }
 
+/* -------------------------------------------------------
+   UPDATE PACKAGE
+------------------------------------------------------- */
 
-// UPDATE PACKAGE
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -145,9 +159,9 @@ export async function PUT(
 
     const formData = await request.formData();
 
-    // -----------------------------------------
-    // Basic fields
-    // -----------------------------------------
+    /* -----------------------------------------------
+       Basic fields
+    ------------------------------------------------ */
 
     const title = formData
       .get("title")
@@ -168,6 +182,15 @@ export async function PUT(
       .get("price")
       ?.toString();
 
+    const tourType = formData
+      .get("tourType")
+      ?.toString()
+      .trim();
+
+    const rating = formData
+      .get("rating")
+      ?.toString();
+
     const description = formData
       .get("description")
       ?.toString()
@@ -176,9 +199,9 @@ export async function PUT(
     const status =
       formData.get("status")?.toString() || "Draft";
 
-    // -----------------------------------------
-    // Find existing package
-    // -----------------------------------------
+    /* -----------------------------------------------
+       Find existing package
+    ------------------------------------------------ */
 
     const existingPackage =
       await Package.findById(id);
@@ -193,9 +216,9 @@ export async function PUT(
       );
     }
 
-    // -----------------------------------------
-    // Parse JSON fields
-    // -----------------------------------------
+    /* -----------------------------------------------
+       Parse JSON fields
+    ------------------------------------------------ */
 
     const highlightsRaw = formData
       .get("highlights")
@@ -261,62 +284,74 @@ export async function PUT(
       return NextResponse.json(
         {
           success: false,
-          message:
-            "Invalid package list data",
+          message: "Invalid package list data",
         },
         { status: 400 }
       );
     }
 
-    // -----------------------------------------
-    // Validate
-    // -----------------------------------------
+    /* -----------------------------------------------
+       Validate
+    ------------------------------------------------ */
 
     const numericPrice = Number(price);
+    const numericRating = Number(rating);
 
     if (
       !title ||
       !destination ||
       !duration ||
       !Number.isFinite(numericPrice) ||
-      numericPrice < 0
+      numericPrice < 0 ||
+      !tourType ||
+      !Number.isFinite(numericRating) ||
+      numericRating < 0 ||
+      numericRating > 5
     ) {
       return NextResponse.json(
         {
           success: false,
           message:
-            "Valid title, destination, duration and price are required",
+            "Valid title, destination, duration, price, tour type and rating are required",
         },
         { status: 400 }
       );
     }
 
-    // -----------------------------------------
-    // Prepare update
-    // -----------------------------------------
+    /* -----------------------------------------------
+       Prepare update
+    ------------------------------------------------ */
 
     const updateData: Record<string, unknown> = {
       title,
       destination,
       duration,
       price: numericPrice,
+
+      // NEW
+      tourType,
+      rating: numericRating,
+
       description: description || "",
+
       highlights,
       included,
       excluded,
       itinerary,
+
       status:
         status === "Active" || status === "Draft"
           ? status
           : "Draft",
     };
 
-    // -----------------------------------------
-    // Main image
-    // Only upload if a new image was selected
-    // -----------------------------------------
+    /* -----------------------------------------------
+       Main image
+       Only upload if a new image was selected
+    ------------------------------------------------ */
 
-    const mainImage = formData.get("mainImage");
+    const mainImage =
+      formData.get("mainImage");
 
     let oldMainImage: string | null = null;
 
@@ -324,10 +359,11 @@ export async function PUT(
       mainImage instanceof File &&
       mainImage.size > 0
     ) {
-      const result = await uploadToCloudinary(
-        mainImage,
-        "travel-agency/packages/main"
-      );
+      const result =
+        await uploadToCloudinary(
+          mainImage,
+          "travel-agency/packages/main"
+        );
 
       // Keep old image URL temporarily
       oldMainImage =
@@ -338,10 +374,10 @@ export async function PUT(
         result.secure_url;
     }
 
-    // -----------------------------------------
-    // Gallery images
-    // Add new images to existing gallery
-    // -----------------------------------------
+    /* -----------------------------------------------
+       Gallery images
+       Add new images to existing gallery
+    ------------------------------------------------ */
 
     const galleryImages =
       formData.getAll("galleryImages");
@@ -375,40 +411,43 @@ export async function PUT(
       ];
     }
 
-    // -----------------------------------------
-    // Update MongoDB
-    // -----------------------------------------
+    /* -----------------------------------------------
+       Update MongoDB
+    ------------------------------------------------ */
 
     const updatedPackage =
-  await Package.findByIdAndUpdate(
-    id,
-    updateData,
-    {
-      new: true,
-      runValidators: true,
+      await Package.findByIdAndUpdate(
+        id,
+        updateData,
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+
+    /* -----------------------------------------------
+       Delete old main image
+       ONLY after MongoDB update succeeds
+    ------------------------------------------------ */
+
+    if (oldMainImage) {
+      await deleteFromCloudinary(
+        oldMainImage
+      );
     }
-  );
 
-// -----------------------------------------
-// Delete old main image from Cloudinary
-// ONLY after MongoDB update succeeds
-// -----------------------------------------
+    /* -----------------------------------------------
+       Response
+    ------------------------------------------------ */
 
-if (oldMainImage) {
-  await deleteFromCloudinary(
-    oldMainImage
-  );
-}
-
-return NextResponse.json(
-  {
-    success: true,
-    message: "Package updated successfully",
-    package: updatedPackage,
-  },
-  { status: 200 }
-);
-
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Package updated successfully",
+        package: updatedPackage,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(
       "UPDATE PACKAGE ERROR:",
@@ -425,9 +464,10 @@ return NextResponse.json(
   }
 }
 
+/* -------------------------------------------------------
+   SOFT DELETE PACKAGE
+------------------------------------------------------- */
 
-
-// SOFT DELETE PACKAGE
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -461,7 +501,8 @@ export async function DELETE(
     return NextResponse.json(
       {
         success: true,
-        message: "Package moved to deleted packages",
+        message:
+          "Package moved to deleted packages",
         package: deletedPackage,
       },
       { status: 200 }

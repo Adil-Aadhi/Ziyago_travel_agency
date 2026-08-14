@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Package,
   Images,
@@ -13,62 +13,75 @@ import {
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminHeader from "@/components/admin/AdminHeader";
 
-const stats = [
-  {
-    title: "Total Packages",
-    value: "12",
-    change: "+3 this month",
-    icon: Package,
-  },
-  {
-    title: "Gallery Images",
-    value: "24",
-    change: "+8 this month",
-    icon: Images,
-  },
-  {
-    title: "Enquiries",
-    value: "18",
-    change: "+5 this week",
-    icon: MessageSquare,
-  },
-  {
-    title: "Active Packages",
-    value: "10",
-    change: "83% active",
-    icon: TrendingUp,
-  },
-];
 
-const recentPackages = [
-  {
-    title: "Switzerland Escape",
-    location: "Switzerland",
-    price: "₹1,25,000",
-    status: "Active",
-  },
-  {
-    title: "Japan Sakura Tour",
-    location: "Japan",
-    price: "₹98,000",
-    status: "Active",
-  },
-  {
-    title: "Luxury Dubai",
-    location: "Dubai",
-    price: "₹72,000",
-    status: "Active",
-  },
-  {
-    title: "Iceland Adventure",
-    location: "Iceland",
-    price: "₹1,45,000",
-    status: "Draft",
-  },
-];
+
+type DashboardStats = {
+  totalPackages: number;
+  galleryItems: number;
+  enquiries: number;
+  activePackages: number;
+};
+
+type RecentPackage = {
+  _id: string;
+  title: string;
+  destination: string;
+  price: number;
+  status: string;
+  isActive: boolean;
+  createdAt: string;
+};
 
 export default function AdminDashboard() {
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const [stats, setStats] =
+    useState<DashboardStats | null>(null);
+
+  const [recentPackages, setRecentPackages] =
+    useState<RecentPackage[]>([]);
+
+  const [loading, setLoading] =
+    useState(true);
+
+    useEffect(() => {
+      const fetchDashboard = async () => {
+        try {
+          setLoading(true);
+
+          const response = await fetch(
+            "/api/admin/dashboard",
+            {
+              method: "GET",
+              cache: "no-store",
+            }
+          );
+
+          const data = await response.json();
+
+          if (!response.ok || !data.success) {
+            throw new Error(
+              data.message ||
+                "Failed to fetch dashboard data"
+            );
+          }
+
+          setStats(data.stats);
+          setRecentPackages(
+            data.recentPackages || []
+          );
+        } catch (error) {
+          console.error(
+            "FETCH DASHBOARD ERROR:",
+            error
+          );
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchDashboard();
+    }, []);
 
   return (
     <div className="min-h-screen bg-[#f8fafb]">
@@ -105,79 +118,152 @@ export default function AdminDashboard() {
                   Here's what's happening with your travel agency.
                 </p>
               </div>
-
-              <a
-                href="/admin/packages/add"
-                className="
-                  inline-flex
-                  items-center
-                  justify-center
-                  gap-2
-                  rounded-xl
-                  bg-orange-500
-                  px-5
-                  py-3
-                  text-sm
-                  font-semibold
-                  text-white
-                  shadow-sm
-                  transition
-                  hover:bg-orange-600
-                "
-              >
-                <Plus size={18} />
-                Add Package
-              </a>
             </div>
 
             {/* Stats */}
-            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
 
-              {stats.map((stat) => {
-                const Icon = stat.icon;
+              <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
 
-                return (
-                  <div
-                    key={stat.title}
-                    className="
-                      rounded-2xl
-                      border
-                      border-gray-100
-                      bg-white
-                      p-5
-                      shadow-sm
-                      transition
-                      hover:-translate-y-0.5
-                      hover:shadow-md
-                    "
-                  >
-                    <div className="flex items-start justify-between">
+                {/* Total Packages */}
 
-                      <div>
-                        <p className="text-sm text-gray-500">
-                          {stat.title}
-                        </p>
+                <div className="
+                  rounded-2xl
+                  border
+                  border-gray-100
+                  bg-white
+                  p-5
+                  shadow-sm
+                  transition
+                  hover:-translate-y-0.5
+                  hover:shadow-md
+                ">
+                  <div className="flex items-start justify-between">
 
-                        <p className="mt-2 text-3xl font-bold text-gray-900">
-                          {stat.value}
-                        </p>
-                      </div>
+                    <div>
+                      <p className="text-sm text-gray-500">
+                        Total Packages
+                      </p>
 
-                      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
-                        <Icon size={21} />
-                      </div>
-
+                      <p className="mt-2 text-3xl font-bold text-gray-900">
+                        {loading
+                          ? "—"
+                          : stats?.totalPackages ?? 0}
+                      </p>
                     </div>
 
-                    <div className="mt-4 flex items-center gap-1 text-xs font-medium text-green-600">
-                      <ArrowUpRight size={14} />
-                      {stat.change}
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
+                      <Package size={21} />
                     </div>
+
                   </div>
-                );
-              })}
+                </div>
 
-            </div>
+
+                {/* Gallery */}
+
+                <div className="
+                  rounded-2xl
+                  border
+                  border-gray-100
+                  bg-white
+                  p-5
+                  shadow-sm
+                  transition
+                  hover:-translate-y-0.5
+                  hover:shadow-md
+                ">
+                  <div className="flex items-start justify-between">
+
+                    <div>
+                      <p className="text-sm text-gray-500">
+                        Gallery Images
+                      </p>
+
+                      <p className="mt-2 text-3xl font-bold text-gray-900">
+                        {loading
+                          ? "—"
+                          : stats?.galleryItems ?? 0}
+                      </p>
+                    </div>
+
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
+                      <Images size={21} />
+                    </div>
+
+                  </div>
+                </div>
+
+
+                {/* Enquiries */}
+
+                <div className="
+                  rounded-2xl
+                  border
+                  border-gray-100
+                  bg-white
+                  p-5
+                  shadow-sm
+                  transition
+                  hover:-translate-y-0.5
+                  hover:shadow-md
+                ">
+                  <div className="flex items-start justify-between">
+
+                    <div>
+                      <p className="text-sm text-gray-500">
+                        Enquiries
+                      </p>
+
+                      <p className="mt-2 text-3xl font-bold text-gray-900">
+                        {loading
+                          ? "—"
+                          : stats?.enquiries ?? 0}
+                      </p>
+                    </div>
+
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
+                      <MessageSquare size={21} />
+                    </div>
+
+                  </div>
+                </div>
+
+
+                {/* Active Packages */}
+
+                <div className="
+                  rounded-2xl
+                  border
+                  border-gray-100
+                  bg-white
+                  p-5
+                  shadow-sm
+                  transition
+                  hover:-translate-y-0.5
+                  hover:shadow-md
+                ">
+                  <div className="flex items-start justify-between">
+
+                    <div>
+                      <p className="text-sm text-gray-500">
+                        Active Packages
+                      </p>
+
+                      <p className="mt-2 text-3xl font-bold text-gray-900">
+                        {loading
+                          ? "—"
+                          : stats?.activePackages ?? 0}
+                      </p>
+                    </div>
+
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
+                      <TrendingUp size={21} />
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
 
             {/* Content */}
             <div className="mt-8 grid gap-6 xl:grid-cols-3">
@@ -219,13 +305,13 @@ export default function AdminDashboard() {
                         </h3>
 
                         <p className="mt-1 text-xs text-gray-400">
-                          {pkg.location}
+                          {pkg.destination}
                         </p>
                       </div>
 
                       <div className="text-right">
                         <p className="text-sm font-semibold text-gray-900">
-                          {pkg.price}
+                          ₹{pkg.price.toLocaleString("en-IN")}
                         </p>
 
                         <span
@@ -267,7 +353,7 @@ export default function AdminDashboard() {
                 <div className="mt-6 space-y-3">
 
                   <a
-                    href="/admin/packages/add"
+                    href="/admin/packages/"
                     className="
                       flex
                       items-center
@@ -287,7 +373,7 @@ export default function AdminDashboard() {
                       </div>
 
                       <span className="text-sm font-medium text-gray-700">
-                        Add Package
+                        Manage Package
                       </span>
                     </div>
 
@@ -329,7 +415,7 @@ export default function AdminDashboard() {
                   </a>
 
                   <a
-                    href="/admin/enquiries"
+                    href="/admin/contact-enquiries"
                     className="
                       flex
                       items-center

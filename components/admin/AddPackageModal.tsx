@@ -32,6 +32,8 @@ type PackageData = {
   excluded: string[];
   itinerary: ItineraryDay[];
   status: "Active" | "Draft";
+  tourType: string;
+  rating: number;
 };
 
 type AddPackageModalProps = {
@@ -56,6 +58,8 @@ export default function AddPackageModal({
   const [duration, setDuration] = useState("");
   const [price, setPrice] = useState("");
   const [status, setStatus] = useState("Active");
+  const [tourType, setTourType] = useState("Adventure");
+  const [rating, setRating] = useState("0");
   const [description, setDescription] = useState("");
   const isEditMode = !!editPackage;
   const [mainImage, setMainImage] = useState<File | null>(null);
@@ -252,6 +256,8 @@ export default function AddPackageModal({
       formData.append("price", price);
       formData.append("description", description);
       formData.append("status", status);
+      formData.append("tourType", tourType);
+      formData.append("rating", rating);
 
       // Main image
       if (mainImage) {
@@ -356,6 +362,13 @@ useEffect(() => {
   setPrice(String(editPackage.price));
   setStatus(editPackage.status);
   setDescription(editPackage.description || "");
+
+  setTourType(editPackage.tourType || "Adventure");
+  setRating(
+    typeof editPackage.rating === "number"
+      ? String(editPackage.rating)
+      : "0"
+  );
 
   setMainImage(null);
   setMainImagePreview(editPackage.mainImage || "");
@@ -589,8 +602,10 @@ useEffect(() => {
                   </div>
                 </div>
 
-                {/* Price + Status */}
+                {/* Price + Tour Type + Rating + Status */}
                 <div className="grid gap-5 sm:grid-cols-2">
+
+                  {/* Price */}
                   <div>
                     <label className="mb-2 block text-sm font-medium text-gray-700">
                       Price
@@ -603,7 +618,7 @@ useEffect(() => {
                       onChange={(e) =>
                         setPrice(e.target.value)
                       }
-                      placeholder="₹1,25,000"
+                      placeholder="125000"
                       className="
                         h-11
                         w-full
@@ -621,10 +636,110 @@ useEffect(() => {
                         focus:bg-white
                         focus:ring-2
                         focus:ring-orange-100
-                        "
+                      "
                     />
                   </div>
 
+                  {/* Tour Type */}
+                  <div>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                      Tour Type
+                    </label>
+
+                    <select
+                      value={tourType}
+                      onChange={(e) =>
+                        setTourType(e.target.value)
+                      }
+                      className="
+                        h-11
+                        w-full
+                        rounded-xl
+                        border
+                        border-gray-200
+                        bg-gray-50
+                        px-4
+                        text-sm
+                        text-gray-800
+                        outline-none
+                        transition
+                        focus:border-orange-400
+                        focus:bg-white
+                        focus:ring-2
+                        focus:ring-orange-100
+                      "
+                    >
+                      <option value="Adventure">
+                        Adventure
+                      </option>
+
+                      <option value="Family">
+                        Family
+                      </option>
+
+                      <option value="Honeymoon">
+                        Honeymoon
+                      </option>
+
+                      <option value="Cultural">
+                        Cultural
+                      </option>
+
+                      <option value="Luxury">
+                        Luxury
+                      </option>
+
+                      <option value="Beach">
+                        Beach
+                      </option>
+
+                      <option value="Wildlife">
+                        Wildlife
+                      </option>
+                    </select>
+                  </div>
+
+                  {/* Rating */}
+                  <div>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                      Rating
+                    </label>
+
+                    <select
+                      value={rating}
+                      onChange={(e) =>
+                        setRating(e.target.value)
+                      }
+                      className="
+                        h-11
+                        w-full
+                        rounded-xl
+                        border
+                        border-gray-200
+                        bg-gray-50
+                        px-4
+                        text-sm
+                        text-gray-800
+                        outline-none
+                        transition
+                        focus:border-orange-400
+                        focus:bg-white
+                        focus:ring-2
+                        focus:ring-orange-100
+                      "
+                    >
+                      <option value="0">No Rating</option>
+                      <option value="1">1.0</option>
+                      <option value="2">2.0</option>
+                      <option value="3">3.0</option>
+                      <option value="3.5">3.5</option>
+                      <option value="4">4.0</option>
+                      <option value="4.5">4.5</option>
+                      <option value="5">5.0</option>
+                    </select>
+                  </div>
+
+                  {/* Status */}
                   <div>
                     <label className="mb-2 block text-sm font-medium text-gray-700">
                       Status
@@ -647,17 +762,22 @@ useEffect(() => {
                         text-gray-800
                         outline-none
                         transition
-                        placeholder:text-gray-400
                         focus:border-orange-400
                         focus:bg-white
                         focus:ring-2
                         focus:ring-orange-100
-                        "
+                      "
                     >
-                      <option value="Active">Active</option>
-                      <option value="Draft">Draft</option>
+                      <option value="Active">
+                        Active
+                      </option>
+
+                      <option value="Draft">
+                        Draft
+                      </option>
                     </select>
                   </div>
+
                 </div>
 
                 {/* Description */}

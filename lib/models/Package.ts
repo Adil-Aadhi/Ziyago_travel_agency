@@ -22,6 +22,8 @@ export interface IPackage extends Document {
   excluded: string[];
 
   itinerary: IItinerary[];
+  tourType: string;
+  rating: number;
 
   status: "Active" | "Draft";
   isActive: boolean;
@@ -112,6 +114,19 @@ const packageSchema = new Schema<IPackage>(
     excluded: {
       type: [String],
       default: [],
+    },
+
+    tourType: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    rating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
     },
 
     isActive: {
