@@ -72,32 +72,43 @@ export default function FeaturedPackages() {
         overflow-hidden
         rounded-t-[70px]
         py-20
-        pt-36
-        pb-24
+        pt-24
+        pb-16
+        md:pt-36
+        md:pb-24
       "
     >
       <div className="mx-auto max-w-7xl px-6">
 
         {/* Heading */}
 
-        <div className="mb-14 flex items-end justify-between">
-          <div>
-            <p className="font-semibold text-orange-500">
-              Popular Packages
-            </p>
+       <div className="mb-8 flex items-end justify-between gap-3 md:mb-14">
+        <div>
+          <p className="text-sm font-semibold text-blue-600 md:text-base">
+            Popular Packages
+          </p>
 
-            <h2 className="mt-2 text-4xl font-bold text-gray-900">
-              Explore Our Best Tours
-            </h2>
-          </div>
-
-          <Link
-            href="/packages"
-            className="font-semibold text-orange-500 hover:text-orange-600"
-          >
-            View All →
-          </Link>
+          <h2 className="mt-1 text-2xl font-bold leading-tight text-gray-900 sm:text-3xl md:mt-2 md:text-4xl">
+            Explore Our Best Tours
+          </h2>
         </div>
+
+        <Link
+          href="/packages"
+          className="
+            shrink-0
+            pb-0.5
+            text-xs
+            font-semibold
+            text-blue-700
+            hover:text-blue-800
+            sm:text-sm
+            md:text-base
+          "
+        >
+          View All →
+        </Link>
+      </div>
 
         {/* Loading */}
 
@@ -123,7 +134,7 @@ export default function FeaturedPackages() {
         {/* Cards */}
 
         {!loading && packages.length > 0 && (
-          <div className="grid gap-6 rounded-2xl sm:grid-cols-2 xl:grid-cols-4">
+         <div className="grid grid-cols-2 gap-3 rounded-2xl sm:gap-4 md:grid-cols-4 md:gap-6">
 
             {packages.map((item) => (
               <div
@@ -131,27 +142,28 @@ export default function FeaturedPackages() {
                 className="
                   group
                   relative
-                  h-[410px]
+                  h-[300px]
                   overflow-hidden
-                  rounded-2xl
+                  rounded-xl
                   shadow-xl
                   transition-all
                   duration-500
                   hover:-translate-y-2
                   hover:shadow-2xl
+                  md:h-[410px]
+                  md:rounded-2xl
                 "
               >
 
-                {/* Top Clear Image */}
-
-                <div className="relative h-[60%] overflow-hidden">
+                {/* Top Image */}
+                <div className="relative h-[55%] overflow-hidden md:h-[60%]">
                   <Image
                     src={item.mainImage}
                     alt={item.title}
                     fill
                     sizes="
-                      (max-width: 640px) 100vw,
-                      (max-width: 1280px) 50vw,
+                      (max-width: 640px) 50vw,
+                      (max-width: 1280px) 25vw,
                       25vw
                     "
                     className="
@@ -164,10 +176,7 @@ export default function FeaturedPackages() {
                 </div>
 
                 {/* Bottom Blur Section */}
-
-                <div className="relative h-[40%] overflow-hidden">
-
-                  {/* Same Image */}
+                <div className="relative h-[45%] overflow-hidden md:h-[40%]">
 
                   <Image
                     src={item.mainImage}
@@ -175,24 +184,21 @@ export default function FeaturedPackages() {
                     fill
                     sizes="25vw"
                     className="
-                      rounded-2xl
-                      object-cover
                       scale-125
+                      rounded-xl
+                      object-cover
                       blur-xl
+                      md:rounded-2xl
                     "
                   />
 
-                  {/* Dark Overlay */}
-
                   <div className="absolute inset-0 bg-black/45" />
-
-                  {/* Glass Layer */}
 
                   <div
                     className="
                       absolute
                       inset-0
-                      rounded-2xl
+                      rounded-xl
                       border-t
                       border-white/20
                       bg-white/10
@@ -200,11 +206,11 @@ export default function FeaturedPackages() {
                       transition-all
                       duration-300
                       group-hover:bg-white/15
+                      md:rounded-2xl
                     "
                   />
 
                   {/* Content */}
-
                   <div
                     className="
                       relative
@@ -213,35 +219,47 @@ export default function FeaturedPackages() {
                       h-full
                       flex-col
                       justify-between
-                      p-4
+                      p-2.5
+                      md:p-4
                     "
                   >
 
                     {/* Title */}
-
-                    <h3 className="text-base font-semibold text-white">
+                    <h3
+                      className="
+                        line-clamp-2
+                        text-[11px]
+                        font-semibold
+                        leading-tight
+                        text-white
+                        md:text-base
+                      "
+                    >
                       {item.title}
                     </h3>
 
                     {/* Location & Rating */}
+                    <div className="flex items-center justify-between text-[9px] md:text-xs">
 
-                    <div className="flex items-center justify-between text-xs">
+                      <div className="flex min-w-0 items-center gap-1 text-white/80 md:gap-2">
+                        <MapPin
+                          size={11}
+                          className="shrink-0 md:h-[15px] md:w-[15px]"
+                        />
 
-                      <div className="flex items-center gap-2 text-white/80">
-                        <MapPin size={15} />
-
-                        <span>
+                        <span className="truncate">
                           {item.destination}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-1 text-white">
-
+                      <div className="ml-1 flex shrink-0 items-center gap-0.5 text-white">
                         <Star
-                          size={15}
+                          size={11}
                           className="
                             fill-yellow-400
                             text-yellow-400
+                            md:h-[15px]
+                            md:w-[15px]
                           "
                         />
 
@@ -250,54 +268,48 @@ export default function FeaturedPackages() {
                             ? item.rating.toFixed(1)
                             : "New"}
                         </span>
-
                       </div>
 
                     </div>
 
                     {/* Duration */}
+                    <div className="flex items-center gap-1 text-[9px] text-white/70 md:gap-2 md:text-xs">
+                      <Clock3
+                        size={11}
+                        className="shrink-0 md:h-[15px] md:w-[15px]"
+                      />
 
-                    <div className="flex items-center gap-2 text-xs text-white/70">
-
-                      <Clock3 size={15} />
-
-                      <span>
-                        {item.duration}
-                      </span>
-
+                      <span>{item.duration}</span>
                     </div>
 
-                    {/* Price */}
-
+                    {/* Price + Button */}
                     <div className="flex items-end justify-between">
 
                       <div>
-
-                        <p className="text-xs text-white/60">
+                        <p className="text-[8px] text-white/60 md:text-xs">
                           Starting From
                         </p>
 
-                        <h4 className="text-xl font-bold text-orange-400">
-                          ₹
-                          {item.price.toLocaleString(
-                            "en-IN"
-                          )}
+                        <h4 className="text-sm font-bold text-orange-400  md:mt-1 md:text-xl">
+                          ₹{item.price.toLocaleString("en-IN")}
                         </h4>
-
                       </div>
 
                       <Link
                         href={`/packages/${item._id}`}
                         className="
                           rounded-full
-                          bg-orange-500
-                          px-4
-                          py-2
-                          text-sm
+                          bg-blue-900
+                          px-2.5
+                          py-1
+                          text-[9px]
                           font-semibold
                           text-white
                           transition
-                          hover:bg-orange-600
+                          hover:bg-blue-950
+                          md:px-4
+                          md:py-2
+                          md:text-sm
                         "
                       >
                         View →
@@ -309,7 +321,6 @@ export default function FeaturedPackages() {
                 </div>
               </div>
             ))}
-
           </div>
         )}
 

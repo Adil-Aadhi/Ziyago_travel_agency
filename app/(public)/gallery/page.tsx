@@ -181,47 +181,44 @@ export default function GalleryPage() {
           Hero
       ------------------------------------------------------- */}
 
-      <section className="px-6 pb-20 pt-24">
+      <section className="px-3 pb-10 pt-16 sm:px-6 sm:pb-14 sm:pt-20 lg:px-6 lg:pb-20 lg:pt-24">
         <div className="mx-auto max-w-7xl text-center">
 
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+          <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-blue-600 sm:mb-2 sm:text-xs lg:mb-3 lg:text-sm lg:tracking-[0.2em]">
             Our Gallery
           </p>
 
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 md:text-5xl">
+          <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 sm:text-3xl md:text-5xl">
             Moments From Our Journeys
           </h1>
 
-          <p className="mx-auto mt-4 max-w-2xl text-gray-500">
-            Explore beautiful moments, destinations, and
-            experiences captured during our journeys around
-            the world.
+          <p className="mx-auto mt-2 max-w-[310px] text-[10px] leading-5 text-gray-500 sm:mt-3 sm:max-w-2xl sm:text-xs sm:leading-6 lg:mt-4 lg:text-base lg:leading-normal">
+            Explore beautiful moments, destinations, and experiences captured
+            during our journeys around the world.
           </p>
 
         </div>
       </section>
-
       {/* -------------------------------------------------------
           Gallery
       ------------------------------------------------------- */}
 
-      <section className="relative z-10 px-6 pb-20 pt-10">
+      <section className="relative z-10 px-3 pb-10 pt-6 sm:px-6 sm:pb-20 sm:pt-10">
         <div className="mx-auto max-w-7xl">
 
           {/* Section heading */}
 
-          <div className="mb-10">
-            <p className="text-sm font-medium text-orange-500">
+          <div className="mb-6 sm:mb-10">
+            <p className="text-[10px] font-medium text-blue-700 sm:text-sm">
               TRAVEL MOMENTS
             </p>
 
-            <h2 className="mt-1 text-3xl font-bold text-gray-900">
+            <h2 className="mt-1 text-xl font-bold text-gray-900 sm:text-3xl">
               Explore Our Gallery
             </h2>
 
-            <p className="mt-2 text-sm text-gray-600">
-              Discover places we've explored with our
-              travelers.
+            <p className="mt-1 text-[10px] leading-5 text-gray-600 sm:mt-2 sm:text-sm">
+              Discover places we've explored with our travelers.
             </p>
           </div>
 
@@ -306,19 +303,17 @@ export default function GalleryPage() {
           {!loading &&
             !error &&
             galleryItems.length > 0 && (
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-5 xl:grid-cols-4 xl:gap-6">
 
                 {galleryItems.map((item) => (
                   <button
                     key={item._id}
                     type="button"
-                    onClick={() =>
-                      setSelectedItem(item)
-                    }
+                    onClick={() => setSelectedItem(item)}
                     className="
                       group
                       overflow-hidden
-                      rounded-2xl
+                      rounded-xl
                       bg-white
                       text-left
                       shadow-sm
@@ -330,14 +325,13 @@ export default function GalleryPage() {
                       focus:ring-2
                       focus:ring-orange-400
                       focus:ring-offset-2
+                      sm:rounded-2xl
                     "
                   >
                     {/* Media */}
-
-                    <div className="relative h-60 overflow-hidden bg-gray-100">
+                    <div className="relative h-[180px] overflow-hidden bg-gray-100 sm:h-60">
 
                       {/* Image */}
-
                       {item.type === "image" && (
                         <Image
                           src={item.url}
@@ -350,7 +344,7 @@ export default function GalleryPage() {
                             group-hover:scale-105
                           "
                           sizes="
-                            (max-width: 640px) 100vw,
+                            (max-width: 640px) 50vw,
                             (max-width: 1280px) 50vw,
                             25vw
                           "
@@ -358,13 +352,10 @@ export default function GalleryPage() {
                       )}
 
                       {/* Video Thumbnail */}
-
                       {item.type === "video" && (
                         <>
                           <Image
-                            src={getVideoThumbnail(
-                              item.url
-                            )}
+                            src={getVideoThumbnail(item.url)}
                             alt={item.title}
                             fill
                             className="
@@ -374,20 +365,19 @@ export default function GalleryPage() {
                               group-hover:scale-105
                             "
                             sizes="
-                              (max-width: 640px) 100vw,
+                              (max-width: 640px) 50vw,
                               (max-width: 1280px) 50vw,
                               25vw
                             "
                           />
 
                           {/* Play Button */}
-
                           <div className="absolute inset-0 flex items-center justify-center">
                             <div
                               className="
                                 flex
-                                h-14
-                                w-14
+                                h-9
+                                w-9
                                 items-center
                                 justify-center
                                 rounded-full
@@ -397,12 +387,14 @@ export default function GalleryPage() {
                                 transition-transform
                                 duration-300
                                 group-hover:scale-110
+                                sm:h-14
+                                sm:w-14
                               "
                             >
                               <Play
-                                size={23}
+                                size={16}
                                 fill="currentColor"
-                                className="ml-1"
+                                className="ml-0.5 sm:h-[23px] sm:w-[23px]"
                               />
                             </div>
                           </div>
@@ -410,7 +402,6 @@ export default function GalleryPage() {
                       )}
 
                       {/* Overlay */}
-
                       <div
                         className="
                           absolute
@@ -424,15 +415,14 @@ export default function GalleryPage() {
                       />
 
                       {/* Text */}
+                      <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5">
 
-                      <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
-
-                        <h3 className="text-lg font-semibold">
+                        <h3 className="text-sm font-semibold text-white sm:text-lg">
                           {item.title}
                         </h3>
 
                         {item.description && (
-                          <p className="mt-1 line-clamp-2 text-sm text-white/80">
+                          <p className="mt-0.5 line-clamp-2 text-[10px] leading-4 text-white/80 sm:mt-1 sm:text-sm">
                             {item.description}
                           </p>
                         )}
@@ -562,8 +552,9 @@ export default function GalleryPage() {
             items-center
             justify-center
             bg-black/80
-            p-4
+            p-2
             backdrop-blur-sm
+            sm:p-4
             md:p-8
           "
           onClick={() => setSelectedItem(null)}
@@ -574,34 +565,35 @@ export default function GalleryPage() {
             className="
               relative
               flex
-              max-h-[90vh]
+              max-h-[88vh]
               w-full
-              max-w-6xl
+              max-w-[94vw]
               flex-col
               overflow-hidden
-              rounded-2xl
+              rounded-xl
               bg-black
               shadow-2xl
+              sm:max-h-[90vh]
+              sm:max-w-2xl
+              sm:rounded-2xl
+              md:max-w-6xl
             "
-            onClick={(event) =>
-              event.stopPropagation()
-            }
+            onClick={(event) => event.stopPropagation()}
           >
+
             {/* Close Button */}
 
             <button
               type="button"
-              onClick={() =>
-                setSelectedItem(null)
-              }
+              onClick={() => setSelectedItem(null)}
               className="
                 absolute
-                right-4
-                top-4
+                right-2
+                top-2
                 z-20
                 flex
-                h-10
-                w-10
+                h-8
+                w-8
                 items-center
                 justify-center
                 rounded-full
@@ -610,20 +602,54 @@ export default function GalleryPage() {
                 backdrop-blur-sm
                 transition
                 hover:bg-black/80
+                sm:right-3
+                sm:top-3
+                sm:h-9
+                sm:w-9
+                md:right-4
+                md:top-4
+                md:h-10
+                md:w-10
               "
               aria-label="Close gallery"
             >
-              <X size={22} />
+              <X
+                size={18}
+                className="sm:h-5 sm:w-5 md:h-[22px] md:w-[22px]"
+              />
             </button>
+
 
             {/* Media */}
 
-            <div className="relative flex max-h-[75vh] min-h-[300px] items-center justify-center bg-black">
+            <div
+              className="
+                relative
+                flex
+                max-h-[62vh]
+                min-h-[180px]
+                items-center
+                justify-center
+                bg-black
+                sm:max-h-[70vh]
+                sm:min-h-[250px]
+                md:max-h-[75vh]
+                md:min-h-[300px]
+              "
+            >
 
               {/* Full Image */}
 
               {selectedItem.type === "image" && (
-                <div className="relative h-[70vh] w-full">
+                <div
+                  className="
+                    relative
+                    h-[55vh]
+                    w-full
+                    sm:h-[65vh]
+                    md:h-[70vh]
+                  "
+                >
                   <Image
                     src={selectedItem.url}
                     alt={selectedItem.title}
@@ -634,6 +660,7 @@ export default function GalleryPage() {
                 </div>
               )}
 
+
               {/* Full Video */}
 
               {selectedItem.type === "video" && (
@@ -643,30 +670,66 @@ export default function GalleryPage() {
                   autoPlay
                   playsInline
                   className="
-                    max-h-[75vh]
+                    max-h-[62vh]
                     max-w-full
                     object-contain
+                    sm:max-h-[70vh]
+                    md:max-h-[75vh]
                   "
                 />
               )}
 
             </div>
 
+
             {/* Modal Information */}
 
-            <div className="bg-white px-6 py-5">
+            <div
+              className="
+                bg-white
+                px-3
+                py-3
+                sm:px-5
+                sm:py-4
+                md:px-6
+                md:py-5
+              "
+            >
 
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2
+                className="
+                  text-base
+                  font-semibold
+                  text-gray-900
+                  sm:text-lg
+                  md:text-xl
+                "
+              >
                 {selectedItem.title}
               </h2>
 
               {selectedItem.description && (
-                <p className="mt-2 text-sm leading-6 text-gray-600">
+                <p
+                  className="
+                    mt-1
+                    line-clamp-3
+                    text-[10px]
+                    leading-4
+                    text-gray-600
+                    sm:mt-1.5
+                    sm:text-xs
+                    sm:leading-5
+                    md:mt-2
+                    md:text-sm
+                    md:leading-6
+                  "
+                >
                   {selectedItem.description}
                 </p>
               )}
 
             </div>
+
           </div>
         </div>
       )}
