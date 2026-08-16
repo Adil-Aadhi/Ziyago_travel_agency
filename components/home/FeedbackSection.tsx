@@ -168,7 +168,7 @@ export default function FeedbackSection() {
 
       <section
         data-navbar-theme="light"
-        className="bg-gradient-to-b from-[#cfeef8] to-white py-20"
+        className="bg-gradient-to-b from-[#cfeef8] to-white py-12 md:py-20"
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
 
@@ -180,11 +180,11 @@ export default function FeedbackSection() {
               Guest Experiences
             </p>
 
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               What Our Travelers Say
             </h2>
 
-            <p className="mt-4 text-base leading-7 text-gray-600">
+            <p className="mt-4 text-sm md:text-base  leading-7 text-gray-600">
               Every journey is special to us. Here is what some of our
               travelers have to say about their experience with us.
             </p>
@@ -193,105 +193,250 @@ export default function FeedbackSection() {
 
           {/* Reviews */}
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-3">
 
             {loading ? (
 
               <div className="col-span-full flex min-h-[220px] items-center justify-center">
-
                 <Loader2
                   size={28}
                   className="animate-spin text-blue-600"
                 />
-
               </div>
 
             ) : reviews.length === 0 ? (
 
               <div className="col-span-full flex min-h-[220px] items-center justify-center">
-
-                <p className="text-sm text-gray-500">
+                <p className="px-4 text-center text-sm text-gray-500">
                   No reviews yet. Be the first to share
                   your experience!
                 </p>
-
               </div>
 
             ) : (
 
-              reviews
-                .slice(0, 3)
-                .map((item) => (
-                  <div
-                    key={item._id}
-                    className="flex h-full flex-col rounded-2xl border border-gray-100 bg-gray-50 p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
-                  >
+              <>
+                {/* ================= DESKTOP / TABLET ================= */}
+                <div className="col-span-full hidden md:grid md:grid-cols-3 md:gap-6">
 
-                    {/* Stars */}
+                  {reviews.slice(0, 3).map((item) => (
+                    <div
+                      key={item._id}
+                      className="
+                        flex h-full flex-col
+                        rounded-2xl
+                        border border-gray-100
+                        bg-gray-50
+                        p-6
+                        shadow-sm
+                        transition duration-300
+                        hover:-translate-y-1
+                        hover:shadow-lg
+                      "
+                    >
 
-                    <div className="mb-5 flex gap-1">
+                      {/* Stars */}
+                      <div className="mb-5 flex gap-1">
+                        {Array.from({ length: 5 }).map((_, index) => (
+                          <Star
+                            key={index}
+                            size={18}
+                            className={
+                              index < item.rating
+                                ? "fill-yellow-400 text-yellow-400"
+                                : "text-gray-300"
+                            }
+                          />
+                        ))}
+                      </div>
 
-                      {Array.from({
-                        length: 5,
-                      }).map((_, index) => (
-                        <Star
-                          key={index}
-                          size={18}
-                          className={
-                            index <
-                            item.rating
-                              ? "fill-yellow-400 text-yellow-400"
-                              : "text-gray-300"
-                          }
-                        />
-                      ))}
+                      {/* Review */}
+                      <p className="flex-1 text-sm leading-7 text-gray-600">
+                        "{item.review}"
+                      </p>
 
-                    </div>
+                      {/* User */}
+                      <div className="mt-6 border-t border-gray-200 pt-5">
 
-                    {/* Review */}
+                        <div className="flex items-center gap-3">
 
-                    <p className="flex-1 text-sm leading-7 text-gray-600">
-                      "{item.review}"
-                    </p>
+                          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-100 font-semibold text-blue-600">
+                            {item.name.charAt(0).toUpperCase()}
+                          </div>
 
-                    {/* User */}
+                          <div>
+                            <h3 className="text-sm font-semibold text-gray-900">
+                              {item.name}
+                            </h3>
 
-                    <div className="mt-6 border-t border-gray-200 pt-5">
+                            <p className="text-xs text-gray-500">
+                              {item.location}
+                            </p>
+                          </div>
 
-                      <div className="flex items-center gap-3">
-
-                        {/* First letter avatar */}
-
-                        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-100 font-semibold text-blue-600">
-                          {item.name
-                            .charAt(0)
-                            .toUpperCase()}
                         </div>
 
-                        <div>
+                        <p className="mt-3 text-xs text-gray-400">
+                          {formatDate(item.createdAt)}
+                        </p>
 
-                          <h3 className="text-sm font-semibold text-gray-900">
-                            {item.name}
-                          </h3>
+                      </div>
 
-                          <p className="text-xs text-gray-500">
-                            {item.location}
+                    </div>
+                  ))}
+
+                </div>
+
+
+                {/* ================= MOBILE ================= */}
+                <div className="col-span-full overflow-hidden md:hidden">
+
+                  <div className="review-marquee flex w-max">
+
+                    {/* First set */}
+                    {reviews.slice(0, 3).map((item) => (
+                      <div
+                        key={`first-${item._id}`}
+                        className="
+                          flex
+                          w-[84vw]
+                          max-w-[340px]
+                          shrink-0
+                          flex-col
+                          rounded-2xl
+                          border
+                          border-gray-100
+                          bg-gray-50
+                          p-5
+                          shadow-md
+                        "
+                      >
+
+                        {/* Stars */}
+                        <div className="mb-4 flex gap-0.5">
+                          {Array.from({ length: 5 }).map((_, index) => (
+                            <Star
+                              key={index}
+                              size={15}
+                              className={
+                                index < item.rating
+                                  ? "fill-yellow-400 text-yellow-400"
+                                  : "text-gray-300"
+                              }
+                            />
+                          ))}
+                        </div>
+
+                        {/* Review */}
+                        <p className="flex-1 text-xs leading-6 text-gray-600">
+                          "{item.review}"
+                        </p>
+
+                        {/* User */}
+                        <div className="mt-5 border-t border-gray-200 pt-4">
+
+                          <div className="flex items-center gap-2.5">
+
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-600">
+                              {item.name.charAt(0).toUpperCase()}
+                            </div>
+
+                            <div className="min-w-0">
+                              <h3 className="truncate text-xs font-semibold text-gray-900">
+                                {item.name}
+                              </h3>
+
+                              <p className="truncate text-[10px] text-gray-500">
+                                {item.location}
+                              </p>
+                            </div>
+
+                          </div>
+
+                          <p className="mt-2.5 text-[10px] text-gray-400">
+                            {formatDate(item.createdAt)}
                           </p>
 
                         </div>
 
                       </div>
+                    ))}
 
-                      <p className="mt-3 text-xs text-gray-400">
-                        {formatDate(
-                          item.createdAt
-                        )}
-                      </p>
 
-                    </div>
+                    {/* Duplicate set → infinite loop */}
+                    {reviews.slice(0, 3).map((item) => (
+                      <div
+                        key={`second-${item._id}`}
+                        className="
+                          flex
+                          w-[84vw]
+                          max-w-[340px]
+                          shrink-0
+                          flex-col
+                          rounded-2xl
+                          border
+                          border-gray-100
+                          bg-gray-50
+                          p-5
+                          shadow-md
+                        "
+                      >
+
+                        {/* Stars */}
+                        <div className="mb-4 flex gap-0.5">
+                          {Array.from({ length: 5 }).map((_, index) => (
+                            <Star
+                              key={index}
+                              size={15}
+                              className={
+                                index < item.rating
+                                  ? "fill-yellow-400 text-yellow-400"
+                                  : "text-gray-300"
+                              }
+                            />
+                          ))}
+                        </div>
+
+                        {/* Review */}
+                        <p className="flex-1 text-xs leading-6 text-gray-600">
+                          "{item.review}"
+                        </p>
+
+                        {/* User */}
+                        <div className="mt-5 border-t border-gray-200 pt-4">
+
+                          <div className="flex items-center gap-2.5">
+
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-600">
+                              {item.name.charAt(0).toUpperCase()}
+                            </div>
+
+                            <div className="min-w-0">
+                              <h3 className="truncate text-xs font-semibold text-gray-900">
+                                {item.name}
+                              </h3>
+
+                              <p className="truncate text-[10px] text-gray-500">
+                                {item.location}
+                              </p>
+                            </div>
+
+                          </div>
+
+                          <p className="mt-2.5 text-[10px] text-gray-400">
+                            {formatDate(item.createdAt)}
+                          </p>
+
+                        </div>
+
+                      </div>
+                    ))}
 
                   </div>
-                ))
+
+                </div>
+              </>
+
             )}
 
           </div>
@@ -321,223 +466,387 @@ export default function FeedbackSection() {
 
       {/* Review Modal */}
 
-      {isModalOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm"
-          onClick={() => {
-            if (!submitting) {
-              setIsModalOpen(false);
-            }
-          }}
-        >
+    {isModalOpen && (
+  <div
+    className="
+      fixed
+      inset-0
+      z-50
+      flex
+      items-center
+      justify-center
+      bg-black/50
+      px-3
+      backdrop-blur-sm
+      md:px-4
+    "
+    onClick={() => {
+      if (!submitting) {
+        setIsModalOpen(false);
+      }
+    }}
+  >
 
-          <div
-            className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl sm:p-8"
-            onClick={(e) =>
-              e.stopPropagation()
-            }
+    <div
+      className="
+        relative
+        max-h-[92vh]
+        w-full
+        max-w-lg
+        overflow-y-auto
+        rounded-xl
+        bg-white
+        p-4
+        shadow-2xl
+        sm:p-6
+        md:max-h-[90vh]
+        md:rounded-2xl
+        md:p-6
+        lg:p-8
+      "
+      onClick={(e) => e.stopPropagation()}
+    >
+
+      {/* Close Button */}
+
+      <button
+        type="button"
+        onClick={() => setIsModalOpen(false)}
+        disabled={submitting}
+        className="
+          absolute
+          right-3
+          top-3
+          rounded-full
+          p-1.5
+          text-gray-400
+          transition
+          hover:bg-gray-100
+          hover:text-gray-700
+          disabled:cursor-not-allowed
+          disabled:opacity-50
+          md:right-4
+          md:top-4
+          md:p-2
+        "
+        aria-label="Close review form"
+      >
+        <X
+          size={17}
+          className="md:h-5 md:w-5"
+        />
+      </button>
+
+
+      {/* Modal Header */}
+
+      <div className="mb-4 pr-7 md:mb-6 md:pr-8">
+
+        <h2 className="text-xl font-bold text-gray-900 md:text-2xl">
+          Share Your Experience
+        </h2>
+
+        <p className="mt-1.5 text-xs leading-5 text-gray-500 md:mt-2 md:text-sm md:leading-6">
+          Tell us about your journey. Your feedback helps us improve
+          and helps other travelers plan their trips.
+        </p>
+
+      </div>
+
+
+      {/* Form */}
+
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-3.5 md:space-y-5"
+      >
+
+        {/* Name */}
+
+        <div>
+
+          <label
+            htmlFor="review-name"
+            className="
+              mb-1.5
+              block
+              text-xs
+              font-medium
+              text-gray-700
+              md:mb-2
+              md:text-sm
+            "
           >
+            Your Name
+          </label>
 
-            {/* Close Button */}
+          <input
+            id="review-name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter your name"
+            required
+            disabled={submitting}
+            className="
+              w-full
+              rounded-lg
+              border
+              border-gray-200
+              bg-gray-50
+              px-3
+              py-2
+              text-xs
+              text-gray-900
+              outline-none
+              transition
+              placeholder:text-gray-400
+              focus:border-blue-500
+              focus:bg-white
+              focus:ring-2
+              focus:ring-blue-100
+              disabled:opacity-60
+              md:rounded-xl
+              md:px-4
+              md:py-3
+              md:text-sm
+            "
+          />
 
-            <button
-              type="button"
-              onClick={() =>
-                setIsModalOpen(false)
-              }
-              disabled={submitting}
-              className="absolute right-4 top-4 rounded-full p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
-              aria-label="Close review form"
-            >
-              <X size={20} />
-            </button>
+        </div>
 
-            {/* Modal Header */}
 
-            <div className="mb-6 pr-8">
+        {/* Location */}
 
-              <h2 className="text-2xl font-bold text-gray-900">
-                Share Your Experience
-              </h2>
+        <div>
 
-              <p className="mt-2 text-sm leading-6 text-gray-500">
-                Tell us about your journey. Your feedback helps us improve
-                and helps other travelers plan their trips.
-              </p>
+          <label
+            htmlFor="review-location"
+            className="
+              mb-1.5
+              block
+              text-xs
+              font-medium
+              text-gray-700
+              md:mb-2
+              md:text-sm
+            "
+          >
+            Location
+          </label>
 
-            </div>
+          <input
+            id="review-location"
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="e.g. Kerala, India"
+            required
+            disabled={submitting}
+            className="
+              w-full
+              rounded-lg
+              border
+              border-gray-200
+              bg-gray-50
+              px-3
+              py-2
+              text-xs
+              text-gray-900
+              outline-none
+              transition
+              placeholder:text-gray-400
+              focus:border-blue-500
+              focus:bg-white
+              focus:ring-2
+              focus:ring-blue-100
+              disabled:opacity-60
+              md:rounded-xl
+              md:px-4
+              md:py-3
+              md:text-sm
+            "
+          />
 
-            {/* Form */}
+        </div>
 
-            <form
-              onSubmit={handleSubmit}
-              className="space-y-5"
-            >
 
-              {/* Name */}
+        {/* Rating */}
 
-              <div>
+        <div>
 
-                <label
-                  htmlFor="review-name"
-                  className="mb-2 block text-sm font-medium text-gray-700"
-                >
-                  Your Name
-                </label>
+          <label
+            className="
+              mb-1.5
+              block
+              text-xs
+              font-medium
+              text-gray-700
+              md:mb-2
+              md:text-sm
+            "
+          >
+            Your Rating
+          </label>
 
-                <input
-                  id="review-name"
-                  type="text"
-                  value={name}
-                  onChange={(e) =>
-                    setName(e.target.value)
-                  }
-                  placeholder="Enter your name"
-                  required
+          <div className="flex items-center gap-1 md:gap-2">
+
+            {Array.from({
+              length: 5,
+            }).map((_, index) => {
+
+              const starValue = index + 1;
+
+              return (
+                <button
+                  key={starValue}
+                  type="button"
+                  onClick={() => setRating(starValue)}
                   disabled={submitting}
-                  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 disabled:opacity-60"
-                />
-
-              </div>
-
-              {/* Location */}
-
-              <div>
-
-                <label
-                  htmlFor="review-location"
-                  className="mb-2 block text-sm font-medium text-gray-700"
+                  className="
+                    transition
+                    hover:scale-110
+                    disabled:cursor-not-allowed
+                  "
+                  aria-label={`Rate ${starValue} stars`}
                 >
-                  Location
-                </label>
-
-                <input
-                  id="review-location"
-                  type="text"
-                  value={location}
-                  onChange={(e) =>
-                    setLocation(
-                      e.target.value
-                    )
-                  }
-                  placeholder="e.g. Kerala, India"
-                  required
-                  disabled={submitting}
-                  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 disabled:opacity-60"
+                 <Star
+                  size={22}
+                  className={`md:h-7 md:w-7 ${
+                    starValue <= rating
+                      ? "fill-yellow-400 text-yellow-400"
+                      : "text-gray-300"
+                  }`}
                 />
+                </button>
+              );
 
-              </div>
+            })}
 
-              {/* Rating */}
-
-              <div>
-
-                <label className="mb-2 block text-sm font-medium text-gray-700">
-                  Your Rating
-                </label>
-
-                <div className="flex items-center gap-2">
-
-                  {Array.from({
-                    length: 5,
-                  }).map((_, index) => {
-
-                    const starValue =
-                      index + 1;
-
-                    return (
-                      <button
-                        key={starValue}
-                        type="button"
-                        onClick={() =>
-                          setRating(
-                            starValue
-                          )
-                        }
-                        disabled={
-                          submitting
-                        }
-                        className="transition hover:scale-110 disabled:cursor-not-allowed"
-                        aria-label={`Rate ${starValue} stars`}
-                      >
-                        <Star
-                          size={28}
-                          className={
-                            starValue <=
-                            rating
-                              ? "fill-yellow-400 text-yellow-400"
-                              : "text-gray-300"
-                          }
-                        />
-                      </button>
-                    );
-                  })}
-
-                  <span className="ml-2 text-sm text-gray-500">
-                    {rating}/5
-                  </span>
-
-                </div>
-
-              </div>
-
-              {/* Review */}
-
-              <div>
-
-                <label
-                  htmlFor="review-text"
-                  className="mb-2 block text-sm font-medium text-gray-700"
-                >
-                  Your Review
-                </label>
-
-                <textarea
-                  id="review-text"
-                  value={review}
-                  onChange={(e) =>
-                    setReview(e.target.value)
-                  }
-                  placeholder="Tell us about your travel experience..."
-                  required
-                  disabled={submitting}
-                  rows={5}
-                  className="w-full resize-none rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 disabled:opacity-60"
-                />
-
-              </div>
-
-              {/* Submit */}
-
-              <button
-                type="submit"
-                disabled={submitting}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-
-                {submitting ? (
-                  <>
-                    <Loader2
-                      size={17}
-                      className="animate-spin"
-                    />
-                    Submitting...
-                  </>
-                ) : (
-                  <>
-                    <Send size={17} />
-                    Submit Review
-                  </>
-                )}
-
-              </button>
-
-            </form>
+            <span className="ml-1.5 text-xs text-gray-500 md:ml-2 md:text-sm">
+              {rating}/5
+            </span>
 
           </div>
 
         </div>
-      )}
+
+
+        {/* Review */}
+
+        <div>
+
+          <label
+            htmlFor="review-text"
+            className="
+              mb-1.5
+              block
+              text-xs
+              font-medium
+              text-gray-700
+              md:mb-2
+              md:text-sm
+            "
+          >
+            Your Review
+          </label>
+
+          <textarea
+            id="review-text"
+            value={review}
+            onChange={(e) => setReview(e.target.value)}
+            placeholder="Tell us about your travel experience..."
+            required
+            disabled={submitting}
+            rows={4}
+            className="
+              w-full
+              resize-none
+              rounded-lg
+              border
+              border-gray-200
+              bg-gray-50
+              px-3
+              py-2
+              text-xs
+              leading-5
+              text-gray-900
+              outline-none
+              transition
+              placeholder:text-gray-400
+              focus:border-blue-500
+              focus:bg-white
+              focus:ring-2
+              focus:ring-blue-100
+              disabled:opacity-60
+              md:rounded-xl
+              md:px-4
+              md:py-3
+              md:text-sm
+              md:leading-normal
+              md:rows-5
+            "
+          />
+
+        </div>
+
+
+        {/* Submit */}
+
+        <button
+          type="submit"
+          disabled={submitting}
+          className="
+            flex
+            w-full
+            items-center
+            justify-center
+            gap-1
+            rounded-lg
+            bg-blue-600
+            px-3
+            py-2
+            text-[10px]
+            font-semibold
+            text-white
+            transition
+            hover:bg-blue-700
+            disabled:cursor-not-allowed
+            disabled:opacity-60
+            md:gap-2
+            md:rounded-xl
+            md:px-5
+            md:py-3.5
+            md:text-sm
+          "
+        >
+
+          {submitting ? (
+            <>
+              <Loader2
+                size={13}
+                className="animate-spin md:h-[17px] md:w-[17px]"
+              />
+              Submitting...
+            </>
+          ) : (
+            <>
+              <Send
+                size={13}
+                className="md:h-[17px] md:w-[17px]"
+              />
+              Submit Review
+            </>
+          )}
+
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+)}
 
     </>
   );

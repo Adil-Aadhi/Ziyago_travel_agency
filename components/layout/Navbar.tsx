@@ -81,50 +81,77 @@ export default function Navbar() {
   -------------------------------- */
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections =
-        document.querySelectorAll(
-          "[data-navbar-theme]"
+  const handleScroll = () => {
+    const sections = document.querySelectorAll(
+      "[data-navbar-theme]"
+    );
+
+    let isLight = false;
+
+    sections.forEach((section) => {
+      const rect = section.getBoundingClientRect();
+
+      if (
+        rect.top <= 80 &&
+        rect.bottom >= 80
+      ) {
+        const theme = section.getAttribute(
+          "data-navbar-theme"
         );
 
-      let isLight = false;
-
-      sections.forEach((section) => {
-        const rect =
-          section.getBoundingClientRect();
-
-        if (
-          rect.top <= 80 &&
-          rect.bottom >= 80
-        ) {
-          const theme =
-            section.getAttribute(
-              "data-navbar-theme"
-            );
-
-          if (theme === "light") {
-            isLight = true;
-          }
+        if (theme === "light") {
+          isLight = true;
         }
-      });
+      }
+    });
 
-      setLightBackground(isLight);
-    };
+    // Mobile only:
+    // If footer is visible anywhere in the viewport,
+    // force dark navbar.
+    if (window.innerWidth < 1024) {
+      const footer = document.querySelector("footer");
 
-    handleScroll();
+      if (footer) {
+        const rect = footer.getBoundingClientRect();
 
-    window.addEventListener(
+        const footerVisible =
+          rect.top < window.innerHeight &&
+          rect.bottom > 0;
+
+        if (footerVisible) {
+          isLight = false;
+        }
+      }
+    }
+
+    setLightBackground(isLight);
+  };
+
+  handleScroll();
+
+  window.addEventListener(
+    "scroll",
+    handleScroll,
+    { passive: true }
+  );
+
+  window.addEventListener(
+    "resize",
+    handleScroll
+  );
+
+  return () => {
+    window.removeEventListener(
       "scroll",
       handleScroll
     );
 
-    return () => {
-      window.removeEventListener(
-        "scroll",
-        handleScroll
-      );
-    };
-  }, []);
+    window.removeEventListener(
+      "resize",
+      handleScroll
+    );
+  };
+}, []);
 
   const collapsed =
     scrolled && !hovered;
@@ -462,24 +489,35 @@ export default function Navbar() {
 
           {/* Book Now */}
 
-          <Link
-            href="/contact"
-            className="
-                flex
-                h-10
-                w-10
-                items-center
-                justify-center
-                rounded-full
-            
-                text-[#155DFC]
-                
-                transition
-                hover:bg-blue-50
-            "
-            >
-            <Phone size={18} strokeWidth={2} />
-            </Link>
+         <Link
+          href="/contact"
+          className="
+            flex
+            h-6
+            w-8
+            items-center
+            justify-center
+            rounded-xl
+            bg-white
+            shadow-md
+            transition
+            hover:bg-blue-50
+            hover:shadow-lg
+          "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="#155DFC"
+            className="h-4 w-4"
+          >
+            <path
+              fillRule="evenodd"
+              d="M1.5 4.5A3 3 0 0 1 4.5 1.5h1.372a2 2 0 0 1 1.94 1.515l.7 2.8a2 2 0 0 1-.51 1.89L6.67 9.037a16.017 16.017 0 0 0 8.293 8.293l1.332-1.332a2 2 0 0 1 1.89-.51l2.8.7a2 2 0 0 1 1.515 1.94V19.5a3 3 0 0 1-3 3h-1C10.492 22.5 1.5 13.508 1.5 2.5v-1.5Z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </Link>
         </header>
 
         {/* ===============================================

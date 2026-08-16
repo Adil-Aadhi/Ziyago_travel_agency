@@ -66,7 +66,7 @@ const destinations: Destination[] = [
 
 export default function Destinations() {
     return (
-        <section className="px-6 py-20">
+        <section className="px-6 py-10 md:py-20">
             <div className="mx-auto max-w-7xl">
 
                 {/* Heading */}
@@ -75,138 +75,154 @@ export default function Destinations() {
                         Featured Destinations
                     </span>
 
-                    <h2 className="mt-4 text-4xl font-bold tracking-tight text-[#11102d] md:text-5xl">
+                    <h2 className="mt-4 text-2xl font-bold tracking-tight text-[#11102d] md:text-4xl">
                         The Journey of Destinations
                     </h2>
 
-                    <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-gray-500">
+                    <p className="mx-auto mt-4 max-w-2xl text-xs md:text-sm leading-6 text-gray-500">
                         Discover breathtaking destinations and unforgettable
                         experiences waiting for your next adventure.
                     </p>
                 </div>
 
                 {/* Collage */}
-                <div className="grid auto-rows-[180px] grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 gap-2.5 auto-rows-[140px] md:grid-cols-3 md:auto-rows-[180px] md:gap-3">
 
-                    {destinations.map((destination) => (
-                        <Link
-                            key={destination.id}
-                            href="/packages"
-                            className={`group relative overflow-hidden rounded-xl ${destination.className}`}
+                {destinations.map((destination) => (
+                    <Link
+                    key={destination.id}
+                    href="/packages"
+                    className={`group relative overflow-hidden rounded-lg md:rounded-xl ${destination.className}`}
+                    >
+                    {/* Image */}
+                    <Image
+                        src={destination.image}
+                        alt={destination.name}
+                        fill
+                        className="
+                        object-cover
+                        transition-transform
+                        duration-700
+                        ease-out
+                        group-hover:scale-105
+                        "
+                    />
+
+                    {/* Content */}
+                    <div
+                        className="
+                        absolute inset-x-0 bottom-0
+                        p-2.5
+                        transition-all
+                        duration-500
+                        group-hover:-translate-y-1
+                        md:p-4
+                        "
+                    >
+                        <div className="flex items-end justify-between gap-2 md:gap-3">
+
+                        <div className="min-w-0">
+
+                            {/* Destination name */}
+                            <h3 className="truncate text-sm font-semibold text-white drop-shadow-md md:text-lg">
+                            {destination.name}
+                            </h3>
+
+                            {/* Category */}
+                            <p
+                            className="
+                                mt-0.5
+                                truncate
+                                text-[10px]
+                                text-white/80
+                                drop-shadow-md
+                                md:text-xs
+                            "
+                            >
+                            {destination.category}
+                            </p>
+
+                            {/* Price */}
+                            <p
+                            className="
+                                mt-1
+                                text-[11px]
+                                font-semibold
+                                text-white
+                                opacity-0
+                                translate-y-2
+                                transition-all
+                                duration-300
+                                group-hover:translate-y-0
+                                group-hover:opacity-100
+                                md:mt-2
+                                md:text-sm
+                            "
+                            >
+                            From {destination.price}
+                            </p>
+
+                        </div>
+
+                        {/* View button */}
+                        <div
+                            className="
+                            flex h-7 w-7 shrink-0
+                            items-center justify-center
+                            rounded-full
+                            bg-white/30
+                            backdrop-blur-md
+                            transition-all
+                            duration-300
+                            group-hover:bg-white
+                            md:h-9
+                            md:w-9
+                            "
                         >
-                            {/* Image */}
-                            <Image
-                                src={destination.image}
-                                alt={destination.name}
-                                fill
-                                className="
-                                    object-cover
-                                    transition-transform
-                                    duration-700
-                                    ease-out
-                                    group-hover:scale-105
-                                "
+                            <ArrowUpRight
+                            size={14}
+                            className="
+                                text-white
+                                transition-colors
+                                duration-300
+                                group-hover:text-sky-500
+                                md:h-[17px]
+                                md:w-[17px]
+                            "
                             />
+                        </div>
 
-                            {/* Content */}
-                            <div
-                                className="
-                                    absolute inset-x-0 bottom-0
-                                    p-4
-                                    transition-all
-                                    duration-500
-                                    group-hover:-translate-y-1
-                                "
-                            >
-                                <div className="flex items-end justify-between gap-3">
+                        </div>
+                    </div>
 
-                                    <div>
-                                        {/* Destination name */}
-                                        <h3 className="text-lg font-semibold text-white drop-shadow-md">
-                                            {destination.name}
-                                        </h3>
-
-                                        {/* Category */}
-                                        <p
-                                            className="
-                                                mt-0.5
-                                                text-xs
-                                                text-white/80
-                                                drop-shadow-md
-                                            "
-                                        >
-                                            {destination.category}
-                                        </p>
-
-                                        {/* Price - appears on hover */}
-                                        <p
-                                            className="
-                                                mt-2
-                                                text-sm
-                                                font-semibold
-                                                text-white
-                                                opacity-0
-                                                translate-y-2
-                                                transition-all
-                                                duration-300
-                                                group-hover:translate-y-0
-                                                group-hover:opacity-100
-                                            "
-                                        >
-                                            From {destination.price}
-                                        </p>
-                                    </div>
-
-                                    {/* View button */}
-                                    <div
-                                        className="
-                                            flex h-9 w-9 shrink-0
-                                            items-center justify-center
-                                            rounded-full
-                                            bg-white/30
-                                            backdrop-blur-md
-                                            transition-all
-                                            duration-300
-                                            group-hover:bg-white
-                                        "
-                                    >
-                                        <ArrowUpRight
-                                            size={17}
-                                            className="
-                                                text-white
-                                                transition-colors
-                                                duration-300
-                                                group-hover:text-sky-500
-                                            "
-                                        />
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            {/* Explore badge - appears on hover */}
-                            <div
-                                className="
-                                    absolute left-4 top-4
-                                    rounded-full
-                                    bg-white/20
-                                    px-3 py-1
-                                    text-[10px]
-                                    font-medium
-                                    text-white
-                                    opacity-0
-                                    backdrop-blur-md
-                                    -translate-y-2
-                                    transition-all
-                                    duration-300
-                                    group-hover:translate-y-0
-                                    group-hover:opacity-100
-                                "
-                            >
-                                Explore
-                            </div>
-                        </Link>
-                    ))}
+                    {/* Explore badge */}
+                    <div
+                        className="
+                        absolute left-2.5 top-2.5
+                        rounded-full
+                        bg-white/20
+                        px-2 py-0.5
+                        text-[9px]
+                        font-medium
+                        text-white
+                        opacity-0
+                        backdrop-blur-md
+                        -translate-y-2
+                        transition-all
+                        duration-300
+                        group-hover:translate-y-0
+                        group-hover:opacity-100
+                        md:left-4
+                        md:top-4
+                        md:px-3
+                        md:py-1
+                        md:text-[10px]
+                        "
+                    >
+                        Explore
+                    </div>
+                    </Link>
+                ))}
 
                 </div>
             </div>

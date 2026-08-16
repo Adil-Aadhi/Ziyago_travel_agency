@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { motion } from "framer-motion";
 import "swiper/css";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const slides = [
   {
@@ -62,9 +62,22 @@ const slides = [
 export default function Hero() {
 
 const [activeSlide, setActiveSlide] = useState(0);
+const [isMobile, setIsMobile] = useState(false);
+
+useEffect(() => {
+  const checkMobile = () => {
+    setIsMobile(window.innerWidth < 768);
+  };
+
+  checkMobile();
+
+  window.addEventListener("resize", checkMobile);
+
+  return () => window.removeEventListener("resize", checkMobile);
+}, []);
 
 return (
-    <section data-navbar-theme="dark" className="relative min-h-[103vh] overflow-hidden">
+    <section data-navbar-theme={isMobile ? "light" : "dark"} className="relative min-h-[103vh] overflow-hidden">
       <Swiper
         modules={[Autoplay]}
         loop
@@ -77,13 +90,17 @@ return (
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id} className="h-full w-full">
-        <div className="relative h-screen w-full overflow-hidden">
+        <div className="relative h-[100svh] w-full overflow-hidden md:h-screen">
 
             <motion.div
             key={slide.id}
             initial={{ scale: 1 }}
             animate={{
-                scale: activeSlide === slide.id - 1 ? 1.1 : 1,
+              scale: activeSlide === slide.id - 1
+                ? isMobile
+                  ? 1.03
+                  : 1.1
+                : 1,
             }}
             transition={{
                 duration: 5,
@@ -105,11 +122,33 @@ return (
         </div>
         </SwiperSlide>
         ))}
-        <div className="absolute bottom-40 left-1/2 z-20 flex -translate-x-1/2 gap-3 rounded-full border border-white/20 bg-white/10 px-5 py-4 backdrop-blur-xl">
+        <div
+            className="
+              absolute
+              bottom-[180px]
+              left-1/2
+              z-20
+              flex
+              -translate-x-1/2
+              gap-2
+              rounded-full
+              border
+              border-white/20
+              bg-white/10
+              px-4
+              py-3
+              backdrop-blur-xl
+
+              md:bottom-40
+              md:gap-3
+              md:px-5
+              md:py-4
+            "
+          >
             {slides.map((_, index) => (
                 <div
                 key={index}
-                className="h-1 w-14 overflow-hidden rounded-full bg-white/20"
+                className="h-1 w-8 overflow-hidden rounded-full bg-white/20 md:w-14"
                 >
                 <motion.div
                     key={activeSlide === index ? index : `inactive-${index}`}
@@ -127,7 +166,11 @@ return (
             ))}
         </div>
       </Swiper>
-        <div className="absolute inset-0 z-10 flex items-center justify-center">
+        <div
+            className="
+              absolute inset-0 z-10 flex items-center justify-center pb-44 md:pb-0
+            "
+          >
         <div className="mx-auto max-w-5xl px-6 text-center text-white">
 
             <motion.div
@@ -135,7 +178,7 @@ return (
             animate={{ opacity: 1, y: 0 }}
             className="mb-8 inline-flex rounded-full border border-white/20 bg-white/10 px-6 py-2 backdrop-blur-xl"
             >
-            🌍 Luxury Travel Experiences
+            Luxury Travel Experiences
             </motion.div>
 
             <motion.h1
@@ -143,7 +186,10 @@ return (
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-5xl font-extrabold leading-tight md:text-7xl"
+            className="text-4xl
+                font-extrabold
+                leading-tight
+                md:text-7xl"
             >
             {slides[activeSlide].title}
             </motion.h1>
@@ -153,14 +199,44 @@ return (
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="mx-auto mt-8 max-w-3xl text-lg leading-8 text-gray-200 md:text-xl"
+            className="
+                mx-auto
+                mt-5
+                max-w-3xl
+                px-4
+                text-base
+                leading-7
+                text-gray-200
+                md:mt-8
+                md:px-0
+                md:text-xl
+                md:leading-8
+              "
             >
             {slides[activeSlide].subtitle}
             </motion.p>
 
             <Link
             href="/packages"
-            className="mt-10 inline-flex rounded-full border border-white/20 bg-white/10 px-10 py-4 text-lg font-semibold text-white backdrop-blur-xl transition hover:bg-white/20"
+            className="mt-6
+                inline-flex
+                rounded-full
+                border
+                border-white/20
+                bg-white/10
+                px-6
+                py-3
+                text-sm
+                font-semibold
+                text-white
+                backdrop-blur-xl
+                transition
+                hover:bg-white/20
+
+                md:mt-10
+                md:px-10
+                md:py-4
+                md:text-lg"
             >
             Explore Tours →
             </Link>

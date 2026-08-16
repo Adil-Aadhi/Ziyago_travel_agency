@@ -69,8 +69,10 @@ export default function FAQSection() {
         via-[#f4fbfd]
         to-[#cfeef8]
         px-6
-        pb-28
-        pt-20
+        pb-10
+        md:pb-28
+        pt-10
+        md:pt-20
         sm:px-8
         lg:px-12
       "
