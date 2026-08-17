@@ -465,6 +465,8 @@ export default function Footer() {
             sm:items-center
             sm:justify-between
             sm:text-left
+            py-12
+            md:py-0
             lg:gap-4
           "
         >

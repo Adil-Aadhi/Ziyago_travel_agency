@@ -171,36 +171,51 @@ const [packageToDelete, setPackageToDelete] =
 };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-5 py-8 md:px-8">
+    <div className="min-h-screen bg-gray-50 px-3 py-5 sm:px-5 sm:py-8 md:px-8">
       <div className="mx-auto max-w-7xl">
 
         {/* HEADER */}
         <div className="mb-8">
           <Link
-            href="/admin/packages"
-            className="mb-5 inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition hover:text-gray-900"
-          >
-            <ArrowLeft size={16} />
-            Back to Packages
-          </Link>
+              href="/admin/packages"
+              className="
+                mb-4
+                inline-flex
+                items-center
+                gap-1.5
+                text-xs
+                font-medium
+                text-gray-500
+                transition
+                hover:text-gray-900
+                sm:mb-5
+                sm:gap-2
+                sm:text-sm
+            "
+            >
+              <ArrowLeft size={14} className="sm:h-4 sm:w-4" />
+              Back to Packages
+            </Link>
 
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-50">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-red-50 sm:h-11 sm:w-11 sm:rounded-xl">
               <Trash2
-                size={20}
-                className="text-red-500"
+                size={17}
+                className="text-red-500 sm:h-5 sm:w-5"
               />
             </div>
 
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">
                 Deleted Packages
               </h1>
 
-              <p className="mt-1 text-sm text-gray-400">
+              <p className="mt-0.5 text-xs text-gray-400 sm:mt-1 sm:text-sm">
                 Packages moved to trash
               </p>
             </div>
+
           </div>
         </div>
 
@@ -234,128 +249,175 @@ const [packageToDelete, setPackageToDelete] =
         )}
 
         {/* CARDS */}
-        {!loading && packages.length > 0 && (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+{!loading && packages.length > 0 && (
+  <div className="grid gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
 
-            {packages.map((pkg) => (
-              <div
-                key={pkg._id}
-                className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm"
-              >
-                {/* IMAGE */}
-                <div className="relative h-48 overflow-hidden bg-gray-100">
-                  <img
-                    src={pkg.mainImage}
-                    alt={pkg.title}
-                    className="h-full w-full object-cover grayscale-[20%]"
-                  />
+    {packages.map((pkg) => (
+      <div
+        key={pkg._id}
+        className="
+          overflow-hidden
+          rounded-xl
+          border
+          border-gray-100
+          bg-white
+          shadow-sm
+          sm:rounded-2xl
+        "
+      >
 
-                  <div className="absolute left-3 top-3 rounded-full bg-red-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
-                    Deleted
-                  </div>
-                </div>
+        {/* IMAGE */}
 
-                {/* CONTENT */}
-                <div className="p-5">
+        <div className="relative h-36 overflow-hidden bg-gray-100 sm:h-48">
 
-                  <h2 className="line-clamp-1 text-base font-bold text-gray-900">
-                    {pkg.title}
-                  </h2>
+          <img
+            src={pkg.mainImage}
+            alt={pkg.title}
+            className="h-full w-full object-cover grayscale-[20%]"
+          />
 
-                  <div className="mt-2 flex items-center gap-1.5 text-sm text-gray-400">
-                    <MapPin size={14} />
-                    {pkg.destination}
-                  </div>
+          <div className="absolute left-2 top-2 rounded-full bg-red-500 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white sm:left-3 sm:top-3 sm:px-2.5 sm:py-1 sm:text-[10px]">
+            Deleted
+          </div>
 
-                  <div className="mt-2 flex items-center gap-1.5 text-sm text-gray-400">
-                    <Clock3 size={14} />
-                    {pkg.duration}
-                  </div>
+        </div>
 
-                  <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4">
-                    <div>
-                      <p className="text-xs text-gray-400">
-                        Status
-                      </p>
+        {/* CONTENT */}
 
-                      <p className="mt-0.5 text-sm font-semibold text-red-500">
-                        isActive: false
-                      </p>
-                    </div>
+        <div className="p-3 sm:p-5">
 
-                    <div className="flex items-center gap-2">
-                    {/* RESTORE */}
+          <h2 className="line-clamp-1 text-sm font-bold text-gray-900 sm:text-base">
+            {pkg.title}
+          </h2>
 
-                    <button
-                      type="button"
-                      disabled={
-                        restoringId === pkg._id ||
-                        deletingId === pkg._id
-                      }
-                      onClick={() =>
-                        handleRestore(pkg._id)
-                      }
-                      className="
-                        inline-flex
-                        items-center
-                        gap-2
-                        rounded-xl
-                        bg-green-50
-                        px-4
-                        py-2.5
-                        text-sm
-                        font-semibold
-                        text-green-600
-                        transition
-                        hover:bg-green-100
-                        disabled:cursor-not-allowed
-                        disabled:opacity-50
-                      "
-                    >
-                      <RotateCcw size={15} />
+          <div className="mt-1.5 flex items-center gap-1.5 text-xs text-gray-400 sm:mt-2 sm:text-sm">
 
-                      {restoringId === pkg._id
-                        ? "Restoring..."
-                        : "Restore"}
-                    </button>
+            <MapPin
+              size={12}
+              className="shrink-0 sm:h-[14px] sm:w-[14px]"
+            />
 
-                    {/* PERMANENT DELETE */}
-
-                        <button
-                          type="button"
-                          disabled={
-                            restoringId === pkg._id ||
-                            deletingId === pkg._id
-                          }
-                          onClick={() =>
-                            setPackageToDelete(pkg)
-                          }
-                          className="
-                            inline-flex
-                            items-center
-                            justify-center
-                            rounded-xl
-                            bg-red-50
-                            p-2.5
-                            text-red-500
-                            transition
-                            hover:bg-red-100
-                            disabled:cursor-not-allowed
-                            disabled:opacity-50
-                          "
-                          title="Delete permanently"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                  </div>
-
-                </div>
-              </div>
-            ))}
+            <span className="truncate">
+              {pkg.destination}
+            </span>
 
           </div>
-        )}
+
+          <div className="mt-1.5 flex items-center gap-1.5 text-xs text-gray-400 sm:mt-2 sm:text-sm">
+
+            <Clock3
+              size={12}
+              className="shrink-0 sm:h-[14px] sm:w-[14px]"
+            />
+
+            {pkg.duration}
+
+          </div>
+
+          <div className="mt-3 flex items-center justify-between border-t border-gray-100 pt-3 sm:mt-4 sm:pt-4">
+
+            <div>
+              <p className="text-[10px] text-gray-400 sm:text-xs">
+                Status
+              </p>
+
+              <p className="mt-0.5 text-xs font-semibold text-red-500 sm:text-sm">
+                isActive: false
+              </p>
+            </div>
+
+            <div className="flex items-center gap-1.5 sm:gap-2">
+
+              {/* RESTORE */}
+
+              <button
+                type="button"
+                disabled={
+                  restoringId === pkg._id ||
+                  deletingId === pkg._id
+                }
+                onClick={() =>
+                  handleRestore(pkg._id)
+                }
+                className="
+                  inline-flex
+                  items-center
+                  gap-1.5
+                  rounded-lg
+                  bg-green-50
+                  px-2.5
+                  py-2
+                  text-[11px]
+                  font-semibold
+                  text-green-600
+                  transition
+                  hover:bg-green-100
+                  disabled:cursor-not-allowed
+                  disabled:opacity-50
+                  sm:gap-2
+                  sm:rounded-xl
+                  sm:px-4
+                  sm:py-2.5
+                  sm:text-sm
+                "
+              >
+
+                <RotateCcw
+                  size={13}
+                  className="sm:h-[15px] sm:w-[15px]"
+                />
+
+                {restoringId === pkg._id
+                  ? "Restoring..."
+                  : "Restore"}
+
+              </button>
+
+              {/* PERMANENT DELETE */}
+
+              <button
+                type="button"
+                disabled={
+                  restoringId === pkg._id ||
+                  deletingId === pkg._id
+                }
+                onClick={() =>
+                  setPackageToDelete(pkg)
+                }
+                className="
+                  inline-flex
+                  items-center
+                  justify-center
+                  rounded-lg
+                  bg-red-50
+                  p-2
+                  text-red-500
+                  transition
+                  hover:bg-red-100
+                  disabled:cursor-not-allowed
+                  disabled:opacity-50
+                  sm:rounded-xl
+                  sm:p-2.5
+                "
+                title="Delete permanently"
+              >
+                <Trash2
+                  size={14}
+                  className="sm:h-4 sm:w-4"
+                />
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    ))}
+
+  </div>
+)}
       </div>
       {packageToDelete && (
         <div

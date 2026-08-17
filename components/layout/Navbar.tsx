@@ -489,35 +489,26 @@ export default function Navbar() {
 
           {/* Book Now */}
 
-         <Link
-          href="/contact"
-          className="
-            flex
-            h-6
-            w-8
-            items-center
-            justify-center
-            rounded-xl
-            bg-white
-            shadow-md
-            transition
-            hover:bg-blue-50
-            hover:shadow-lg
-          "
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="#155DFC"
-            className="h-4 w-4"
+        <Link
+            href="/contact"
+            className="
+              flex
+              h-7
+              items-center
+              justify-center
+              rounded-lg
+              bg-blue-900
+              px-3
+              text-[11px]
+              font-semibold
+              text-white
+              shadow-sm
+              transition
+              hover:bg-blue-950
+            "
           >
-            <path
-              fillRule="evenodd"
-              d="M1.5 4.5A3 3 0 0 1 4.5 1.5h1.372a2 2 0 0 1 1.94 1.515l.7 2.8a2 2 0 0 1-.51 1.89L6.67 9.037a16.017 16.017 0 0 0 8.293 8.293l1.332-1.332a2 2 0 0 1 1.89-.51l2.8.7a2 2 0 0 1 1.515 1.94V19.5a3 3 0 0 1-3 3h-1C10.492 22.5 1.5 13.508 1.5 2.5v-1.5Z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </Link>
+            Contact
+          </Link>
         </header>
 
         {/* ===============================================

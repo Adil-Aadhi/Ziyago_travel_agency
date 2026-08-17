@@ -426,53 +426,62 @@ useEffect(() => {
     >
       <div
         className="
-          relative
-          flex
-          max-h-[92vh]
-          w-full
-          max-w-4xl
-          flex-col
-          overflow-hidden
-          rounded-2xl
-          bg-white
-          shadow-2xl
-        "
+        relative
+        flex
+        max-h-[94vh]
+        w-full
+        max-w-4xl
+        flex-col
+        overflow-hidden
+        rounded-xl
+        bg-white
+        shadow-2xl
+        sm:rounded-2xl
+      "
       >
         {/* ================================================= */}
         {/* HEADER */}
         {/* ================================================= */}
 
-        <div className="flex items-center justify-between border-b border-gray-100 px-6 py-5">
+        <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3.5 sm:px-6 sm:py-5">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-orange-500">
+
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-blue-600 sm:text-xs">
               Package Management
             </p>
 
-            <h2 className="mt-1 text-xl font-bold text-gray-900">
+            <h2 className="mt-0.5 text-lg font-bold text-gray-900 sm:mt-1 sm:text-xl">
               {isEditMode
                 ? "Edit Package"
                 : "Add New Package"}
             </h2>
 
-            <p className="mt-1 text-xs text-gray-400">
+            <p className="mt-0.5 text-[10px] text-gray-400 sm:mt-1 sm:text-xs">
               {isEditMode
                 ? "Update the details of this travel package."
                 : "Create a complete travel package for your website."}
             </p>
+
           </div>
 
           <button
             onClick={onClose}
             className="
-              flex h-9 w-9 items-center justify-center
+              flex
+              h-8
+              w-8
+              items-center
+              justify-center
               rounded-lg
               text-gray-400
               transition
               hover:bg-gray-100
               hover:text-gray-700
+              sm:h-9
+              sm:w-9
             "
           >
-            <X size={19} />
+            <X size={17} className="sm:h-[19px] sm:w-[19px]" />
           </button>
         </div>
 
@@ -480,8 +489,8 @@ useEffect(() => {
         {/* BODY */}
         {/* ================================================= */}
 
-        <div className="overflow-y-auto px-6 py-6">
-          <div className="space-y-8">
+        <div className="overflow-y-auto px-4 py-4 sm:px-6 sm:py-6">
+            <div className="space-y-6 sm:space-y-8">
 
             {/* ================================================= */}
             {/* BASIC INFORMATION */}
@@ -501,7 +510,7 @@ useEffect(() => {
               <div className="space-y-5">
                 {/* Package Name */}
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                  <label className="mb-1.5 block text-xs font-medium text-gray-700 sm:mb-2 sm:text-sm">
                     Package Name
                   </label>
 
@@ -513,101 +522,114 @@ useEffect(() => {
                     }
                     placeholder="e.g. Switzerland Escape"
                     className="
-                        h-11
+                        h-10
                         w-full
                         rounded-xl
                         border
                         border-gray-200
                         bg-gray-50
-                        px-4
-                        text-sm
+                        px-3
+                        sm:h-11
+                        sm:px-4
+                        sm:text-sm
+                        text-xs
                         text-gray-800
                         outline-none
                         transition
                         placeholder:text-gray-400
-                        focus:border-orange-400
+                        focus:border-blue-400
                         focus:bg-white
                         focus:ring-2
-                        focus:ring-orange-100
+                        focus:ring-blue-100
                         "
                   />
                 </div>
 
                 {/* Destination + Duration */}
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
-                      Destination
-                    </label>
+                  <div className="grid gap-3 sm:grid-cols-2 sm:gap-5">
 
-                    <input
-                      type="text"
-                      value={destination}
-                      onChange={(e) =>
-                        setDestination(e.target.value)
-                      }
-                      placeholder="e.g. Switzerland"
-                      className="
-                        h-11
-                        w-full
-                        rounded-xl
-                        border
-                        border-gray-200
-                        bg-gray-50
-                        px-4
-                        text-sm
-                        text-gray-800
-                        outline-none
-                        transition
-                        placeholder:text-gray-400
-                        focus:border-orange-400
-                        focus:bg-white
-                        focus:ring-2
-                        focus:ring-orange-100
+                    <div>
+                      <label className="mb-1 block text-[11px] font-medium text-gray-700 sm:mb-2 sm:text-sm">
+                        Destination
+                      </label>
+
+                      <input
+                        type="text"
+                        value={destination}
+                        onChange={(e) =>
+                          setDestination(e.target.value)
+                        }
+                        placeholder="e.g. Switzerland"
+                        className="
+                          h-9
+                          w-full
+                          rounded-lg
+                          border
+                          border-gray-200
+                          bg-gray-50
+                          px-3
+                          text-xs
+                          text-gray-800
+                          outline-none
+                          transition
+                          placeholder:text-gray-400
+                          focus:border-blue-400
+                          focus:bg-white
+                          focus:ring-2
+                          focus:ring-blue-100
+                          sm:h-11
+                          sm:rounded-xl
+                          sm:px-4
+                          sm:text-sm
                         "
-                    />
-                  </div>
+                      />
+                    </div>
 
-                  <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
-                      Duration
-                    </label>
+                    <div>
+                      <label className="mb-1 block text-[11px] font-medium text-gray-700 sm:mb-2 sm:text-sm">
+                        Duration
+                      </label>
 
-                    <input
-                      type="text"
-                      value={duration}
-                      onChange={(e) =>
-                        setDuration(e.target.value)
-                      }
-                      placeholder="e.g. 7 Days / 6 Nights"
-                      className="
-                        h-11
-                        w-full
-                        rounded-xl
-                        border
-                        border-gray-200
-                        bg-gray-50
-                        px-4
-                        text-sm
-                        text-gray-800
-                        outline-none
-                        transition
-                        placeholder:text-gray-400
-                        focus:border-orange-400
-                        focus:bg-white
-                        focus:ring-2
-                        focus:ring-orange-100
+                      <input
+                        type="text"
+                        value={duration}
+                        onChange={(e) =>
+                          setDuration(e.target.value)
+                        }
+                        placeholder="e.g. 7 Days / 6 Nights"
+                        className="
+                          h-9
+                          w-full
+                          rounded-lg
+                          border
+                          border-gray-200
+                          bg-gray-50
+                          px-3
+                          text-xs
+                          text-gray-800
+                          outline-none
+                          transition
+                          placeholder:text-gray-400
+                          focus:border-blue-400
+                          focus:bg-white
+                          focus:ring-2
+                          focus:ring-blue-100
+                          sm:h-11
+                          sm:rounded-xl
+                          sm:px-4
+                          sm:text-sm
                         "
-                    />
+                      />
+                    </div>
+
                   </div>
-                </div>
 
                 {/* Price + Tour Type + Rating + Status */}
-                <div className="grid gap-5 sm:grid-cols-2">
+                <div className="grid gap-3 sm:grid-cols-2 sm:gap-5">
 
                   {/* Price */}
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                    <label className="mb-1 block text-[11px] font-medium text-gray-700 sm:mb-2 sm:text-sm">
                       Price
                     </label>
 
@@ -620,29 +642,33 @@ useEffect(() => {
                       }
                       placeholder="125000"
                       className="
-                        h-11
+                        h-9
                         w-full
-                        rounded-xl
+                        rounded-lg
                         border
                         border-gray-200
                         bg-gray-50
-                        px-4
-                        text-sm
+                        px-3
+                        text-xs
                         text-gray-800
                         outline-none
                         transition
                         placeholder:text-gray-400
-                        focus:border-orange-400
+                        focus:border-blue-400
                         focus:bg-white
                         focus:ring-2
-                        focus:ring-orange-100
+                        focus:ring-blue-100
+                        sm:h-11
+                        sm:rounded-xl
+                        sm:px-4
+                        sm:text-sm
                       "
                     />
                   </div>
 
                   {/* Tour Type */}
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                    <label className="mb-1 block text-[11px] font-medium text-gray-700 sm:mb-2 sm:text-sm">
                       Tour Type
                     </label>
 
@@ -652,56 +678,40 @@ useEffect(() => {
                         setTourType(e.target.value)
                       }
                       className="
-                        h-11
+                        h-9
                         w-full
-                        rounded-xl
+                        rounded-lg
                         border
                         border-gray-200
                         bg-gray-50
-                        px-4
-                        text-sm
+                        px-3
+                        text-xs
                         text-gray-800
                         outline-none
                         transition
-                        focus:border-orange-400
+                        focus:border-blue-400
                         focus:bg-white
                         focus:ring-2
-                        focus:ring-orange-100
+                        focus:ring-blue-100
+                        sm:h-11
+                        sm:rounded-xl
+                        sm:px-4
+                        sm:text-sm
                       "
                     >
-                      <option value="Adventure">
-                        Adventure
-                      </option>
-
-                      <option value="Family">
-                        Family
-                      </option>
-
-                      <option value="Honeymoon">
-                        Honeymoon
-                      </option>
-
-                      <option value="Cultural">
-                        Cultural
-                      </option>
-
-                      <option value="Luxury">
-                        Luxury
-                      </option>
-
-                      <option value="Beach">
-                        Beach
-                      </option>
-
-                      <option value="Wildlife">
-                        Wildlife
-                      </option>
+                      <option value="Adventure">Adventure</option>
+                      <option value="Family">Family</option>
+                      <option value="Honeymoon">Honeymoon</option>
+                      <option value="Cultural">Cultural</option>
+                      <option value="Luxury">Luxury</option>
+                      <option value="Beach">Beach</option>
+                      <option value="Wildlife">Wildlife</option>
                     </select>
                   </div>
 
                   {/* Rating */}
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                    <label className="mb-1 block text-[11px] font-medium text-gray-700 sm:mb-2 sm:text-sm">
                       Rating
                     </label>
 
@@ -711,21 +721,25 @@ useEffect(() => {
                         setRating(e.target.value)
                       }
                       className="
-                        h-11
+                        h-9
                         w-full
-                        rounded-xl
+                        rounded-lg
                         border
                         border-gray-200
                         bg-gray-50
-                        px-4
-                        text-sm
+                        px-3
+                        text-xs
                         text-gray-800
                         outline-none
                         transition
-                        focus:border-orange-400
+                        focus:border-blue-400
                         focus:bg-white
                         focus:ring-2
-                        focus:ring-orange-100
+                        focus:ring-blue-100
+                        sm:h-11
+                        sm:rounded-xl
+                        sm:px-4
+                        sm:text-sm
                       "
                     >
                       <option value="0">No Rating</option>
@@ -741,7 +755,7 @@ useEffect(() => {
 
                   {/* Status */}
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                    <label className="mb-1 block text-[11px] font-medium text-gray-700 sm:mb-2 sm:text-sm">
                       Status
                     </label>
 
@@ -751,30 +765,29 @@ useEffect(() => {
                         setStatus(e.target.value)
                       }
                       className="
-                        h-11
+                        h-9
                         w-full
-                        rounded-xl
+                        rounded-lg
                         border
                         border-gray-200
                         bg-gray-50
-                        px-4
-                        text-sm
+                        px-3
+                        text-xs
                         text-gray-800
                         outline-none
                         transition
-                        focus:border-orange-400
+                        focus:border-blue-400
                         focus:bg-white
                         focus:ring-2
-                        focus:ring-orange-100
+                        focus:ring-blue-100
+                        sm:h-11
+                        sm:rounded-xl
+                        sm:px-4
+                        sm:text-sm
                       "
                     >
-                      <option value="Active">
-                        Active
-                      </option>
-
-                      <option value="Draft">
-                        Draft
-                      </option>
+                      <option value="Active">Active</option>
+                      <option value="Draft">Draft</option>
                     </select>
                   </div>
 
@@ -782,7 +795,7 @@ useEffect(() => {
 
                 {/* Description */}
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                  <label className="mb-1 block text-[11px] font-medium text-gray-700 sm:mb-2 sm:text-sm">
                     Description
                   </label>
 
@@ -794,15 +807,27 @@ useEffect(() => {
                     }
                     placeholder="Write a short description about this package..."
                     className="
-                      w-full resize-none rounded-xl
-                      border border-gray-200
-                      bg-gray-50 px-4 py-3
-                      text-sm text-gray-800
-                      outline-none transition
+                      w-full
+                      resize-none
+                      rounded-lg
+                      border
+                      border-gray-200
+                      bg-gray-50
+                      px-3
+                      py-2.5
+                      text-xs
+                      text-gray-800
+                      outline-none
+                      transition
                       placeholder:text-gray-400
-                      focus:border-orange-400
+                      focus:border-blue-400
                       focus:bg-white
-                      focus:ring-2 focus:ring-orange-100
+                      focus:ring-2
+                      focus:ring-blue-100
+                      sm:rounded-xl
+                      sm:px-4
+                      sm:py-3
+                      sm:text-sm
                     "
                   />
                 </div>
@@ -814,54 +839,63 @@ useEffect(() => {
             {/* ================================================= */}
 
             <section>
-              <div className="mb-4">
-                <h3 className="text-sm font-bold text-gray-900">
+              <div className="mb-3 sm:mb-4">
+                <h3 className="text-xs font-bold text-gray-900 sm:text-sm">
                   Package Images
                 </h3>
 
-                <p className="mt-1 text-xs text-gray-400">
+                <p className="mt-0.5 text-[10px] text-gray-400 sm:mt-1 sm:text-xs">
                   Add a main image and additional destination images.
                 </p>
               </div>
 
-              <div className="space-y-5">
+              <div className="space-y-4 sm:space-y-5">
+
                 {/* Main Image */}
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                  <label className="mb-1 block text-[11px] font-medium text-gray-700 sm:mb-2 sm:text-sm">
                     Main Package Image
+
                     {!isEditMode && (
-                      <span className="ml-1 text-orange-500">*</span>
+                      <span className="ml-1 text-blue-500">*</span>
                     )}
                   </label>
 
                   {!mainImagePreview ? (
                     <label
                       className="
-                        flex h-44 cursor-pointer flex-col
-                        items-center justify-center
-                        rounded-xl
-                        border-2 border-dashed
+                        flex
+                        h-32
+                        cursor-pointer
+                        flex-col
+                        items-center
+                        justify-center
+                        rounded-lg
+                        border-2
+                        border-dashed
                         border-gray-200
                         bg-gray-50
                         transition
-                        hover:border-orange-300
-                        hover:bg-orange-50/40
+                        hover:border-blue-300
+                        hover:bg-blue-50/40
+                        sm:h-44
+                        sm:rounded-xl
                       "
                     >
                       <Upload
-                        size={25}
-                        className="text-gray-400"
+                        size={21}
+                        className="text-gray-400 sm:h-[25px] sm:w-[25px]"
                       />
 
-                      <span className="mt-3 text-sm font-medium text-gray-600">
+                      <span className="mt-2 text-xs font-medium text-gray-600 sm:mt-3 sm:text-sm">
                         Upload main image
                       </span>
 
-                      <span className="mt-1 text-xs text-gray-400">
+                      <span className="mt-0.5 text-[10px] text-gray-400 sm:mt-1 sm:text-xs">
                         This image will represent the package
                       </span>
 
-                      <span className="mt-1 text-[11px] text-gray-400">
+                      <span className="mt-0.5 text-[9px] text-gray-400 sm:mt-1 sm:text-[11px]">
                         JPG, PNG or WEBP
                       </span>
 
@@ -873,7 +907,7 @@ useEffect(() => {
                       />
                     </label>
                   ) : (
-                    <div className="relative h-52 overflow-hidden rounded-xl">
+                    <div className="relative h-40 overflow-hidden rounded-lg sm:h-52 sm:rounded-xl">
                       <img
                         src={mainImagePreview}
                         alt="Main package preview"
@@ -887,18 +921,30 @@ useEffect(() => {
                           setMainImagePreview("");
                         }}
                         className="
-                          absolute right-3 top-3
-                          flex h-9 w-9
-                          items-center justify-center
+                          absolute
+                          right-2
+                          top-2
+                          flex
+                          h-7
+                          w-7
+                          items-center
+                          justify-center
                           rounded-lg
                           bg-black/50
                           text-white
                           backdrop-blur-sm
                           transition
                           hover:bg-red-500
+                          sm:right-3
+                          sm:top-3
+                          sm:h-9
+                          sm:w-9
                         "
                       >
-                        <Trash2 size={16} />
+                        <Trash2
+                          size={14}
+                          className="sm:h-4 sm:w-4"
+                        />
                       </button>
                     </div>
                   )}
@@ -906,41 +952,49 @@ useEffect(() => {
 
                 {/* Gallery */}
                 <div>
-                  <div className="mb-2 flex items-center justify-between">
-                    <label className="text-sm font-medium text-gray-700">
+
+                  <div className="mb-1.5 flex items-center justify-between sm:mb-2">
+                    <label className="text-xs font-medium text-gray-700 sm:text-sm">
                       Additional Images
                     </label>
 
-                    <span className="text-xs text-gray-400">
+                    <span className="text-[10px] text-gray-400 sm:text-xs">
                       Multiple images allowed
                     </span>
                   </div>
 
                   <label
                     className="
-                      flex h-24 cursor-pointer
-                      items-center justify-center
-                      gap-3
-                      rounded-xl
-                      border-2 border-dashed
+                      flex
+                      h-20
+                      cursor-pointer
+                      items-center
+                      justify-center
+                      gap-2
+                      rounded-lg
+                      border-2
+                      border-dashed
                       border-gray-200
                       bg-gray-50
                       transition
-                      hover:border-orange-300
-                      hover:bg-orange-50/40
+                      hover:border-blue-300
+                      hover:bg-blue-50/40
+                      sm:h-24
+                      sm:gap-3
+                      sm:rounded-xl
                     "
                   >
                     <ImagePlus
-                      size={21}
-                      className="text-gray-400"
+                      size={18}
+                      className="text-gray-400 sm:h-[21px] sm:w-[21px]"
                     />
 
                     <div>
-                      <p className="text-sm font-medium text-gray-600">
+                      <p className="text-xs font-medium text-gray-600 sm:text-sm">
                         Add more images
                       </p>
 
-                      <p className="text-xs text-gray-400">
+                      <p className="text-[10px] text-gray-400 sm:text-xs">
                         Select multiple destination photos
                       </p>
                     </div>
@@ -955,7 +1009,7 @@ useEffect(() => {
                   </label>
 
                   {galleryPreviews.length > 0 && (
-                    <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    <div className="mt-3 grid grid-cols-2 gap-2 sm:mt-4 sm:grid-cols-4 sm:gap-3">
                       {galleryPreviews.map((preview, index) => (
                         <div
                           key={preview}
@@ -964,8 +1018,9 @@ useEffect(() => {
                             relative
                             aspect-[4/3]
                             overflow-hidden
-                            rounded-xl
+                            rounded-lg
                             bg-gray-100
+                            sm:rounded-xl
                           "
                         >
                           <img
@@ -980,26 +1035,42 @@ useEffect(() => {
                               removeGalleryImage(index)
                             }
                             className="
-                              absolute right-2 top-2
-                              flex h-7 w-7
-                              items-center justify-center
-                              rounded-lg
+                              absolute
+                              right-1.5
+                              top-1.5
+                              flex
+                              h-6
+                              w-6
+                              items-center
+                              justify-center
+                              rounded-md
                               bg-black/50
                               text-white
-                              opacity-0
+                              opacity-100
                               backdrop-blur-sm
                               transition
-                              group-hover:opacity-100
                               hover:bg-red-500
+                              sm:right-2
+                              sm:top-2
+                              sm:h-7
+                              sm:w-7
+                              sm:rounded-lg
+                              sm:opacity-0
+                              sm:group-hover:opacity-100
                             "
                           >
-                            <X size={14} />
+                            <X
+                              size={12}
+                              className="sm:h-[14px] sm:w-[14px]"
+                            />
                           </button>
                         </div>
                       ))}
                     </div>
                   )}
+
                 </div>
+
               </div>
             </section>
 
@@ -1008,13 +1079,13 @@ useEffect(() => {
             {/* ================================================= */}
 
             <section>
-              <div className="mb-4 flex items-end justify-between">
+              <div className="mb-3 flex items-end justify-between sm:mb-4">
                 <div>
-                  <h3 className="text-sm font-bold text-gray-900">
+                  <h3 className="text-xs font-bold text-gray-900 sm:text-sm">
                     Package Highlights
                   </h3>
 
-                  <p className="mt-1 text-xs text-gray-400">
+                  <p className="mt-0.5 text-[10px] text-gray-400 sm:mt-1 sm:text-xs">
                     Add the main experiences included in the package.
                   </p>
                 </div>
@@ -1023,27 +1094,53 @@ useEffect(() => {
                   type="button"
                   onClick={addHighlight}
                   className="
-                    inline-flex items-center gap-1
-                    text-xs font-semibold
-                    text-orange-500
-                    hover:text-orange-600
+                    inline-flex
+                    items-center
+                    gap-1
+                    text-[11px]
+                    font-semibold
+                    text-blue-600
+                    hover:text-blue-700
+                    sm:text-xs
                   "
                 >
-                  <Plus size={14} />
+                  <Plus size={13} className="sm:h-[14px] sm:w-[14px]" />
                   Add Highlight
                 </button>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-1.5 sm:space-y-2">
+
                 {highlights.map((highlight, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-1.5 sm:gap-2"
                   >
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-xs font-bold text-orange-500">
+
+                    {/* Number */}
+                    <div
+                      className="
+                        flex
+                        h-8
+                        w-8
+                        shrink-0
+                        items-center
+                        justify-center
+                        rounded-lg
+                        bg-blue-50
+                        text-[10px]
+                        font-bold
+                        text-blue-600
+                        sm:h-10
+                        sm:w-10
+                        sm:rounded-xl
+                        sm:text-xs
+                      "
+                    >
                       {index + 1}
                     </div>
 
+                    {/* Highlight input */}
                     <input
                       type="text"
                       value={highlight}
@@ -1055,25 +1152,30 @@ useEffect(() => {
                       }
                       placeholder="e.g. Swiss Alps sightseeing"
                       className="
-                        h-11
+                        h-9
                         w-full
-                        rounded-xl
+                        rounded-lg
                         border
                         border-gray-200
                         bg-gray-50
-                        px-4
-                        text-sm
+                        px-3
+                        text-xs
                         text-gray-800
                         outline-none
                         transition
                         placeholder:text-gray-400
-                        focus:border-orange-400
+                        focus:border-blue-400
                         focus:bg-white
                         focus:ring-2
-                        focus:ring-orange-100
-                        "
+                        focus:ring-blue-100
+                        sm:h-11
+                        sm:rounded-xl
+                        sm:px-4
+                        sm:text-sm
+                      "
                     />
 
+                    {/* Remove */}
                     {highlights.length > 1 && (
                       <button
                         type="button"
@@ -1081,19 +1183,32 @@ useEffect(() => {
                           removeHighlight(index)
                         }
                         className="
-                          flex h-10 w-10 shrink-0
-                          items-center justify-center
-                          rounded-xl
+                          flex
+                          h-8
+                          w-8
+                          shrink-0
+                          items-center
+                          justify-center
+                          rounded-lg
                           text-gray-400
+                          transition
                           hover:bg-red-50
                           hover:text-red-500
+                          sm:h-10
+                          sm:w-10
+                          sm:rounded-xl
                         "
                       >
-                        <Trash2 size={16} />
+                        <Trash2
+                          size={14}
+                          className="sm:h-4 sm:w-4"
+                        />
                       </button>
                     )}
+
                   </div>
                 ))}
+
               </div>
             </section>
 
@@ -1102,30 +1217,30 @@ useEffect(() => {
             {/* ================================================= */}
 
             <section>
-              <div className="mb-5">
-                <h3 className="text-sm font-bold text-gray-900">
+              <div className="mb-3 sm:mb-5">
+                <h3 className="text-xs font-bold text-gray-900 sm:text-sm">
                   Package Includes & Excludes
                 </h3>
 
-                <p className="mt-1 text-xs text-gray-400">
+                <p className="mt-0.5 text-[10px] text-gray-400 sm:mt-1 sm:text-xs">
                   Specify what is included and not included in this package.
                 </p>
               </div>
 
-              <div className="grid gap-5 lg:grid-cols-2">
+              <div className="grid gap-3 lg:grid-cols-2 lg:gap-5">
 
                 {/* ================= INCLUDED ================= */}
 
-                <div className="rounded-2xl border border-green-100 bg-green-50/40 p-5">
+                <div className="rounded-xl border border-green-100 bg-green-50/40 p-3.5 sm:rounded-2xl sm:p-5">
 
-                  <div className="mb-4 flex items-center justify-between">
+                  <div className="mb-3 flex items-center justify-between sm:mb-4">
 
-                    <div>
-                      <h4 className="text-sm font-bold text-gray-900">
+                    <div className="min-w-0">
+                      <h4 className="text-xs font-bold text-gray-900 sm:text-sm">
                         What's Included
                       </h4>
 
-                      <p className="mt-1 text-xs text-gray-400">
+                      <p className="mt-0.5 text-[10px] text-gray-400 sm:mt-1 sm:text-xs">
                         Services included in the package.
                       </p>
                     </div>
@@ -1135,47 +1250,56 @@ useEffect(() => {
                       onClick={addIncluded}
                       className="
                         inline-flex
+                        shrink-0
                         items-center
                         gap-1
-                        rounded-lg
+                        rounded-md
                         bg-white
-                        px-3
-                        py-2
-                        text-xs
+                        px-2.5
+                        py-1.5
+                        text-[10px]
                         font-semibold
                         text-green-600
                         shadow-sm
                         transition
                         hover:bg-green-50
+                        sm:rounded-lg
+                        sm:px-3
+                        sm:py-2
+                        sm:text-xs
                       "
                     >
-                      <Plus size={14} />
+                      <Plus size={12} className="sm:h-[14px] sm:w-[14px]" />
                       Add
                     </button>
 
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
 
                     {included.map((item, index) => (
                       <div
                         key={index}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-1.5 sm:gap-2"
                       >
 
                         <div
                           className="
                             flex
-                            h-9
-                            w-9
+                            h-7
+                            w-7
                             shrink-0
                             items-center
                             justify-center
-                            rounded-lg
+                            rounded-md
                             bg-green-100
-                            text-xs
+                            text-[10px]
                             font-bold
                             text-green-600
+                            sm:h-9
+                            sm:w-9
+                            sm:rounded-lg
+                            sm:text-xs
                           "
                         >
                           ✓
@@ -1192,14 +1316,14 @@ useEffect(() => {
                           }
                           placeholder="e.g. Daily breakfast"
                           className="
-                            h-11
+                            h-9
                             w-full
-                            rounded-xl
+                            rounded-lg
                             border
                             border-gray-200
                             bg-white
-                            px-4
-                            text-sm
+                            px-3
+                            text-xs
                             text-gray-800
                             outline-none
                             transition
@@ -1207,6 +1331,10 @@ useEffect(() => {
                             focus:border-green-400
                             focus:ring-2
                             focus:ring-green-100
+                            sm:h-11
+                            sm:rounded-xl
+                            sm:px-4
+                            sm:text-sm
                           "
                         />
 
@@ -1218,19 +1346,25 @@ useEffect(() => {
                             }
                             className="
                               flex
-                              h-9
-                              w-9
+                              h-7
+                              w-7
                               shrink-0
                               items-center
                               justify-center
-                              rounded-lg
+                              rounded-md
                               text-gray-400
                               transition
                               hover:bg-red-50
                               hover:text-red-500
+                              sm:h-9
+                              sm:w-9
+                              sm:rounded-lg
                             "
                           >
-                            <Trash2 size={15} />
+                            <Trash2
+                              size={13}
+                              className="sm:h-[15px] sm:w-[15px]"
+                            />
                           </button>
                         )}
 
@@ -1241,18 +1375,19 @@ useEffect(() => {
 
                 </div>
 
+
                 {/* ================= EXCLUDED ================= */}
 
-                <div className="rounded-2xl border border-red-100 bg-red-50/40 p-5">
+                <div className="rounded-xl border border-red-100 bg-red-50/40 p-3.5 sm:rounded-2xl sm:p-5">
 
-                  <div className="mb-4 flex items-center justify-between">
+                  <div className="mb-3 flex items-center justify-between sm:mb-4">
 
-                    <div>
-                      <h4 className="text-sm font-bold text-gray-900">
+                    <div className="min-w-0">
+                      <h4 className="text-xs font-bold text-gray-900 sm:text-sm">
                         What's Not Included
                       </h4>
 
-                      <p className="mt-1 text-xs text-gray-400">
+                      <p className="mt-0.5 text-[10px] text-gray-400 sm:mt-1 sm:text-xs">
                         Services not included in the package.
                       </p>
                     </div>
@@ -1262,47 +1397,56 @@ useEffect(() => {
                       onClick={addExcluded}
                       className="
                         inline-flex
+                        shrink-0
                         items-center
                         gap-1
-                        rounded-lg
+                        rounded-md
                         bg-white
-                        px-3
-                        py-2
-                        text-xs
+                        px-2.5
+                        py-1.5
+                        text-[10px]
                         font-semibold
                         text-red-500
                         shadow-sm
                         transition
                         hover:bg-red-50
+                        sm:rounded-lg
+                        sm:px-3
+                        sm:py-2
+                        sm:text-xs
                       "
                     >
-                      <Plus size={14} />
+                      <Plus size={12} className="sm:h-[14px] sm:w-[14px]" />
                       Add
                     </button>
 
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
 
                     {excluded.map((item, index) => (
                       <div
                         key={index}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-1.5 sm:gap-2"
                       >
 
                         <div
                           className="
                             flex
-                            h-9
-                            w-9
+                            h-7
+                            w-7
                             shrink-0
                             items-center
                             justify-center
-                            rounded-lg
+                            rounded-md
                             bg-red-100
-                            text-xs
+                            text-[10px]
                             font-bold
                             text-red-500
+                            sm:h-9
+                            sm:w-9
+                            sm:rounded-lg
+                            sm:text-xs
                           "
                         >
                           ×
@@ -1319,14 +1463,14 @@ useEffect(() => {
                           }
                           placeholder="e.g. International airfare"
                           className="
-                            h-11
+                            h-9
                             w-full
-                            rounded-xl
+                            rounded-lg
                             border
                             border-gray-200
                             bg-white
-                            px-4
-                            text-sm
+                            px-3
+                            text-xs
                             text-gray-800
                             outline-none
                             transition
@@ -1334,6 +1478,10 @@ useEffect(() => {
                             focus:border-red-400
                             focus:ring-2
                             focus:ring-red-100
+                            sm:h-11
+                            sm:rounded-xl
+                            sm:px-4
+                            sm:text-sm
                           "
                         />
 
@@ -1345,19 +1493,25 @@ useEffect(() => {
                             }
                             className="
                               flex
-                              h-9
-                              w-9
+                              h-7
+                              w-7
                               shrink-0
                               items-center
                               justify-center
-                              rounded-lg
+                              rounded-md
                               text-gray-400
                               transition
                               hover:bg-red-50
                               hover:text-red-500
+                              sm:h-9
+                              sm:w-9
+                              sm:rounded-lg
                             "
                           >
-                            <Trash2 size={15} />
+                            <Trash2
+                              size={13}
+                              className="sm:h-[15px] sm:w-[15px]"
+                            />
                           </button>
                         )}
 
@@ -1376,176 +1530,255 @@ useEffect(() => {
             {/* ================================================= */}
 
             <section>
-              <div className="mb-5 flex items-end justify-between">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-50 text-orange-500">
-                      <CalendarDays size={17} />
-                    </div>
+                <div className="mb-3 flex items-end justify-between sm:mb-5">
 
-                    <h3 className="text-sm font-bold text-gray-900">
-                      Your Journey Day by Day
-                    </h3>
-                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5 sm:gap-2">
 
-                  <p className="mt-2 text-xs text-gray-400">
-                    Add activities and experiences for each day.
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={addDay}
-                  className="
-                    inline-flex items-center gap-1
-                    rounded-lg
-                    bg-orange-50
-                    px-3 py-2
-                    text-xs font-semibold
-                    text-orange-500
-                    transition
-                    hover:bg-orange-100
-                  "
-                >
-                  <Plus size={14} />
-                  Add Day
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                {activities.map((activity, index) => (
-                  <div
-                    key={index}
-                    className="
-                      relative
-                      rounded-2xl
-                      border border-gray-100
-                      bg-gray-50/60
-                      p-5
-                    "
-                  >
-                    {/* Day Header */}
-                    <div className="mb-4 flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="
-                            flex h-10 w-10
-                            items-center justify-center
-                            rounded-xl
-                            bg-orange-500
-                            text-sm
-                            font-bold
-                            text-white
-                          "
-                        >
-                          {activity.day}
-                        </div>
-
-                        <div>
-                          <p className="text-[11px] font-semibold uppercase tracking-wide text-orange-500">
-                            Day {activity.day}
-                          </p>
-
-                          <p className="text-xs text-gray-400">
-                            Journey activity
-                          </p>
-                        </div>
+                      <div className="
+                        flex
+                        h-7
+                        w-7
+                        items-center
+                        justify-center
+                        rounded-lg
+                        bg-blue-50
+                        text-blue-600
+                        sm:h-8
+                        sm:w-8
+                      ">
+                        <CalendarDays
+                          size={15}
+                          className="sm:h-[17px] sm:w-[17px]"
+                        />
                       </div>
 
-                      {activities.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => removeDay(index)}
-                          className="
-                            flex h-8 w-8
-                            items-center justify-center
-                            rounded-lg
-                            text-gray-400
-                            transition
-                            hover:bg-red-50
-                            hover:text-red-500
-                          "
-                        >
-                          <Trash2 size={15} />
-                        </button>
-                      )}
+                      <h3 className="text-xs font-bold text-gray-900 sm:text-sm">
+                        Your Journey Day by Day
+                      </h3>
+
                     </div>
 
-                    {/* Day Title */}
-                    <div className="mb-4">
-                      <label className="mb-2 block text-sm font-medium text-gray-700">
-                        Activity Title
-                      </label>
+                    <p className="mt-1.5 text-[10px] text-gray-400 sm:mt-2 sm:text-xs">
+                      Add activities and experiences for each day.
+                    </p>
+                  </div>
 
-                      <input
-                        type="text"
-                        value={activity.title}
-                        onChange={(e) =>
-                          updateDay(
-                            index,
-                            "title",
-                            e.target.value
-                          )
-                        }
-                        placeholder="e.g. Arrival in Zurich"
-                        className="
-                        h-11
-                        w-full
+                  <button
+                    type="button"
+                    onClick={addDay}
+                    className="
+                      inline-flex
+                      items-center
+                      gap-1
+                      rounded-md
+                      bg-blue-50
+                      px-2.5
+                      py-1.5
+                      text-[10px]
+                      font-semibold
+                      text-blue-600
+                      transition
+                      hover:bg-blue-100
+                      sm:rounded-lg
+                      sm:px-3
+                      sm:py-2
+                      sm:text-xs
+                    "
+                  >
+                    <Plus
+                      size={12}
+                      className="sm:h-[14px] sm:w-[14px]"
+                    />
+                    Add Day
+                  </button>
+
+                </div>
+
+
+                <div className="space-y-3 sm:space-y-4">
+
+                  {activities.map((activity, index) => (
+                    <div
+                      key={index}
+                      className="
+                        relative
                         rounded-xl
                         border
-                        border-gray-200
-                        bg-gray-50
-                        px-4
-                        text-sm
-                        text-gray-800
-                        outline-none
-                        transition
-                        placeholder:text-gray-400
-                        focus:border-orange-400
-                        focus:bg-white
-                        focus:ring-2
-                        focus:ring-orange-100
-                        "
-                      />
-                    </div>
+                        border-gray-100
+                        bg-gray-50/60
+                        p-3.5
+                        sm:rounded-2xl
+                        sm:p-5
+                      "
+                    >
 
-                    {/* Day Description */}
-                    <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">
-                        Activity Description
-                      </label>
+                      {/* Day Header */}
 
-                      <textarea
-                        rows={3}
-                        value={activity.description}
-                        onChange={(e) =>
-                          updateDay(
-                            index,
-                            "description",
-                            e.target.value
-                          )
-                        }
-                        placeholder="Describe what happens during this day..."
-                        className="
-                          w-full resize-none
-                          rounded-xl
-                          border border-gray-200
-                          bg-white
-                          px-4 py-3
-                          text-sm text-gray-800
-                          outline-none
-                          transition
-                          placeholder:text-gray-400
-                          focus:border-orange-400
-                          focus:ring-2
-                          focus:ring-orange-100
-                        "
-                      />
+                      <div className="mb-3 flex items-center justify-between sm:mb-4">
+
+                        <div className="flex items-center gap-2 sm:gap-3">
+
+                          <div
+                            className="
+                              flex
+                              h-8
+                              w-8
+                              items-center
+                              justify-center
+                              rounded-lg
+                              bg-gradient-to-br
+                              from-cyan-400
+                              to-blue-600
+                              text-xs
+                              font-bold
+                              text-white
+                              sm:h-10
+                              sm:w-10
+                              sm:rounded-xl
+                              sm:text-sm
+                            "
+                          >
+                            {activity.day}
+                          </div>
+
+                          <div>
+                            <p className="text-[10px] font-semibold uppercase tracking-wide text-blue-600 sm:text-[11px]">
+                              Day {activity.day}
+                            </p>
+
+                            <p className="text-[10px] text-gray-400 sm:text-xs">
+                              Journey activity
+                            </p>
+                          </div>
+
+                        </div>
+
+                        {activities.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => removeDay(index)}
+                            className="
+                              flex
+                              h-7
+                              w-7
+                              items-center
+                              justify-center
+                              rounded-lg
+                              text-gray-400
+                              transition
+                              hover:bg-red-50
+                              hover:text-red-500
+                              sm:h-8
+                              sm:w-8
+                            "
+                          >
+                            <Trash2
+                              size={13}
+                              className="sm:h-[15px] sm:w-[15px]"
+                            />
+                          </button>
+                        )}
+
+                      </div>
+
+
+                      {/* Day Title */}
+
+                      <div className="mb-3 sm:mb-4">
+
+                        <label className="mb-1 block text-[11px] font-medium text-gray-700 sm:mb-2 sm:text-sm">
+                          Activity Title
+                        </label>
+
+                        <input
+                          type="text"
+                          value={activity.title}
+                          onChange={(e) =>
+                            updateDay(
+                              index,
+                              "title",
+                              e.target.value
+                            )
+                          }
+                          placeholder="e.g. Arrival in Zurich"
+                          className="
+                            h-9
+                            w-full
+                            rounded-lg
+                            border
+                            border-gray-200
+                            bg-gray-50
+                            px-3
+                            text-xs
+                            text-gray-800
+                            outline-none
+                            transition
+                            placeholder:text-gray-400
+                            focus:border-blue-400
+                            focus:bg-white
+                            focus:ring-2
+                            focus:ring-blue-100
+                            sm:h-11
+                            sm:rounded-xl
+                            sm:px-4
+                            sm:text-sm
+                          "
+                        />
+
+                      </div>
+
+
+                      {/* Day Description */}
+
+                      <div>
+
+                        <label className="mb-1 block text-[11px] font-medium text-gray-700 sm:mb-2 sm:text-sm">
+                          Activity Description
+                        </label>
+
+                        <textarea
+                          rows={3}
+                          value={activity.description}
+                          onChange={(e) =>
+                            updateDay(
+                              index,
+                              "description",
+                              e.target.value
+                            )
+                          }
+                          placeholder="Describe what happens during this day..."
+                          className="
+                            w-full
+                            resize-none
+                            rounded-lg
+                            border
+                            border-gray-200
+                            bg-white
+                            px-3
+                            py-2.5
+                            text-xs
+                            text-gray-800
+                            outline-none
+                            transition
+                            placeholder:text-gray-400
+                            focus:border-blue-400
+                            focus:ring-2
+                            focus:ring-blue-100
+                            sm:rounded-xl
+                            sm:px-4
+                            sm:py-3
+                            sm:text-sm
+                          "
+                        />
+
+                      </div>
+
                     </div>
-                  </div>
-                ))}
-              </div>
-            </section>
+                  ))}
+
+                </div>
+              </section>
           </div>
         </div>
 
@@ -1553,27 +1786,36 @@ useEffect(() => {
         {/* FOOTER */}
         {/* ================================================= */}
 
-        <div className="flex items-center justify-between border-t border-gray-100 bg-gray-50/50 px-6 py-4">
-          <p className="hidden text-xs text-gray-400 sm:block">
+        <div className="flex items-center justify-between border-t border-gray-100 bg-gray-50/50 px-3 py-3 sm:px-6 sm:py-4">
+
+          ``<p className="hidden text-xs text-gray-400 sm:block">
             You can edit package details later.
           </p>
 
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ml-auto flex items-center gap-2 sm:gap-3">
+
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
               className="
-                rounded-xl
-                border border-gray-200
+                rounded-lg
+                border
+                border-gray-200
                 bg-white
-                px-5 py-2.5
-                text-sm font-semibold
+                px-3
+                py-2
+                text-xs
+                font-semibold
                 text-gray-600
                 transition
                 hover:bg-gray-50
                 disabled:cursor-not-allowed
                 disabled:opacity-50
+                sm:rounded-xl
+                sm:px-5
+                sm:py-2.5
+                sm:text-sm
               "
             >
               Cancel
@@ -1585,27 +1827,38 @@ useEffect(() => {
               disabled={isSubmitting}
               className="
                 inline-flex
-                min-w-[145px]
+                min-w-[105px]
                 items-center
                 justify-center
-                gap-2
-                rounded-xl
-                bg-orange-500
-                px-5 py-2.5
-                text-sm font-semibold
+                gap-1.5
+                rounded-lg
+                bg-gradient-to-r
+                from-cyan-500
+                to-blue-600
+                px-3
+                py-2
+                text-xs
+                font-semibold
                 text-white
                 shadow-sm
                 transition
-                hover:bg-orange-600
+                hover:from-cyan-600
+                hover:to-blue-700
                 disabled:cursor-not-allowed
                 disabled:opacity-70
+                sm:min-w-[145px]
+                sm:gap-2
+                sm:rounded-xl
+                sm:px-5
+                sm:py-2.5
+                sm:text-sm
               "
             >
               {isSubmitting ? (
                 <>
                   <Loader2
-                    size={16}
-                    className="animate-spin"
+                    size={14}
+                    className="animate-spin sm:h-4 sm:w-4"
                   />
 
                   {isEditMode
@@ -1618,6 +1871,7 @@ useEffect(() => {
                   : "Create Package"
               )}
             </button>
+
           </div>
         </div>
       </div>
