@@ -299,14 +299,17 @@ export default function FeaturedPackages() {
                         href={`/packages/${item._id}`}
                         className="
                           rounded-full
-                          bg-blue-900
+                          bg-gradient-to-r
+                          from-cyan-500
+                          to-blue-600
                           px-2.5
                           py-1
                           text-[9px]
                           font-semibold
                           text-white
                           transition
-                          hover:bg-blue-950
+                          hover:from-cyan-600
+                          hover:to-blue-700
                           md:px-4
                           md:py-2
                           md:text-sm

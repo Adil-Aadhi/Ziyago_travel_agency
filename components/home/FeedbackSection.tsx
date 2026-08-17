@@ -454,8 +454,25 @@ export default function FeedbackSection() {
               onClick={() =>
                 setIsModalOpen(true)
               }
-              className="inline-flex items-center justify-center rounded-full bg-blue-600 px-7 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 hover:shadow-md"
-            >
+                className="
+                inline-flex
+                items-center
+                justify-center
+                rounded-full
+                bg-gradient-to-r
+                from-cyan-500
+                to-blue-600
+                px-7
+                py-3
+                text-sm
+                font-semibold
+                text-white
+                shadow-sm
+                transition
+                hover:from-cyan-600
+                hover:to-blue-700
+                hover:shadow-md
+              "            >
               Make a Review
             </button>
 
@@ -803,14 +820,17 @@ export default function FeedbackSection() {
             justify-center
             gap-1
             rounded-lg
-            bg-blue-600
+            bg-gradient-to-r
+            from-cyan-500
+            to-blue-600
             px-3
             py-2
             text-[10px]
             font-semibold
             text-white
             transition
-            hover:bg-blue-700
+            hover:from-cyan-600
+            hover:to-blue-700
             disabled:cursor-not-allowed
             disabled:opacity-60
             md:gap-2

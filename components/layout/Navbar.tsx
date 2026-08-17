@@ -426,14 +426,17 @@ export default function Navbar() {
                 block
                 whitespace-nowrap
                 rounded-full
-                bg-blue-900
+                bg-gradient-to-r
+                from-cyan-500
+                to-blue-600
                 px-7
                 py-2
                 font-medium
                 text-white
                 transition
                 duration-150
-                hover:bg-blue-950
+                hover:from-cyan-600
+                hover:to-blue-700
               "
             >
               Contact Now
@@ -492,20 +495,23 @@ export default function Navbar() {
         <Link
             href="/contact"
             className="
-              flex
-              h-7
-              items-center
-              justify-center
-              rounded-lg
-              bg-blue-900
-              px-3
-              text-[11px]
-              font-semibold
-              text-white
-              shadow-sm
-              transition
-              hover:bg-blue-950
-            "
+            flex
+            h-7
+            items-center
+            justify-center
+            rounded-lg
+            bg-gradient-to-r
+            from-cyan-500
+            to-blue-600
+            px-3
+            text-[11px]
+            font-semibold
+            text-white
+            shadow-sm
+            transition
+            hover:from-cyan-600
+            hover:to-blue-700
+          "
           >
             Contact
           </Link>
