@@ -10,16 +10,47 @@ export default function AdminHeader({
   onMenuClick,
 }: AdminHeaderProps) {
   return (
-    <header className="flex h-20 items-center justify-between border-b border-gray-100 bg-white px-5 md:px-8">
-      
+    <header
+      className="
+        sticky
+        top-0
+        z-40
+        flex
+        h-14
+        items-center
+        justify-between
+        border-b
+        border-gray-100
+        bg-white
+        px-3
+        shadow-sm
+        sm:h-16
+        sm:px-5
+        md:h-20
+        md:px-8
+      "
+    >
+
       {/* Mobile menu */}
       <button
         onClick={onMenuClick}
-        className="rounded-xl p-2 text-gray-600 hover:bg-gray-100 lg:hidden"
+        className="
+          rounded-lg
+          p-1.5
+          text-gray-600
+          hover:bg-gray-100
+          sm:rounded-xl
+          sm:p-2
+          lg:hidden
+        "
       >
-        <Menu size={22} />
+        <Menu
+          size={19}
+          className="sm:h-[22px] sm:w-[22px]"
+        />
       </button>
 
+     {/* Desktop */}
       <div className="hidden lg:block">
         <p className="text-sm text-gray-400">
           Admin Panel
@@ -30,11 +61,43 @@ export default function AdminHeader({
         </h2>
       </div>
 
-      {/* Right */}
-      <div className="ml-auto flex items-center gap-4">
+      {/* Mobile */}
+      <div className="ml-[2px] lg:hidden">
+        <p className="text-[9px] text-gray-400">
+          Admin Panel
+        </p>
 
-        <div className="flex items-center gap-3 border-l border-gray-100 pl-4">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-orange-100 text-sm font-bold text-orange-600">
+        <h2 className="text-xs font-semibold text-gray-900">
+          Dashboard
+        </h2>
+      </div>
+
+      {/* Right */}
+      <div className="ml-auto flex items-center gap-2 sm:gap-4">
+
+        <div className="flex items-center gap-2 border-l border-gray-100 pl-2 sm:gap-3 sm:pl-4">
+
+          {/* Avatar */}
+          <div
+            className="
+              flex
+              h-7
+              w-7
+              items-center
+              justify-center
+              rounded-full
+              bg-gradient-to-br
+              from-cyan-400
+              to-blue-600
+              text-xs
+              font-bold
+              text-white
+              shadow-sm
+              sm:h-9
+              sm:w-9
+              sm:text-sm
+            "
+          >
             A
           </div>
 
@@ -47,7 +110,9 @@ export default function AdminHeader({
               Administrator
             </p>
           </div>
+
         </div>
+
       </div>
     </header>
   );

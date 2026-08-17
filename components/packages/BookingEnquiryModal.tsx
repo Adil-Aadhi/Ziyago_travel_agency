@@ -110,364 +110,403 @@ export default function BookingEnquiryModal({
 
   return (
     <div
-      className="
-        fixed
-        inset-0
-        z-[100]
-        flex
-        items-center
-        justify-center
-        bg-black/50
-        p-4
-        backdrop-blur-sm
-      "
-      onClick={onClose}
-    >
-      <div
+  className="
+    fixed
+    inset-0
+    z-[100]
+    flex
+    items-center
+    justify-center
+    bg-black/50
+    p-2
+    backdrop-blur-sm
+    sm:p-4
+  "
+  onClick={onClose}
+>
+  <div
+    className="
+      relative
+      max-h-[95vh]
+      w-full
+      max-w-2xl
+      overflow-y-auto
+      rounded-xl
+      bg-white
+      shadow-2xl
+      sm:max-h-[90vh]
+      sm:rounded-2xl
+    "
+    onClick={(e) => e.stopPropagation()}
+  >
+    {/* Header */}
+
+    <div className="flex items-center justify-between border-b border-gray-100 px-4 py-4 sm:px-6 sm:py-5">
+      <div>
+        <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-blue-800 sm:text-xs sm:tracking-[0.15em]">
+          Booking Enquiry
+        </p>
+
+        <h2 className="mt-0.5 text-xl font-bold text-gray-900 sm:mt-1 sm:text-2xl">
+          Request to Book
+        </h2>
+      </div>
+
+      <button
+        type="button"
+        onClick={onClose}
         className="
-          relative
-          max-h-[90vh]
-          w-full
-          max-w-2xl
-          overflow-y-auto
-          rounded-2xl
-          bg-white
-          shadow-2xl
+          flex
+          h-8
+          w-8
+          items-center
+          justify-center
+          rounded-full
+          text-gray-500
+          transition
+          hover:bg-gray-100
+          hover:text-gray-900
+          sm:h-9
+          sm:w-9
         "
-        onClick={(e) => e.stopPropagation()}
+        aria-label="Close"
       >
-        {/* Header */}
+        <X size={18} className="sm:h-5 sm:w-5" />
+      </button>
+    </div>
 
-        <div className="flex items-center justify-between border-b border-gray-100 px-6 py-5">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-orange-500">
-              Booking Enquiry
-            </p>
+    {/* Form */}
 
-            <h2 className="mt-1 text-2xl font-bold text-gray-900">
-              Request to Book
-            </h2>
-          </div>
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 px-4 py-4 sm:space-y-5 sm:px-6 sm:py-6"
+    >
+      {/* Package */}
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="
-              flex
-              h-9
-              w-9
-              items-center
-              justify-center
-              rounded-full
-              text-gray-500
-              transition
-              hover:bg-gray-100
-              hover:text-gray-900
-            "
-            aria-label="Close"
+      <div>
+        <label className="mb-1.5 block text-xs font-medium text-gray-700 sm:mb-2 sm:text-sm">
+          Package
+        </label>
+
+        <div className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5 text-xs font-medium text-gray-800 sm:rounded-xl sm:px-4 sm:py-3 sm:text-sm">
+          {packageTitle}
+        </div>
+      </div>
+
+      {/* Name + Email */}
+
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
+        <div>
+          <label
+            htmlFor="booking-name"
+            className="mb-1.5 block text-xs font-medium text-gray-700 sm:mb-2 sm:text-sm"
           >
-            <X size={20} />
-          </button>
+            Full Name *
+          </label>
+
+          <input
+            id="booking-name"
+            name="name"
+            type="text"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            placeholder="Enter your name"
+            className="
+              w-full
+              rounded-lg
+              border
+              border-gray-200
+              bg-white
+              px-3
+              py-2.5
+              text-xs
+              text-gray-900
+              outline-none
+              transition
+              placeholder:text-gray-400
+              focus:border-blue-400
+              focus:ring-2
+              focus:ring-blue-100
+              sm:rounded-xl
+              sm:px-4
+              sm:py-3
+              sm:text-sm
+            "
+          />
         </div>
 
-        {/* Form */}
+        <div>
+          <label
+            htmlFor="booking-email"
+            className="mb-1.5 block text-xs font-medium text-gray-700 sm:mb-2 sm:text-sm"
+          >
+            Email Address *
+          </label>
 
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-5 px-6 py-6"
-        >
-          {/* Package */}
-
-          <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
-              Package
-            </label>
-
-            <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-800">
-              {packageTitle}
-            </div>
-          </div>
-
-          {/* Name + Email */}
-
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            <div>
-              <label
-                htmlFor="booking-name"
-                className="mb-2 block text-sm font-medium text-gray-700"
-              >
-                Full Name *
-              </label>
-
-              <input
-                id="booking-name"
-                name="name"
-                type="text"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                placeholder="Enter your name"
-                className="
-                  w-full
-                  rounded-xl
-                  border
-                  border-gray-200
-                  bg-white
-                  px-4
-                  py-3
-                  text-sm
-                  text-gray-900
-                  outline-none
-                  transition
-                  placeholder:text-gray-400
-                  focus:border-orange-400
-                  focus:ring-2
-                  focus:ring-orange-100
-                "
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="booking-email"
-                className="mb-2 block text-sm font-medium text-gray-700"
-              >
-                Email Address *
-              </label>
-
-              <input
-                id="booking-email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                placeholder="Enter your email"
-                className="
-                  w-full
-                  rounded-xl
-                  border
-                  border-gray-200
-                  bg-white
-                  px-4
-                  py-3
-                  text-sm
-                  text-gray-900
-                  outline-none
-                  transition
-                  placeholder:text-gray-400
-                  focus:border-orange-400
-                  focus:ring-2
-                  focus:ring-orange-100
-                "
-              />
-            </div>
-          </div>
-
-          {/* Phone + Travellers */}
-
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            <div>
-              <label
-                htmlFor="booking-phone"
-                className="mb-2 block text-sm font-medium text-gray-700"
-              >
-                Phone Number *
-              </label>
-
-              <input
-                id="booking-phone"
-                name="phone"
-                type="tel"
-                inputMode="numeric"
-                maxLength={10}
-                value={formData.phone}
-                onChange={(e) => {
-                    const value = e.target.value.replace(/\D/g, "");
-
-                    setFormData((prev) => ({
-                    ...prev,
-                    phone: value,
-                    }));
-                }}
-                required
-                placeholder="Enter your phone"
-                className="
-                    w-full
-                    rounded-xl
-                    border
-                    border-gray-200
-                    bg-white
-                    px-4
-                    py-3
-                    text-sm
-                    text-gray-900
-                    outline-none
-                    transition
-                    placeholder:text-gray-400
-                    focus:border-orange-400
-                    focus:ring-2
-                    focus:ring-orange-100
-                "
-                />
-            </div>
-
-            <div>
-              <label
-                htmlFor="booking-travellers"
-                className="mb-2 block text-sm font-medium text-gray-700"
-              >
-                Number of Travellers *
-              </label>
-
-              <input
-                id="booking-travellers"
-                name="travellers"
-                type="number"
-                min="1"
-                value={formData.travellers}
-                onChange={handleChange}
-                required
-                className="
-                  w-full
-                  rounded-xl
-                  border
-                  border-gray-200
-                  bg-white
-                  px-4
-                  py-3
-                  text-sm
-                  text-gray-900
-                  outline-none
-                  transition
-                  focus:border-orange-400
-                  focus:ring-2
-                  focus:ring-orange-100
-                "
-              />
-            </div>
-          </div>
-
-          {/* Travel Date */}
-
-          <div>
-            <label
-              htmlFor="booking-date"
-              className="mb-2 block text-sm font-medium text-gray-700"
-            >
-              Preferred Travel Date
-            </label>
-
-            <input
-              id="booking-date"
-              name="travelDate"
-              type="date"
-              value={formData.travelDate}
-              onChange={handleChange}
-              min={new Date().toISOString().split("T")[0]}
-              className="
-                w-full
-                rounded-xl
-                border
-                border-gray-200
-                bg-white
-                px-4
-                py-3
-                text-sm
-                text-gray-900
-                outline-none
-                transition
-                focus:border-orange-400
-                focus:ring-2
-                focus:ring-orange-100
-              "
-            />
-          </div>
-
-          {/* Message */}
-
-          <div>
-            <label
-              htmlFor="booking-message"
-              className="mb-2 block text-sm font-medium text-gray-700"
-            >
-              Message
-            </label>
-
-            <textarea
-              id="booking-message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              rows={4}
-              placeholder="Tell us about your travel plans..."
-              className="
-                w-full
-                resize-none
-                rounded-xl
-                border
-                border-gray-200
-                bg-white
-                px-4
-                py-3
-                text-sm
-                text-gray-900
-                outline-none
-                transition
-                placeholder:text-gray-400
-                focus:border-orange-400
-                focus:ring-2
-                focus:ring-orange-100
-              "
-            />
-          </div>
-
-          {/* Actions */}
-
-          <div className="flex justify-end gap-3 border-t border-gray-100 pt-5">
-            <button
-              type="button"
-              onClick={onClose}
-              className="
-                rounded-xl
-                border
-                border-gray-200
-                px-5
-                py-3
-                text-sm
-                font-medium
-                text-gray-700
-                transition
-                hover:bg-gray-50
-              "
-            >
-              Cancel
-            </button>
-
-           <button
-                type="submit"
-                disabled={loading}
-                className="
-                    rounded-xl
-                    bg-orange-500
-                    px-6
-                    py-3
-                    text-sm
-                    font-semibold
-                    text-white
-                    transition
-                    hover:bg-orange-600
-                    disabled:cursor-not-allowed
-                    disabled:opacity-60
-                "
-                >
-                {loading
-                    ? "Sending..."
-                    : "Send Booking Request"}
-                </button>
-          </div>
-        </form>
+          <input
+            id="booking-email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            placeholder="Enter your email"
+            className="
+              w-full
+              rounded-lg
+              border
+              border-gray-200
+              bg-white
+              px-3
+              py-2.5
+              text-xs
+              text-gray-900
+              outline-none
+              transition
+              placeholder:text-gray-400
+              focus:border-blue-400
+              focus:ring-2
+              focus:ring-blue-100
+              sm:rounded-xl
+              sm:px-4
+              sm:py-3
+              sm:text-sm
+            "
+          />
+        </div>
       </div>
-    </div>
+
+      {/* Phone + Travellers */}
+
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
+        <div>
+          <label
+            htmlFor="booking-phone"
+            className="mb-1.5 block text-xs font-medium text-gray-700 sm:mb-2 sm:text-sm"
+          >
+            Phone Number *
+          </label>
+
+          <input
+            id="booking-phone"
+            name="phone"
+            type="tel"
+            inputMode="numeric"
+            maxLength={10}
+            value={formData.phone}
+            onChange={(e) => {
+              const value = e.target.value.replace(/\D/g, "");
+
+              setFormData((prev) => ({
+                ...prev,
+                phone: value,
+              }));
+            }}
+            required
+            placeholder="Enter your phone"
+            className="
+              w-full
+              rounded-lg
+              border
+              border-gray-200
+              bg-white
+              px-3
+              py-2.5
+              text-xs
+              text-gray-900
+              outline-none
+              transition
+              placeholder:text-gray-400
+              focus:border-blue-400
+              focus:ring-2
+              focus:ring-blue-100
+              sm:rounded-xl
+              sm:px-4
+              sm:py-3
+              sm:text-sm
+            "
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="booking-travellers"
+            className="mb-1.5 block text-xs font-medium text-gray-700 sm:mb-2 sm:text-sm"
+          >
+            Number of Travellers *
+          </label>
+
+          <input
+            id="booking-travellers"
+            name="travellers"
+            type="number"
+            min="1"
+            value={formData.travellers}
+            onChange={handleChange}
+            required
+            className="
+              w-full
+              rounded-lg
+              border
+              border-gray-200
+              bg-white
+              px-3
+              py-2.5
+              text-xs
+              text-gray-900
+              outline-none
+              transition
+              focus:border-blue-400
+              focus:ring-2
+              focus:ring-blue-100
+              sm:rounded-xl
+              sm:px-4
+              sm:py-3
+              sm:text-sm
+            "
+          />
+        </div>
+      </div>
+
+      {/* Travel Date */}
+
+      <div>
+        <label
+          htmlFor="booking-date"
+          className="mb-1.5 block text-xs font-medium text-gray-700 sm:mb-2 sm:text-sm"
+        >
+          Preferred Travel Date
+        </label>
+
+        <input
+          id="booking-date"
+          name="travelDate"
+          type="date"
+          value={formData.travelDate}
+          onChange={handleChange}
+          min={new Date().toISOString().split("T")[0]}
+          className="
+            w-full
+            rounded-lg
+            border
+            border-gray-200
+            bg-white
+            px-3
+            py-2.5
+            text-xs
+            text-gray-900
+            outline-none
+            transition
+            focus:border-blue-400
+            focus:ring-2
+            focus:ring-blue-100
+            sm:rounded-xl
+            sm:px-4
+            sm:py-3
+            sm:text-sm
+          "
+        />
+      </div>
+
+      {/* Message */}
+
+      <div>
+        <label
+          htmlFor="booking-message"
+          className="mb-1.5 block text-xs font-medium text-gray-700 sm:mb-2 sm:text-sm"
+        >
+          Message
+        </label>
+
+        <textarea
+          id="booking-message"
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
+          rows={3}
+          placeholder="Tell us about your travel plans..."
+          className="
+            w-full
+            resize-none
+            rounded-lg
+            border
+            border-gray-200
+            bg-white
+            px-3
+            py-2.5
+            text-xs
+            text-gray-900
+            outline-none
+            transition
+            placeholder:text-gray-400
+            focus:border-blue-400
+            focus:ring-2
+            focus:ring-blue-100
+            sm:rounded-xl
+            sm:px-4
+            sm:py-3
+            sm:text-sm
+          "
+        />
+      </div>
+
+      {/* Actions */}
+
+      <div className="flex justify-end gap-2 border-t border-gray-100 pt-4 sm:gap-3 sm:pt-5">
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="
+            rounded-lg
+            border
+            border-gray-200
+            px-4
+            py-2.5
+            text-xs
+            font-medium
+            text-gray-700
+            transition
+            hover:bg-gray-50
+            hover:cursor-pointer
+            sm:rounded-xl
+            sm:px-5
+            sm:py-3
+            sm:text-sm
+          "
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="
+            rounded-lg
+            bg-blue-900
+            px-4
+            py-2.5
+            text-xs
+            font-semibold
+            text-white
+            transition
+            hover:bg-blue-950
+            disabled:cursor-not-allowed
+            disabled:opacity-60
+            hover:cursor-pointer
+            sm:rounded-xl
+            sm:px-6
+            sm:py-3
+            sm:text-sm
+          "
+        >
+          {loading ? "Sending..." : "Send Booking Request"}
+        </button>
+
+      </div>
+    </form>
+  </div>
+</div>
   );
 }

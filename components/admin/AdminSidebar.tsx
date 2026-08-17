@@ -128,14 +128,17 @@ export default function AdminSidebar({
           left-0
           z-50
           flex
-          w-64
+          w-60
           flex-col
           border-r
           border-gray-100
           bg-white
           transition-transform
           duration-300
-          lg:static
+          sm:w-64
+          lg:sticky
+          lg:top-0
+          lg:h-screen
           lg:translate-x-0
           ${
             mobileOpen
@@ -145,29 +148,31 @@ export default function AdminSidebar({
         `}
       >
         {/* Logo */}
-          <div className="flex h-20 items-center justify-between border-b border-gray-100 px-6">
-            <div>
-              <Image
-                src="/logo/logo.svg"
-                alt="ZiyaGo"
-                width={120}
-                height={25}
-                className="h-auto w-[140px] object-contain"
-                priority
-              />
-            </div>
+        <div className="flex h-16 items-center justify-between border-b border-gray-100 px-4 sm:h-20 sm:px-6">
 
-            <button
-              onClick={onClose}
-              className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 lg:hidden"
-            >
-              <X size={19} />
-            </button>
+          <div>
+            <Image
+              src="/logo/logo.svg"
+              alt="ZiyaGo"
+              width={120}
+              height={25}
+              className="h-auto w-[120px] object-contain sm:w-[140px]"
+              priority
+            />
           </div>
 
+          <button
+            onClick={onClose}
+            className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 sm:p-2 lg:hidden"
+          >
+            <X size={17} className="sm:h-[19px] sm:w-[19px]" />
+          </button>
+        </div>
+
         {/* Navigation */}
-        <nav className="flex-1 space-y-1 px-4 py-6">
-          <p className="mb-3 px-3 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+        <nav className="flex-1 space-y-0.5 px-2.5 py-4 sm:space-y-1 sm:px-4 sm:py-6">
+
+          <p className="mb-2 px-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 sm:mb-3 sm:px-3 sm:text-[11px]">
             Management
           </p>
 
@@ -187,21 +192,41 @@ export default function AdminSidebar({
                 className={`
                   flex
                   items-center
-                  gap-3
-                  rounded-xl
-                  px-3
-                  py-3
-                  text-sm
+                  gap-2.5
+                  rounded-lg
+                  px-2.5
+                  py-2.5
+                  text-xs
                   font-medium
-                  transition
+                  transition-all
+                  duration-200
+                  sm:gap-3
+                  sm:rounded-xl
+                  sm:px-3
+                  sm:py-3
+                  sm:text-sm
                   ${
                     isActive
-                      ? "bg-orange-50 text-orange-500"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                      ? `
+                        bg-gradient-to-r
+                        from-cyan-400
+                        to-blue-600
+                        text-white
+                        shadow-md
+                        shadow-blue-200/60
+                      `
+                      : `
+                        text-gray-600
+                        hover:bg-blue-50
+                        hover:text-blue-600
+                      `
                   }
                 `}
               >
-                <Icon size={19} />
+                <Icon
+                  size={17}
+                  className="shrink-0 sm:h-[19px] sm:w-[19px]"
+                />
 
                 <span>{item.name}</span>
               </Link>
@@ -210,7 +235,8 @@ export default function AdminSidebar({
         </nav>
 
         {/* Logout */}
-        <div className="border-t border-gray-100 p-4">
+        <div className="border-t border-gray-100 p-2.5 sm:p-4">
+
           <button
             type="button"
             onClick={() => setShowLogoutModal(true)}
@@ -218,21 +244,31 @@ export default function AdminSidebar({
               flex
               w-full
               items-center
-              gap-3
-              rounded-xl
-              px-3
-              py-3
-              text-sm
+              gap-2.5
+              rounded-lg
+              px-2.5
+              py-2.5
+              text-xs
               font-medium
               text-gray-500
               transition
               hover:bg-red-50
               hover:text-red-500
+              sm:gap-3
+              sm:rounded-xl
+              sm:px-3
+              sm:py-3
+              sm:text-sm
             "
           >
-            <LogOut size={19} />
+            <LogOut
+              size={17}
+              className="sm:h-[19px] sm:w-[19px]"
+            />
+
             Logout
           </button>
+
         </div>
       </aside>
       <ConfirmModal

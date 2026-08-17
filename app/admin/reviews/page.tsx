@@ -214,7 +214,7 @@ export default function ReviewsPage() {
   ) => {
     switch (status) {
       case "pending":
-        return "bg-orange-50 text-orange-600";
+        return "bg-gradient-to-r from-cyan-50 to-blue-50 text-blue-600";
 
       case "approved":
         return "bg-green-50 text-green-600";
@@ -229,7 +229,10 @@ export default function ReviewsPage() {
 
   return (
     <div className="min-h-screen bg-[#f8fafb]">
+
       <div className="flex min-h-screen">
+
+        {/* Sidebar */}
 
         <AdminSidebar
           mobileOpen={mobileOpen}
@@ -237,6 +240,8 @@ export default function ReviewsPage() {
             setMobileOpen(false)
           }
         />
+
+        {/* Main */}
 
         <div className="flex min-w-0 flex-1 flex-col">
 
@@ -246,29 +251,48 @@ export default function ReviewsPage() {
             }
           />
 
-          <main className="flex-1 p-5 md:p-8">
+          <main className="flex-1 p-3 sm:p-5 md:p-8">
 
-            {/* Header */}
+            {/* -------------------------------------------------------
+                Header
+            ------------------------------------------------------- */}
 
-            <div className="mb-6">
+            <div className="mb-5 sm:mb-6">
 
-              <p className="text-sm font-medium uppercase tracking-wider text-orange-500">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-blue-600 sm:text-sm">
                 Customer Feedback
               </p>
 
-              <h1 className="mt-1 text-3xl font-bold text-gray-900">
+              <h1 className="mt-0.5 text-2xl font-bold text-gray-900 sm:mt-1 sm:text-3xl">
                 Reviews
               </h1>
 
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-0.5 text-[11px] leading-5 text-gray-500 sm:mt-1 sm:text-sm">
                 Review and manage customer feedback.
               </p>
 
             </div>
 
-            {/* Filters */}
+            {/* -------------------------------------------------------
+                Filters
+            ------------------------------------------------------- */}
 
-            <div className="mb-5 flex flex-wrap gap-2">
+            <div
+              className="
+                mb-4
+                flex
+                max-w-full
+                items-center
+                gap-1.5
+                overflow-x-auto
+                pb-1
+                sm:mb-5
+                sm:flex-wrap
+                sm:gap-2
+                sm:overflow-visible
+                sm:pb-0
+              "
+            >
 
               {(
                 [
@@ -285,16 +309,21 @@ export default function ReviewsPage() {
                     setStatusFilter(value)
                   }
                   className={`
-                    rounded-xl
-                    px-4
-                    py-2
-                    text-sm
+                    shrink-0
+                    rounded-lg
+                    px-3
+                    py-1.5
+                    text-[11px]
                     font-medium
                     transition
+                    sm:rounded-xl
+                    sm:px-4
+                    sm:py-2
+                    sm:text-sm
                     ${
                       statusFilter === value
-                        ? "bg-orange-500 text-white"
-                        : "border border-gray-200 bg-white text-gray-600 hover:border-orange-300 hover:text-orange-500"
+                        ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm"
+                        : "border border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:text-blue-600"
                     }
                   `}
                 >
@@ -304,70 +333,108 @@ export default function ReviewsPage() {
 
             </div>
 
-            {/* Content */}
+            {/* -------------------------------------------------------
+                Content
+            ------------------------------------------------------- */}
 
-            <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+            <div
+              className="
+                overflow-hidden
+                rounded-xl
+                border
+                border-gray-200
+                bg-white
+                shadow-sm
+                sm:rounded-2xl
+              "
+            >
+
+              {/* Loading */}
 
               {loading && (
-                <div className="flex min-h-[400px] items-center justify-center">
-                  <div className="flex items-center gap-3 text-gray-500">
+                <div className="flex min-h-[300px] items-center justify-center sm:min-h-[400px]">
+
+                  <div className="flex items-center gap-2 text-xs text-gray-500 sm:gap-3 sm:text-sm">
+
                     <Loader2
-                      size={22}
-                      className="animate-spin"
+                      size={18}
+                      className="animate-spin sm:h-[22px] sm:w-[22px]"
                     />
+
                     Loading reviews...
+
                   </div>
+
                 </div>
               )}
 
+              {/* Empty */}
+
               {!loading &&
                 filteredReviews.length === 0 && (
-                  <div className="flex min-h-[400px] flex-col items-center justify-center text-center">
+                  <div
+                    className="
+                      flex
+                      min-h-[250px]
+                      flex-col
+                      items-center
+                      justify-center
+                      px-4
+                      text-center
+                      sm:min-h-[400px]
+                    "
+                  >
+
                     <MessageSquare
-                      size={42}
-                      className="text-gray-300"
+                      size={34}
+                      className="text-gray-300 sm:h-[42px] sm:w-[42px]"
                     />
 
-                    <h2 className="mt-4 text-lg font-semibold text-gray-800">
+                    <h2 className="mt-3 text-sm font-semibold text-gray-800 sm:mt-4 sm:text-lg">
                       No reviews found
                     </h2>
 
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 text-xs text-gray-500 sm:text-sm">
                       There are no reviews for this filter.
                     </p>
+
                   </div>
                 )}
 
+              {/* -------------------------------------------------------
+                  Table
+              ------------------------------------------------------- */}
+
               {!loading &&
                 filteredReviews.length > 0 && (
-                  <div className="overflow-x-auto">
+                  <div className="w-full overflow-x-auto">
 
-                    <table className="w-full min-w-[900px]">
+                    <table className="w-full min-w-[780px] sm:min-w-[900px]">
 
                       <thead>
                         <tr className="border-b border-gray-100 bg-gray-50">
 
-                          <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                          <th className="px-3 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500 sm:px-6 sm:py-4 sm:text-xs">
                             Customer
                           </th>
 
-                          <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                          <th className="px-3 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500 sm:px-6 sm:py-4 sm:text-xs">
                             Rating
                           </th>
 
-                          <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                          <th className="px-3 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500 sm:px-6 sm:py-4 sm:text-xs">
                             Review
                           </th>
 
-                          <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                          <th className="px-3 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500 sm:px-6 sm:py-4 sm:text-xs">
                             Status
                           </th>
 
-                          <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                          <th className="px-3 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500 sm:px-6 sm:py-4 sm:text-xs">
                             Date
                           </th>
 
-                          <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">
+                          <th className="px-3 py-3 text-right text-[10px] font-semibold uppercase tracking-wider text-gray-500 sm:px-6 sm:py-4 sm:text-xs">
                             Action
                           </th>
 
@@ -385,29 +452,55 @@ export default function ReviewsPage() {
                                   review
                                 )
                               }
-                              className="cursor-pointer transition hover:bg-orange-50/40"
+                              className="
+                                cursor-pointer
+                                transition
+                                hover:bg-blue-50/50
+                              "
                             >
 
                               {/* Customer */}
 
-                              <td className="px-6 py-5">
+                              <td className="px-3 py-3 sm:px-6 sm:py-5">
 
-                                <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-2 sm:gap-3">
 
-                                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-50 font-semibold text-orange-500">
+                                  <div
+                                    className="
+                                      flex
+                                      h-8
+                                      w-8
+                                      shrink-0
+                                      items-center
+                                      justify-center
+                                      rounded-full
+                                      bg-gradient-to-br
+                                      from-cyan-400
+                                      to-blue-600
+                                      text-xs
+                                      font-semibold
+                                      text-white
+                                      shadow-sm
+                                      sm:h-10
+                                      sm:w-10
+                                      sm:text-sm
+                                    "
+                                  >
                                     {review.name
                                       .charAt(0)
                                       .toUpperCase()}
                                   </div>
 
-                                  <div>
-                                    <p className="font-medium text-gray-900">
+                                  <div className="min-w-0">
+
+                                    <p className="truncate text-xs font-medium text-gray-900 sm:text-sm">
                                       {review.name}
                                     </p>
 
-                                    <p className="text-xs text-gray-500">
+                                    <p className="truncate text-[10px] text-gray-500 sm:text-xs">
                                       {review.location}
                                     </p>
+
                                   </div>
 
                                 </div>
@@ -416,9 +509,9 @@ export default function ReviewsPage() {
 
                               {/* Rating */}
 
-                              <td className="px-6 py-5">
+                              <td className="px-3 py-3 sm:px-6 sm:py-5">
 
-                                <div className="flex gap-0.5 text-sm">
+                                <div className="flex gap-0.5 text-xs text-yellow-400 sm:text-sm">
                                   {"★".repeat(
                                     review.rating
                                   )}
@@ -428,9 +521,9 @@ export default function ReviewsPage() {
 
                               {/* Review */}
 
-                              <td className="max-w-[300px] px-6 py-5">
+                              <td className="max-w-[220px] px-3 py-3 sm:max-w-[300px] sm:px-6 sm:py-5">
 
-                                <p className="truncate text-sm text-gray-600">
+                                <p className="truncate text-xs text-gray-600 sm:text-sm">
                                   {review.review}
                                 </p>
 
@@ -438,17 +531,20 @@ export default function ReviewsPage() {
 
                               {/* Status */}
 
-                              <td className="px-6 py-5">
+                              <td className="px-3 py-3 sm:px-6 sm:py-5">
 
                                 <span
                                   className={`
                                     inline-flex
                                     rounded-full
-                                    px-3
-                                    py-1
-                                    text-xs
+                                    px-2
+                                    py-0.5
+                                    text-[10px]
                                     font-semibold
                                     capitalize
+                                    sm:px-3
+                                    sm:py-1
+                                    sm:text-xs
                                     ${getStatusClass(
                                       review.status
                                     )}
@@ -461,7 +557,7 @@ export default function ReviewsPage() {
 
                               {/* Date */}
 
-                              <td className="px-6 py-5 text-sm text-gray-500">
+                              <td className="px-3 py-3 text-xs text-gray-500 sm:px-6 sm:py-5 sm:text-sm">
                                 {formatDate(
                                   review.createdAt
                                 )}
@@ -470,15 +566,15 @@ export default function ReviewsPage() {
                               {/* Action */}
 
                               <td
-                                className="px-6 py-5"
+                                className="px-3 py-3 sm:px-6 sm:py-5"
                                 onClick={(e) =>
                                   e.stopPropagation()
                                 }
                               >
 
                                 {review.status ===
-                                  "pending" ? (
-                                  <div className="flex justify-end gap-2">
+                                "pending" ? (
+                                  <div className="flex justify-end gap-1.5 sm:gap-2">
 
                                     <button
                                       type="button"
@@ -492,10 +588,29 @@ export default function ReviewsPage() {
                                           "approved"
                                         )
                                       }
-                                      className="flex items-center gap-1.5 rounded-lg bg-green-50 px-3 py-2 text-xs font-semibold text-green-600 transition hover:bg-green-100 disabled:opacity-50"
+                                      className="
+                                        flex
+                                        items-center
+                                        gap-1
+                                        rounded-lg
+                                        bg-green-50
+                                        px-2
+                                        py-1.5
+                                        text-[10px]
+                                        font-semibold
+                                        text-green-600
+                                        transition
+                                        hover:bg-green-100
+                                        disabled:opacity-50
+                                        sm:gap-1.5
+                                        sm:px-3
+                                        sm:py-2
+                                        sm:text-xs
+                                      "
                                     >
                                       <Check
-                                        size={14}
+                                        size={12}
+                                        className="sm:h-[14px] sm:w-[14px]"
                                       />
                                       Approve
                                     </button>
@@ -512,17 +627,36 @@ export default function ReviewsPage() {
                                           "rejected"
                                         )
                                       }
-                                      className="flex items-center gap-1.5 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-100 disabled:opacity-50"
+                                      className="
+                                        flex
+                                        items-center
+                                        gap-1
+                                        rounded-lg
+                                        bg-red-50
+                                        px-2
+                                        py-1.5
+                                        text-[10px]
+                                        font-semibold
+                                        text-red-600
+                                        transition
+                                        hover:bg-red-100
+                                        disabled:opacity-50
+                                        sm:gap-1.5
+                                        sm:px-3
+                                        sm:py-2
+                                        sm:text-xs
+                                      "
                                     >
                                       <X
-                                        size={14}
+                                        size={12}
+                                        className="sm:h-[14px] sm:w-[14px]"
                                       />
                                       Reject
                                     </button>
 
                                   </div>
                                 ) : (
-                                  <span className="text-xs text-gray-400">
+                                  <span className="text-[10px] text-gray-400 sm:text-xs">
                                     —
                                   </span>
                                 )}
@@ -540,14 +674,31 @@ export default function ReviewsPage() {
                   </div>
                 )}
 
-              {/* Pagination */}
+              {/* -------------------------------------------------------
+                  Pagination
+              ------------------------------------------------------- */}
 
               {!loading &&
                 pagination &&
                 pagination.totalPages > 1 && (
-                  <div className="flex items-center justify-between border-t border-gray-100 px-6 py-4">
+                  <div
+                    className="
+                      flex
+                      flex-col
+                      gap-2
+                      border-t
+                      border-gray-100
+                      px-3
+                      py-3
+                      sm:flex-row
+                      sm:items-center
+                      sm:justify-between
+                      sm:px-6
+                      sm:py-4
+                    "
+                  >
 
-                    <p className="text-sm text-gray-500">
+                    <p className="text-[11px] text-gray-500 sm:text-sm">
                       Page{" "}
                       <span className="font-medium text-gray-800">
                         {pagination.currentPage}
@@ -558,7 +709,7 @@ export default function ReviewsPage() {
                       </span>
                     </p>
 
-                    <div className="flex gap-2">
+                    <div className="flex gap-1.5 sm:gap-2">
 
                       <button
                         type="button"
@@ -574,10 +725,33 @@ export default function ReviewsPage() {
                               )
                           )
                         }
-                        className="flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-40"
+                        className="
+                          flex
+                          h-8
+                          items-center
+                          gap-1
+                          rounded-lg
+                          border
+                          border-gray-200
+                          px-2.5
+                          py-1.5
+                          text-[11px]
+                          font-medium
+                          text-gray-700
+                          transition
+                          hover:border-blue-400
+                          hover:text-blue-600
+                          disabled:cursor-not-allowed
+                          disabled:opacity-40
+                          sm:h-9
+                          sm:px-3
+                          sm:py-2
+                          sm:text-sm
+                        "
                       >
                         <ChevronLeft
-                          size={16}
+                          size={14}
+                          className="sm:h-4 sm:w-4"
                         />
                         Previous
                       </button>
@@ -593,11 +767,34 @@ export default function ReviewsPage() {
                               page + 1
                           )
                         }
-                        className="flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-40"
+                        className="
+                          flex
+                          h-8
+                          items-center
+                          gap-1
+                          rounded-lg
+                          border
+                          border-gray-200
+                          px-2.5
+                          py-1.5
+                          text-[11px]
+                          font-medium
+                          text-gray-700
+                          transition
+                          hover:border-blue-400
+                          hover:text-blue-600
+                          disabled:cursor-not-allowed
+                          disabled:opacity-40
+                          sm:h-9
+                          sm:px-3
+                          sm:py-2
+                          sm:text-sm
+                        "
                       >
                         Next
                         <ChevronRight
-                          size={16}
+                          size={14}
+                          className="sm:h-4 sm:w-4"
                         />
                       </button>
 
@@ -609,35 +806,65 @@ export default function ReviewsPage() {
             </div>
 
           </main>
+
         </div>
       </div>
 
-      {/* Review Details Modal */}
+      {/* -------------------------------------------------------
+          Review Details Modal
+      ------------------------------------------------------- */}
 
       {selectedReview && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+          className="
+            fixed
+            inset-0
+            z-50
+            flex
+            items-center
+            justify-center
+            bg-black/50
+            p-3
+            backdrop-blur-sm
+            sm:p-4
+          "
           onClick={() =>
             setSelectedReview(null)
           }
         >
+
           <div
-            className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl"
+            className="
+              max-h-[92vh]
+              w-full
+              max-w-lg
+              overflow-y-auto
+              rounded-xl
+              bg-white
+              p-4
+              shadow-2xl
+              sm:rounded-2xl
+              sm:p-6
+            "
             onClick={(e) =>
               e.stopPropagation()
             }
           >
 
+            {/* Modal Header */}
+
             <div className="flex items-start justify-between">
 
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-orange-500">
+              <div className="min-w-0 pr-3">
+
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-blue-600 sm:text-xs">
                   Customer Review
                 </p>
 
-                <h2 className="mt-1 text-xl font-bold text-gray-900">
+                <h2 className="mt-0.5 truncate text-base font-bold text-gray-900 sm:mt-1 sm:text-xl">
                   {selectedReview.name}
                 </h2>
+
               </div>
 
               <button
@@ -645,62 +872,94 @@ export default function ReviewsPage() {
                 onClick={() =>
                   setSelectedReview(null)
                 }
-                className="rounded-lg p-2 text-gray-400 hover:bg-gray-100"
+                className="
+                  shrink-0
+                  rounded-lg
+                  p-1.5
+                  text-gray-400
+                  transition
+                  hover:bg-gray-100
+                  sm:p-2
+                "
               >
-                <X size={18} />
+                <X
+                  size={16}
+                  className="sm:h-[18px] sm:w-[18px]"
+                />
               </button>
 
             </div>
 
-            <div className="mt-6 space-y-5">
+            {/* Modal Details */}
+
+            <div className="mt-4 space-y-4 sm:mt-6 sm:space-y-5">
+
+              {/* Location */}
 
               <div>
-                <p className="text-xs text-gray-400">
+
+                <p className="text-[10px] text-gray-400 sm:text-xs">
                   Location
                 </p>
 
-                <p className="mt-1 text-sm text-gray-700">
+                <p className="mt-0.5 text-xs text-gray-700 sm:mt-1 sm:text-sm">
                   {selectedReview.location}
                 </p>
+
               </div>
 
+              {/* Rating */}
+
               <div>
-                <p className="text-xs text-gray-400">
+
+                <p className="text-[10px] text-gray-400 sm:text-xs">
                   Rating
                 </p>
 
-                <p className="mt-1 text-lg">
+                <p className="mt-0.5 text-base text-yellow-400 sm:mt-1 sm:text-lg">
                   {"★".repeat(
                     selectedReview.rating
                   )}
                 </p>
+
               </div>
 
+              {/* Review */}
+
               <div>
-                <p className="text-xs text-gray-400">
+
+                <p className="text-[10px] text-gray-400 sm:text-xs">
                   Review
                 </p>
 
-                <div className="mt-2 rounded-xl bg-gray-50 p-4 text-sm leading-6 text-gray-600">
+                <div className="mt-1.5 rounded-lg bg-gray-50 p-3 text-xs leading-5 text-gray-600 sm:mt-2 sm:rounded-xl sm:p-4 sm:text-sm sm:leading-6">
                   {selectedReview.review}
                 </div>
+
               </div>
 
+              {/* Status */}
+
               <div>
-                <p className="text-xs text-gray-400">
+
+                <p className="text-[10px] text-gray-400 sm:text-xs">
                   Status
                 </p>
 
                 <span
                   className={`
-                    mt-2
+                    mt-1.5
                     inline-flex
                     rounded-full
-                    px-3
-                    py-1
-                    text-xs
+                    px-2
+                    py-0.5
+                    text-[10px]
                     font-semibold
                     capitalize
+                    sm:mt-2
+                    sm:px-3
+                    sm:py-1
+                    sm:text-xs
                     ${getStatusClass(
                       selectedReview.status
                     )}
@@ -708,138 +967,158 @@ export default function ReviewsPage() {
                 >
                   {selectedReview.status}
                 </span>
+
               </div>
 
-              <div className="pt-2">
+              {/* Change Status */}
 
-  <p className="mb-3 text-xs text-gray-400">
-    Change Status
-  </p>
+              <div className="pt-1 sm:pt-2">
 
-  <div className="grid grid-cols-3 gap-2">
+                <p className="mb-2 text-[10px] text-gray-400 sm:mb-3 sm:text-xs">
+                  Change Status
+                </p>
 
-    {/* Pending */}
+                <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
 
-    <button
-      type="button"
-      disabled={
-        updatingId ===
-        selectedReview._id
-      }
-      onClick={() =>
-        updateReviewStatus(
-          selectedReview._id,
-          "pending"
-        )
-      }
-      className={`
-        rounded-xl
-        border
-        px-3
-        py-2.5
-        text-sm
-        font-semibold
-        transition
-        disabled:cursor-not-allowed
-        disabled:opacity-50
-        ${
-          selectedReview.status ===
-          "pending"
-            ? "border-orange-500 bg-orange-50 text-orange-600"
-            : "border-gray-200 bg-white text-gray-600 hover:border-orange-300 hover:text-orange-500"
-        }
-      `}
-    >
-      Pending
-    </button>
+                  {/* Pending */}
 
-    {/* Approved */}
+                  <button
+                    type="button"
+                    disabled={
+                      updatingId ===
+                      selectedReview._id
+                    }
+                    onClick={() =>
+                      updateReviewStatus(
+                        selectedReview._id,
+                        "pending"
+                      )
+                    }
+                    className={`
+                      rounded-lg
+                      border
+                      px-2
+                      py-2
+                      text-[10px]
+                      font-semibold
+                      transition
+                      disabled:cursor-not-allowed
+                      disabled:opacity-50
+                      sm:rounded-xl
+                      sm:px-3
+                      sm:py-2.5
+                      sm:text-sm
+                      ${
+                        selectedReview.status ===
+                        "pending"
+                          ? "border-blue-500 bg-gradient-to-r from-cyan-50 to-blue-50 text-blue-600"
+                          : "border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:text-blue-500"
+                      }
+                    `}
+                  >
+                    Pending
+                  </button>
 
-    <button
-      type="button"
-      disabled={
-        updatingId ===
-        selectedReview._id
-      }
-      onClick={() =>
-        updateReviewStatus(
-          selectedReview._id,
-          "approved"
-        )
-      }
-      className={`
-        rounded-xl
-        border
-        px-3
-        py-2.5
-        text-sm
-        font-semibold
-        transition
-        disabled:cursor-not-allowed
-        disabled:opacity-50
-        ${
-          selectedReview.status ===
-          "approved"
-            ? "border-green-500 bg-green-50 text-green-600"
-            : "border-gray-200 bg-white text-gray-600 hover:border-green-300 hover:text-green-500"
-        }
-      `}
-    >
-      Approved
-    </button>
+                  {/* Approved */}
 
-    {/* Rejected */}
+                  <button
+                    type="button"
+                    disabled={
+                      updatingId ===
+                      selectedReview._id
+                    }
+                    onClick={() =>
+                      updateReviewStatus(
+                        selectedReview._id,
+                        "approved"
+                      )
+                    }
+                    className={`
+                      rounded-lg
+                      border
+                      px-2
+                      py-2
+                      text-[10px]
+                      font-semibold
+                      transition
+                      disabled:cursor-not-allowed
+                      disabled:opacity-50
+                      sm:rounded-xl
+                      sm:px-3
+                      sm:py-2.5
+                      sm:text-sm
+                      ${
+                        selectedReview.status ===
+                        "approved"
+                          ? "border-green-500 bg-green-50 text-green-600"
+                          : "border-gray-200 bg-white text-gray-600 hover:border-green-300 hover:text-green-500"
+                      }
+                    `}
+                  >
+                    Approved
+                  </button>
 
-    <button
-      type="button"
-      disabled={
-        updatingId ===
-        selectedReview._id
-      }
-      onClick={() =>
-        updateReviewStatus(
-          selectedReview._id,
-          "rejected"
-        )
-      }
-      className={`
-        rounded-xl
-        border
-        px-3
-        py-2.5
-        text-sm
-        font-semibold
-        transition
-        disabled:cursor-not-allowed
-        disabled:opacity-50
-        ${
-          selectedReview.status ===
-          "rejected"
-            ? "border-red-500 bg-red-50 text-red-600"
-            : "border-gray-200 bg-white text-gray-600 hover:border-red-300 hover:text-red-500"
-        }
-      `}
-    >
-      Rejected
-    </button>
+                  {/* Rejected */}
 
-  </div>
+                  <button
+                    type="button"
+                    disabled={
+                      updatingId ===
+                      selectedReview._id
+                    }
+                    onClick={() =>
+                      updateReviewStatus(
+                        selectedReview._id,
+                        "rejected"
+                      )
+                    }
+                    className={`
+                      rounded-lg
+                      border
+                      px-2
+                      py-2
+                      text-[10px]
+                      font-semibold
+                      transition
+                      disabled:cursor-not-allowed
+                      disabled:opacity-50
+                      sm:rounded-xl
+                      sm:px-3
+                      sm:py-2.5
+                      sm:text-sm
+                      ${
+                        selectedReview.status ===
+                        "rejected"
+                          ? "border-red-500 bg-red-50 text-red-600"
+                          : "border-gray-200 bg-white text-gray-600 hover:border-red-300 hover:text-red-500"
+                      }
+                    `}
+                  >
+                    Rejected
+                  </button>
 
-  {updatingId === selectedReview._id && (
-    <div className="mt-3 flex items-center justify-center gap-2 text-xs text-gray-500">
-      <Loader2
-        size={14}
-        className="animate-spin"
-      />
-      Updating status...
-    </div>
-  )}
+                </div>
 
-</div>
+                {updatingId ===
+                  selectedReview._id && (
+                  <div className="mt-2 flex items-center justify-center gap-1.5 text-[10px] text-gray-500 sm:mt-3 sm:gap-2 sm:text-xs">
+
+                    <Loader2
+                      size={13}
+                      className="animate-spin sm:h-[14px] sm:w-[14px]"
+                    />
+
+                    Updating status...
+
+                  </div>
+                )}
+
+              </div>
 
             </div>
 
           </div>
+
         </div>
       )}
 
