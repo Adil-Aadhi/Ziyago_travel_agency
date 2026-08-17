@@ -1,3 +1,4 @@
+
 "use client";
 
 import { FormEvent, useState } from "react";
@@ -47,16 +48,14 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#cfeef8] via-[#e8f7fc] to-white px-6 py-12">
-
-      {/* Login Card */}
-      <div className="w-full max-w-md">
+    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#cfeef8] via-[#e8f7fc] to-white px-4 py-8 sm:px-6">
+      <div className="w-full max-w-sm">
 
         {/* Logo / Brand */}
-        <div className="mb-8 text-center">
+        <div className="mb-5 text-center">
 
-          <div className="mb-5 flex justify-center">
-            <div className="relative h-20 w-32">
+          <div className="mb-3 flex justify-center">
+            <div className="relative h-14 w-24">
               <Image
                 src="/logo/logo.svg"
                 alt="ZiyaGo"
@@ -66,30 +65,30 @@ export default function AdminLoginPage() {
             </div>
           </div>
 
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-500">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-600 sm:text-xs">
             Admin Portal
           </p>
 
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900">
+          <h1 className="mt-1.5 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
             Welcome Back
           </h1>
 
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-1.5 text-xs text-gray-500 sm:text-sm">
             Sign in to manage your travel agency.
           </p>
 
         </div>
 
-        {/* Card */}
-        <div className="rounded-3xl bg-white p-7 shadow-xl md:p-9">
+        {/* Login Card */}
+        <div className="rounded-2xl border border-white/70 bg-white/95 p-5 shadow-lg backdrop-blur-sm sm:p-6">
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
 
             {/* Email */}
             <div>
               <label
                 htmlFor="email"
-                className="mb-2 block text-sm font-medium text-gray-700"
+                className="mb-1.5 block text-xs font-medium text-gray-700 sm:text-sm"
               >
                 Email Address
               </label>
@@ -97,10 +96,10 @@ export default function AdminLoginPage() {
               <div className="relative">
 
                 <Mail
-                  size={18}
+                  size={16}
                   className="
                     absolute
-                    left-4
+                    left-3.5
                     top-1/2
                     -translate-y-1/2
                     text-gray-400
@@ -116,23 +115,24 @@ export default function AdminLoginPage() {
                   placeholder="admin@example.com"
                   required
                   className="
+                    h-11
                     w-full
-                    rounded-xl
+                    rounded-lg
                     border
                     border-gray-200
                     bg-gray-50
-                    py-3.5
-                    pl-11
-                    pr-4
-                    text-sm
+                    pl-10
+                    pr-3
+                    text-xs
                     text-gray-900
                     outline-none
                     transition
                     placeholder:text-gray-400
-                    focus:border-orange-400
+                    focus:border-blue-400
                     focus:bg-white
                     focus:ring-2
-                    focus:ring-orange-100
+                    focus:ring-blue-100
+                    sm:text-sm
                   "
                 />
 
@@ -143,7 +143,7 @@ export default function AdminLoginPage() {
             <div>
               <label
                 htmlFor="password"
-                className="mb-2 block text-sm font-medium text-gray-700"
+                className="mb-1.5 block text-xs font-medium text-gray-700 sm:text-sm"
               >
                 Password
               </label>
@@ -151,10 +151,10 @@ export default function AdminLoginPage() {
               <div className="relative">
 
                 <LockKeyhole
-                  size={18}
+                  size={16}
                   className="
                     absolute
-                    left-4
+                    left-3.5
                     top-1/2
                     -translate-y-1/2
                     text-gray-400
@@ -170,23 +170,24 @@ export default function AdminLoginPage() {
                   placeholder="Enter your password"
                   required
                   className="
+                    h-11
                     w-full
-                    rounded-xl
+                    rounded-lg
                     border
                     border-gray-200
                     bg-gray-50
-                    py-3.5
-                    pl-11
-                    pr-12
-                    text-sm
+                    pl-10
+                    pr-11
+                    text-xs
                     text-gray-900
                     outline-none
                     transition
                     placeholder:text-gray-400
-                    focus:border-orange-400
+                    focus:border-blue-400
                     focus:bg-white
                     focus:ring-2
-                    focus:ring-orange-100
+                    focus:ring-blue-100
+                    sm:text-sm
                   "
                 />
 
@@ -195,17 +196,17 @@ export default function AdminLoginPage() {
                   onClick={() => setShowPassword((value) => !value)}
                   className="
                     absolute
-                    right-3
+                    right-2
                     top-1/2
                     flex
                     -translate-y-1/2
                     items-center
                     justify-center
-                    rounded-lg
-                    p-2
+                    rounded-md
+                    p-1.5
                     text-gray-400
                     transition
-                    hover:text-gray-700
+                    hover:text-blue-600
                   "
                   aria-label={
                     showPassword
@@ -214,9 +215,9 @@ export default function AdminLoginPage() {
                   }
                 >
                   {showPassword ? (
-                    <EyeOff size={18} />
+                    <EyeOff size={16} />
                   ) : (
-                    <Eye size={18} />
+                    <Eye size={16} />
                   )}
                 </button>
 
@@ -224,7 +225,7 @@ export default function AdminLoginPage() {
             </div>
 
             {error && (
-              <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">
+              <div className="rounded-lg bg-red-50 px-3 py-2.5 text-xs text-red-600">
                 {error}
               </div>
             )}
@@ -234,22 +235,26 @@ export default function AdminLoginPage() {
               type="submit"
               disabled={loading}
               className="
-                mt-2
+                mt-1
                 w-full
-                rounded-xl
-                bg-orange-500
-                py-3.5
-                text-sm
+                rounded-lg
+                bg-gradient-to-r
+                from-cyan-500
+                to-blue-600
+                py-3
+                text-xs
                 font-semibold
                 text-white
                 shadow-sm
                 transition-all
                 duration-200
-                hover:bg-orange-600
+                hover:from-cyan-600
+                hover:to-blue-700
                 hover:shadow-md
                 active:scale-[0.99]
                 disabled:cursor-not-allowed
                 disabled:opacity-60
+                sm:text-sm
               "
             >
               {loading ? "Signing in..." : "Sign In"}
@@ -260,7 +265,7 @@ export default function AdminLoginPage() {
         </div>
 
         {/* Footer */}
-        <p className="mt-6 text-center text-xs text-gray-400">
+        <p className="mt-4 text-center text-[10px] text-gray-400 sm:text-xs">
           Admin access only
         </p>
 
@@ -268,3 +273,4 @@ export default function AdminLoginPage() {
     </main>
   );
 }
+
