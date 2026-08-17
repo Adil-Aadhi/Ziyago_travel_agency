@@ -127,3 +127,37 @@
     @apply font-sans;
   }
 }
+
+@media (max-width: 640px) {
+  [data-sonner-toaster][data-x-position="right"] {
+    left: auto !important;
+    right: 10px !important;
+    top: 10px !important;
+    bottom: auto !important;
+    width: auto !important;
+    transform: none !important;
+  }
+
+  [data-sonner-toaster][data-x-position="right"]
+    [data-sonner-toast] {
+    width: 250px !important;
+    max-width: 250px !important;
+    min-height: 38px !important;
+    margin: 0 0 6px auto !important;
+    padding: 7px 10px !important;
+    border-radius: 9px !important;
+    font-size: 11px !important;
+  }
+
+  [data-sonner-toaster][data-x-position="right"]
+    [data-sonner-toast] [data-title] {
+    font-size: 11px !important;
+    line-height: 1.25 !important;
+  }
+
+  [data-sonner-toaster][data-x-position="right"]
+    [data-sonner-toast] [data-description] {
+    font-size: 10px !important;
+    line-height: 1.25 !important;
+  }
+}
