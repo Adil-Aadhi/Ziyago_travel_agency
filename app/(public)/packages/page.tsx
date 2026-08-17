@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useSearchParams } from "next/navigation";
 import { SlidersHorizontal } from "lucide-react";
@@ -82,7 +82,7 @@ const budgetOptions = [
   },
 ];
 
-export default function PackagesPage() {
+function PackagesContent() {
   // -----------------------------------------
   // Packages
   // -----------------------------------------
@@ -1338,5 +1338,17 @@ const [tourType, setTourType] =
         </div>
       </section>
     </main>
+  );
+}
+
+export default function PackagesPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white" />
+      }
+    >
+      <PackagesContent />
+    </Suspense>
   );
 }
