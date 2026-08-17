@@ -242,14 +242,17 @@ export default function PackageCard({
               className="
                 shrink-0
                 rounded-full
-                bg-blue-900
+                bg-gradient-to-r
+                from-cyan-500
+                to-blue-600
                 px-2.5
                 py-1.5
                 text-[9px]
                 font-semibold
                 text-white
                 transition
-                group-hover:bg-blue-950
+                group-hover:from-cyan-600
+                group-hover:to-blue-700
                 sm:px-3
                 sm:py-1.5
                 sm:text-[10px]

@@ -1025,22 +1025,25 @@ export default function PackageDetailsPage() {
                   <button
                     type="button"
                     onClick={() => setShowBookingModal(true)}
-                    className="
-                      w-full
-                      rounded-lg
-                      bg-blue-900
-                      px-4
-                      py-2.5
-                      text-xs
-                      font-semibold
-                      text-white
-                      transition
-                      hover:bg-blue-950
-                      sm:rounded-xl
-                      sm:px-6
-                      sm:py-3
-                      sm:text-sm
-                    "
+                   className="
+                    w-full
+                    rounded-lg
+                    bg-gradient-to-r
+                    from-cyan-500
+                    to-blue-600
+                    px-4
+                    py-2.5
+                    text-xs
+                    font-semibold
+                    text-white
+                    transition
+                    hover:from-cyan-600
+                    hover:to-blue-700
+                    sm:rounded-xl
+                    sm:px-6
+                    sm:py-3
+                    sm:text-sm
+                  "
                   >
                     Book This Package
                   </button>

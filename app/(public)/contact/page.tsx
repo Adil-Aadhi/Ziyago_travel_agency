@@ -596,30 +596,33 @@ export default function ContactPage() {
                 type="submit"
                 disabled={loading}
                 className="
-                  flex
-                  items-center
-                  justify-center
-                  gap-1.5
-                  rounded-lg
-                  bg-blue-900
-                  px-4
-                  py-2.5
-                  text-[10px]
-                  font-semibold
-                  text-white
-                  transition
-                  hover:bg-blue-950
-                  disabled:cursor-not-allowed
-                  disabled:opacity-60
-                  sm:rounded-xl
-                  sm:px-5
-                  sm:py-3
-                  sm:text-xs
-                  lg:px-6
-                  lg:py-3.5
-                  lg:text-sm
-                  hover:cursor-pointer
-                "
+  flex
+  items-center
+  justify-center
+  gap-1.5
+  rounded-lg
+  bg-gradient-to-r
+  from-cyan-500
+  to-blue-600
+  px-4
+  py-2.5
+  text-[10px]
+  font-semibold
+  text-white
+  transition
+  hover:from-cyan-600
+  hover:to-blue-700
+  disabled:cursor-not-allowed
+  disabled:opacity-60
+  sm:rounded-xl
+  sm:px-5
+  sm:py-3
+  sm:text-xs
+  lg:px-6
+  lg:py-3.5
+  lg:text-sm
+  hover:cursor-pointer
+"
               >
                 {loading ? "Sending..." : "Send Message"}
 

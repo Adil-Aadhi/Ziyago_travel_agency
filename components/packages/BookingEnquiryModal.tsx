@@ -484,14 +484,17 @@ export default function BookingEnquiryModal({
           disabled={loading}
           className="
             rounded-lg
-            bg-blue-900
+            bg-gradient-to-r
+            from-cyan-500
+            to-blue-600
             px-4
             py-2.5
             text-xs
             font-semibold
             text-white
             transition
-            hover:bg-blue-950
+            hover:from-cyan-600
+            hover:to-blue-700
             disabled:cursor-not-allowed
             disabled:opacity-60
             hover:cursor-pointer

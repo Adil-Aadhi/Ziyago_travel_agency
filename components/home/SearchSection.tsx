@@ -258,31 +258,32 @@ export default function SearchSection({
           type="button"
           onClick={handleSearch}
           className="
-              flex
-              h-9
-              w-9
-              shrink-0
-              items-center
-              justify-center
-              rounded-full
-              bg-blue-900
-              p-0
-              text-white
-              transition
-              hover:bg-blue-950
-              hover:cursor-pointer
+            flex
+            h-9
+            w-9
+            shrink-0
+            items-center
+            justify-center
+            rounded-full
+            bg-gradient-to-r
+            from-cyan-500
+            to-blue-600
+            p-0
+            text-white
+            transition
+            hover:from-cyan-600
+            hover:to-blue-700
+            hover:cursor-pointer
 
-              md:h-14
-              md:w-auto
-              md:shrink
-              md:gap-2
-              md:rounded-2xl
-              md:px-6
+            md:h-14
+            md:w-auto
+            md:shrink
+            md:gap-2
+            md:rounded-2xl
+            md:px-6
           "
         >
-
           <Search size={16} className="md:size-[21px]" />
-
         </button>
 
       </div>
