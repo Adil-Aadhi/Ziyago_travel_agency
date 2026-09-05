@@ -15,37 +15,49 @@ const faqs: FAQ[] = [
     id: 1,
     question: "How can I book a travel package?",
     answer:
-      "You can explore our travel packages and contact us through the booking option. Our travel experts will help you choose the right package and complete the booking process.",
+      "Website, via whatsApp, or at our Valanchery office.",
   },
   {
     id: 2,
+    question: "Can a student slot be cancelled?",
+    answer:
+      "Name swaps are allowed before carrier deadlines; otherwise, standard penalties apply.",
+  },
+  {
+    id: 3,
     question: "Can I customize my travel package?",
     answer:
       "Yes. We can customize your trip based on your preferred destination, travel dates, number of travelers, accommodation, activities, and budget.",
   },
   {
-    id: 3,
+    id: 4,
     question: "What is included in your travel packages?",
     answer:
       "Depending on the package, inclusions may cover accommodation, transportation, sightseeing, activities, meals, and other travel services. The exact inclusions are mentioned with each package.",
   },
   {
-    id: 4,
+    id: 5,
     question: "Can I change my travel dates after booking?",
     answer:
       "Travel date changes may be possible depending on availability and the terms of your booking. Please contact our team as early as possible if you need to make changes.",
   },
   {
-    id: 5,
+    id: 6,
     question: "Do you arrange airport transfers?",
     answer:
       "Yes. Airport transfers can be arranged for selected destinations and packages. You can also request private or shared transportation depending on your requirements.",
   },
   {
-    id: 6,
-    question: "How can I contact your travel team?",
+    id: 8,
+    question: "Is the hajj & umrah visa included or not?",
     answer:
-      "You can contact us through the contact details provided on our website. Our team will be happy to help you with packages, bookings, custom trips, and other travel-related questions.",
+      "Yes, full processing with the Saudi Ministry is handled by us",
+  },
+  {
+    id: 9,
+    question: "How is safety ensured?",
+    answer:
+      "Through audited transport, certified coordinators, and 24/7 tracking.",
   },
 ];
 

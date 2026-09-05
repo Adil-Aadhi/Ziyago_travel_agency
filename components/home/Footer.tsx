@@ -20,16 +20,10 @@ const quickLinks = [
   { name: "About Us", href: "/about" },
   { name: "Packages", href: "/packages" },
   { name: "Videos", href: "/videos" },
-  { name: "Upcoming Tours", href: "/upcoming-tours" },
+  // { name: "Upcoming Tours", href: "/upcoming-tours" },
   { name: "Contact Us", href: "/contact" },
 ];
 
-const locations = [
-  "Kochi",
-  "Calicut",
-  "Malappuram",
-  "Bangalore",
-];
 
 export default function Footer() {
   return (
@@ -111,7 +105,8 @@ export default function Footer() {
               </a>
 
               <a
-                href="#"
+                href="https://www.instagram.com/ziyago_holidays?igsi=MTFnMG53cjNyemZ3Ng=="
+                target="_blank"
                 aria-label="Instagram"
                 className="
                   flex
@@ -255,40 +250,23 @@ export default function Footer() {
               Our Locations
             </h3>
 
-            <ul className="mt-3 space-y-2.5 sm:mt-5 sm:space-y-3 lg:mt-6 lg:space-y-4">
+            <div className="mt-3 flex items-start gap-2 text-[10px] leading-4 text-gray-300 sm:mt-5 sm:gap-3 sm:text-base sm:leading-relaxed">
+  <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-blue-400 sm:h-5 sm:w-5" />
 
-              {locations.map((location) => (
-                <li
-                  key={location}
-                  className="
-                    flex
-                    items-center
-                    gap-1.5
-                    text-[9px]
-                    text-white/65
-                    sm:gap-2
-                    sm:text-[11px]
-                    lg:gap-3
-                    lg:text-sm
-                  "
-                >
-                  <MapPin
-                    size={12}
-                    className="
-                      shrink-0
-                      text-[#8ed8eb]
-                      sm:h-3.5
-                      sm:w-3.5
-                      lg:h-[17px]
-                      lg:w-[17px]
-                    "
-                  />
+  <address className="not-italic">
+    <span className="block font-medium text-white">
+      Valanchery
+    </span>
 
-                  <span>{location}</span>
-                </li>
-              ))}
+    <span className="text-gray-400">
+      Kuttippuram Road, Malappuram
+    </span>
 
-            </ul>
+    <span className="block text-gray-400">
+      Kerala, India
+    </span>
+  </address>
+</div>
           </div>
 
 
@@ -351,7 +329,10 @@ export default function Footer() {
                   </p>
 
                   <p className="mt-0.5 text-[9px] text-white/80 sm:text-[10px] lg:mt-1 lg:text-sm">
-                    +91 98765 43210
+                    +91 9061553747
+                  </p>
+                  <p className="mt-0.5 text-[9px] text-white/80 sm:text-[10px] lg:mt-1 lg:text-sm">
+                    +91 7034735101
                   </p>
 
                 </div>
@@ -397,7 +378,7 @@ export default function Footer() {
                   </p>
 
                   <p className="mt-0.5 break-all text-[8px] text-white/80 sm:text-[10px] lg:mt-1 lg:text-sm">
-                    info@yourtravelagency.com
+                    Ziyagoholidays@gmail.com
                   </p>
 
                 </div>
@@ -437,7 +418,7 @@ export default function Footer() {
                   </p>
 
                   <p className="mt-0.5 text-[9px] leading-4 text-white/80 sm:text-[10px] lg:mt-1 lg:text-sm lg:leading-6">
-                    Kerala, India
+                    Malappuram, kerala , India 
                   </p>
 
                 </div>
@@ -485,7 +466,7 @@ export default function Footer() {
             </Link>
 
             <Link
-              href="/terms"
+              href="/terms-and-payment"
               className="text-[9px] text-white/45 transition-colors duration-300 hover:text-white sm:text-[10px] lg:text-xs"
             >
               Terms & Conditions

@@ -55,18 +55,35 @@ type PackageData = {
 };
 
 const terms = [
-  "Package prices are subject to availability at the time of booking.",
-  "The itinerary may be modified due to weather, local conditions, or operational requirements.",
-  "Guests are responsible for carrying valid travel documents and passports.",
-  "Cancellation charges will apply according to the cancellation policy.",
-  "Any personal expenses not mentioned under inclusions are the responsibility of the traveler.",
+  "ZiyaGo Holidays' Terms and Conditions, along with all booking agreements, are governed by and interpreted in accordance with the laws of the Republic of India.",
+
+  "All travel services and booking agreements are subject to applicable Indian laws, including the Indian Contract Act, 1872, the Consumer Protection Act, 2019, and relevant guidelines issued by the Ministry of Tourism.",
+
+  "Any legal disputes, claims, or arbitration arising from travel services, package cancellations, student tours, pilgrimage tours, or related services shall be subject to the exclusive jurisdiction of the competent courts in Kerala.",
+
+  "All financial transactions and non-refundable deposit forfeitures will be processed in accordance with applicable Indian consumer protection standards.",
+
+  "Force Majeure claims and circumstances beyond the reasonable control of ZiyaGo Holidays will be handled in accordance with applicable laws and booking agreements.",
+
+  "Any foreign exchange transactions related to travel bookings will be subject to applicable foreign exchange regulations and requirements.",
+
+  "By confirming a booking with ZiyaGo Holidays, the traveler agrees to be bound by the applicable Terms and Conditions and the relevant booking agreement.",
 ];
 
 const paymentTerms = [
-  "A booking confirmation amount is required to reserve the package.",
-  "The remaining balance must be paid before the specified departure date.",
-  "Payments once made are subject to the applicable cancellation and refund policy.",
-  "Package prices may change until the booking is confirmed.",
+  "Standard Payment Schedule: All payments and booking agreements are governed by applicable Indian laws, including the Indian Contract Act, 1872, the Consumer Protection Act, 2019, and relevant guidelines issued by the Ministry of Tourism.",
+
+  "Hajj & Umrah Packages – Immediate Allocation: Due to visa window updates and requirements from the Saudi Ministry of Hajj and Umrah, an initial advance payment of up to 50% of the package cost may be required during peak seasons to secure visa processing, accommodation, and other travel arrangements.",
+
+  "Hajj & Umrah Packages – Final Clearance: 100% of the total package cost must be settled before passport submission for visa stamping.",
+
+  "Institutional Tours – Token Advance: A flat, non-refundable token advance is required to reserve group airline seats, private train coaches, or other group travel arrangements.",
+
+  "Institutional Tours – Purchase Order & Milestone Payments: Payment milestone dates may be aligned with school or college board disbursement cycles, provided that 100% of the package amount is cleared at least 20 days before the departure date.",
+
+  "Accepted Payment Methods: UPI, NEFT, RTGS, IMPS bank transfers, credit cards, debit cards, and cash payments, subject to applicable payment limits and regulations.",
+
+  "All payments are subject to the applicable booking, cancellation, refund, and payment policies of ZiyaGo Holidays.",
 ];
 
 export default function PackageDetailsPage() {
