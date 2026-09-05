@@ -22,13 +22,17 @@ type SearchSectionProps = {
 const destinations = [
   "All Destinations",
   "Dubai",
-  "Maldives",
-  "Switzerland",
-  "Paris",
-  "Bali",
-  "Singapore",
-  "Italy",
-  "Thailand",
+  "Malaysia",
+  "Thailanda",
+  "malta",
+  "Vietnam",
+  "Indonesia",
+  "china",
+  "srilanka",
+  "UAE",
+  "Bahrain",
+  "Oman",
+  "Qatar"
 ];
 
 const tourTypes = [

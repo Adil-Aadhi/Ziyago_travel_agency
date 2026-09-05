@@ -208,9 +208,9 @@ export default function ContactPage() {
                   </p>
 
                   <p className="mt-0.5 text-[9px] leading-4 text-gray-500 sm:mt-1 sm:text-xs sm:leading-5 lg:text-sm lg:leading-relaxed">
-                    123 Travel Street,
+                    Valanchery (kuttippuram road),
                     <br />
-                    Kochi, Kerala, India
+                    Malappuram, kerala , India 
                   </p>
                 </div>
 
@@ -249,7 +249,10 @@ export default function ContactPage() {
                   </p>
 
                   <p className="mt-0.5 text-[9px] text-gray-500 sm:mt-1 sm:text-xs lg:text-sm">
-                    +91 98765 43210
+                    +91 9061553747
+                  </p>
+                  <p className="mt-0.5 text-[9px] text-gray-500 sm:mt-1 sm:text-xs lg:text-sm">
+                    +91 7034735101
                   </p>
                 </div>
 
@@ -288,7 +291,7 @@ export default function ContactPage() {
                   </p>
 
                   <p className="mt-0.5 break-all text-[9px] text-gray-500 sm:mt-1 sm:text-xs lg:text-sm">
-                    hello@ziyaGo.com
+                    Ziyagoholidays@gmail.com
                   </p>
                 </div>
 
@@ -646,7 +649,7 @@ export default function ContactPage() {
       {/* ================================
           MAP PLACEHOLDER
       ================================= */}
-      <section className="px-6 pb-20">
+      {/* <section className="px-6 pb-20">
         <div className="mx-auto max-w-7xl">
 
           <div className="overflow-hidden rounded-3xl bg-white shadow-sm">
@@ -681,7 +684,7 @@ export default function ContactPage() {
           </div>
 
         </div>
-      </section>
+      </section> */}
 
     </main>
   );

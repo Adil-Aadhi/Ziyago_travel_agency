@@ -43,14 +43,17 @@ type PaginationData = {
 };
 
 const destinations = [
-  "Dubai",
-  "Maldives",
-  "Switzerland",
-  "Paris",
-  "Bali",
-  "Singapore",
-  "Italy",
-  "Thailand",
+  "Manali",
+  "kashmir",
+  "goa",
+  "kasol",
+  "rajasthan",
+  "delhi",
+  "agra",
+  "Hyderabad",
+  "gokarna",
+  "dandeli",
+  "punjab"
 ];
 
 const tourTypes = [

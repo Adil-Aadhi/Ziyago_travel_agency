@@ -81,10 +81,7 @@ export default function AboutPage() {
           </h1>
 
           <p className="mt-3 max-w-lg text-[10px] leading-5 text-gray-600 sm:mt-4 sm:text-xs sm:leading-6 lg:mt-6 lg:text-base lg:leading-8">
-            We are passionate about creating unforgettable travel
-            experiences. From discovering new destinations to planning every
-            little detail, we are here to make your journey simple,
-            comfortable, and memorable.
+           Welcome to <span className="font-bold">ZiyaGo Holidays</span>, where travel transcends boundaries to become an educational milestone, a deepening of personal bonds, and a sacred journey of devotion. Founded on the absolute pillars of safety, meticulous coordination, and deep cultural respect, we serve as a trusted global compass for diverse travelers.
           </p>
 
           <div className="mt-4 flex flex-wrap gap-2 sm:mt-6 sm:gap-3 lg:mt-8 lg:gap-4">
